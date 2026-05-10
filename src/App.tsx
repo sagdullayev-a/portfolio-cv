@@ -1,0 +1,152 @@
+import { ArrowUpRight } from "lucide-react";
+import { useEffect, useState } from "react";
+import { AnimatePresence } from "framer-motion";
+
+import heroEye from "@/assets/hero-eye.png";
+
+import WelcomeScreen from "@/components/WelcomeScreen";
+import FrontendDeveloperSection from "@/components/FrontendDeveloperSection";
+
+const logos = ["PRINCE", "WEBKAIZEN", "FRONTEND", "DEVELOPER"];
+
+export default function App() {
+  const [showWelcome, setShowWelcome] = useState(true);
+  const [time, setTime] = useState("");
+
+  const text = "PRINCE";
+  const [displayed, setDisplayed] = useState("");
+  const [colorMode, setColorMode] = useState(0);
+
+  const colors = [
+    "bg-gradient-to-b from-white via-gray-200 via-gray-500 to-black text-transparent bg-clip-text",
+    "text-white",
+    "bg-gradient-to-b from-black via-gray-500 via-gray-200 to-white text-transparent bg-clip-text",
+  ];
+
+  useEffect(() => {
+    const timer = setTimeout(() => setShowWelcome(false), 5000);
+    return () => clearTimeout(timer);
+  }, []);
+
+  useEffect(() => {
+    const updateTime = () => {
+      const now = new Date();
+      setTime(
+        now.toLocaleTimeString("en-US", {
+          hour: "2-digit",
+          minute: "2-digit",
+          hour12: true,
+        }),
+      );
+    };
+    updateTime();
+    const interval = setInterval(updateTime, 1000);
+    return () => clearInterval(interval);
+  }, []);
+
+  useEffect(() => {
+    setDisplayed("");
+    let i = 0;
+    function type() {
+      setDisplayed(text.slice(0, i + 1));
+      i++;
+      if (i < text.length) setTimeout(type, 200);
+    }
+    type();
+  }, []);
+
+  return (
+    <div className="min-h-screen bg-black text-white overflow-x-hidden">
+      <AnimatePresence>{showWelcome && <WelcomeScreen />}</AnimatePresence>
+
+      <nav className="absolute top-0 left-0 right-0 z-30 flex items-center justify-between px-6 md:px-12 py-6">
+        <div className="text-[10px] md:text-xs tracking-[0.3em] text-white/70 uppercase font-medium">
+          PRINCE · WEBKAIZEN
+        </div>
+        <ul className="hidden md:flex items-center gap-10 text-xs tracking-widest text-white/70 uppercase">
+          <li className="hover:text-white transition-colors cursor-pointer">Work</li>
+          <li className="hover:text-white transition-colors cursor-pointer">About</li>
+          <li className="hover:text-white transition-colors cursor-pointer">Services</li>
+          <li className="hover:text-white transition-colors cursor-pointer">Contact</li>
+        </ul>
+        <div className="md:hidden text-[10px] tracking-[0.3em] text-white/70 uppercase">
+          {time}
+        </div>
+      </nav>
+
+      <section className="relative w-full h-screen min-h-[640px] overflow-hidden bg-black">
+        <div className="absolute inset-0 flex items-center justify-center">
+          <img
+            src={heroEye}
+            alt="Hero"
+            className="h-[90%] w-[90%] object-contain object-center"
+          />
+        </div>
+
+        <div className="relative z-10 w-full h-full flex flex-col justify-between px-6 md:px-12 pt-24 pb-10">
+          <h1
+            onClick={() => setColorMode((prev) => (prev + 1) % colors.length)}
+            className={`font-display uppercase leading-[0.85] tracking-[-0.03em] text-[22vw] md:text-[14vw] lg:text-[13rem] cursor-pointer transition-all duration-300 ${colors[colorMode]}`}
+          >
+            {displayed || "\u00A0"}
+          </h1>
+
+          <p className="md:absolute md:top-28 md:right-12 mt-4 md:mt-0 text-right text-2xl md:text-4xl lg:text-5xl font-bold leading-[1.05] text-white">
+            Creating
+            <br />
+            Websites
+            <br />
+            That Feel
+            <br />
+            Alive.
+          </p>
+
+          <div className="flex flex-col md:flex-row md:items-end md:justify-between gap-6 mt-auto">
+            <p className="text-sm md:text-base text-white/85 max-w-xs leading-relaxed">
+              Turning creative ideas into interactive and{" "}
+              <em className="not-italic text-white/60">
+                high-quality web experiences.
+              </em>
+            </p>
+
+            <a
+              href="https://www.webkaizen.in"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              <button className="inline-flex items-center gap-3 border border-white/20 text-white px-6 py-3 text-xs tracking-[0.25em] uppercase font-semibold hover:bg-white hover:text-black transition-all duration-300 rounded-full">
+                WEBKAIZEN
+                <ArrowUpRight size={16} />
+              </button>
+            </a>
+          </div>
+        </div>
+      </section>
+
+      <div className="bg-black border-t border-white/10 py-5 overflow-hidden">
+        <div className="flex items-center gap-16 animate-marquee whitespace-nowrap">
+          {[...logos, ...logos, ...logos].map((logo, i) => (
+            <span
+              key={i}
+              className="text-white/40 text-xs tracking-[0.3em] uppercase font-medium"
+            >
+              {logo}
+            </span>
+          ))}
+        </div>
+      </div>
+
+      <style>{`
+        @keyframes marquee {
+          0% { transform: translateX(0); }
+          100% { transform: translateX(-33.333%); }
+        }
+        .animate-marquee {
+          animation: marquee 22s linear infinite;
+        }
+      `}</style>
+
+      <FrontendDeveloperSection />
+    </div>
+  );
+}
