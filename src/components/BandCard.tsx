@@ -85,6 +85,7 @@ export default function BandCard() {
             width: "100%",
             height: "100%",
             pointerEvents: "auto",
+            touchAction: "none",
           }}
         >
           <ambientLight intensity={1.5} />
@@ -196,7 +197,7 @@ function Band({
   );
 
   const [dragged, drag] =
-    useState<any>(false);
+    useState<any>(null);
 
   const [hovered, hover] =
     useState(false);
@@ -240,7 +241,7 @@ function Band({
 
   useFrame((state, delta) => {
     if (
-      dragged &&
+      dragged !== null &&
       card.current &&
       canDrag
     ) {
@@ -277,10 +278,14 @@ function Band({
 
       let newY = vec.y - dragged.y;
 
-      const newZ = vec.z - dragged.z;
+      const newZ = 0;
+
+      if (isMobile) {
+        vec.multiplyScalar(0.92);
+      }
 
       const limit = isMobile
-        ? -0.1
+        ? -0.05
         : -0.2;
 
       if (state.pointer.y < limit) {
@@ -325,9 +330,9 @@ function Band({
         ref.current.lerped.lerp(
           ref.current.translation(),
           delta *
-            (minSpeed +
-              d *
-                (maxSpeed - minSpeed))
+          (minSpeed +
+            d *
+            (maxSpeed - minSpeed))
         );
       });
 
@@ -433,6 +438,8 @@ function Band({
             }
             onPointerUp={(e: any) => {
               if (!canDrag) return;
+
+              e.stopPropagation();
 
               e.target.releasePointerCapture(
                 e.pointerId

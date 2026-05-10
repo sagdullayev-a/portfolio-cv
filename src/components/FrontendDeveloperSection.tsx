@@ -1,6 +1,7 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState, lazy, Suspense } from "react";
 import { motion, useInView, AnimatePresence } from "framer-motion";
-import BandCard from "./BandCard";
+
+const BandCard = lazy(() => import("./BandCard"));
 
 export default function FrontendDeveloperSection() {
   const ref = useRef<HTMLElement>(null);
@@ -93,7 +94,7 @@ export default function FrontendDeveloperSection() {
           animate={inView ? { opacity: 1, y: 0 } : { opacity: 0, y: 30 }}
           transition={{ duration: 0.8, delay: 0.9 }}
           onClick={() => setShowCard((s) => !s)}
-          className="mt-8 inline-flex items-center gap-2 border border-accent text-accent px-6 py-3 text-xs tracking-[0.25em] uppercase font-semibold hover:bg-accent hover:text-black transition-all duration-300 rounded-full relative z-[70]"
+          className="mt-8 inline-flex items-center gap-2 border border-accent text-accent px-6 py-3 text-xs tracking-[0.25em] uppercase font-semibold hover:bg-accent hover:text-black transition-all duration-300 rounded-full relative z-20"
         >
           {showCard ? "Hide Card" : "Show Card"}
         </motion.button>
@@ -103,13 +104,15 @@ export default function FrontendDeveloperSection() {
       <AnimatePresence>
         {showCard && mounted && (
           <motion.div
-            initial={{ opacity: 0, y: -16 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -16 }}
-            transition={{ duration: 0.12, ease: "easeOut" }}
-            className="absolute inset-0 z-[50] pointer-events-none"
+            initial={{ y: "-100%", opacity: 0 }}
+            animate={{ y: 0, opacity: 1 }}
+            exit={{ y: "-100%", opacity: 0 }}
+            transition={{ duration: 1.1, ease: [0.22, 1, 0.36, 1] }}
+            className="absolute inset-0 z-[5] pointer-events-none"
           >
-            <BandCard />
+            <Suspense fallback={null}>
+              <BandCard />
+            </Suspense>
           </motion.div>
         )}
       </AnimatePresence>
