@@ -1,285 +1,309 @@
-"use client";
+import { useState, useRef, useCallback } from "react";
+import { useEffect,} from "react";
 
-import { motion, AnimatePresence } from "framer-motion";
-import { useState } from "react";
+const techStack = [
+  { name: "HTML5", icon: "https://cdn.simpleicons.org/html5/E34F26", color: "#E34F26" },
+  { name: "CSS3", icon: "https://cdn.simpleicons.org/css4/1572B6", color: "#1572B6" },
+  { name: "JavaScript", icon: "https://cdn.simpleicons.org/javascript/F7DF1E", color: "#F7DF1E" },
+  { name: "TypeScript", icon: "https://cdn.simpleicons.org/typescript/3178C6", color: "#3178C6" },
+  { name: "React", icon: "https://cdn.simpleicons.org/react/61DAFB", color: "#61DAFB" },
+  { name: "Next.js", icon: "https://cdn.simpleicons.org/nextdotjs/FFFFFF", color: "#FFFFFF" },
+  { name: "Node.js", icon: "https://cdn.simpleicons.org/nodedotjs/339933", color: "#339933" },
+  { name: "Tailwind", icon: "https://cdn.simpleicons.org/tailwindcss/06B6D4", color: "#06B6D4" },
+  { name: "Python", icon: "https://cdn.simpleicons.org/python/3776AB", color: "#3776AB" },
+  { name: "Firebase", icon: "https://cdn.simpleicons.org/firebase/FFCA28", color: "#FFCA28" },
+  { name: "Git", icon: "https://cdn.simpleicons.org/git/F05032", color: "#F05032" },
+  { name: "GitHub", icon: "https://cdn.simpleicons.org/github/FFFFFF", color: "#FFFFFF" },
+  { name: "Vercel", icon: "https://cdn.simpleicons.org/vercel/FFFFFF", color: "#FFFFFF" },
+  { name: "Netlify", icon: "https://cdn.simpleicons.org/netlify/00C7B7", color: "#00C7B7" },
+  { name: "PowerShell", icon: "https://cdn.simpleicons.org/powershell/5391FE", color: "#5391FE" },
+  { name: "Terminal", icon: "https://cdn.simpleicons.org/windowsterminal/4D4D4D", color: "#4D4D4D" },
+];
 
-const tabs = [
+const projects = [
   {
-    id: "projects",
-    label: "Projects",
-    title: "Selected Projects",
-    desc: "Modern frontend experiences with cinematic animations and premium UI.",
-    items: [
-      {
-        tech: "React + Three.js",
-        thumbnail: "https://images.unsplash.com/photo-1517694712202-14dd9538aa97?w=600&h=400&fit=crop",
-        github: "#"
-      },
-      {
-        tech: "TypeScript + Storybook",
-        thumbnail: "https://images.unsplash.com/photo-1517694712202-14dd9538aa97?w=600&h=400&fit=crop",
-        github: "#"
-      },
-      {
-        tech: "Next.js + D3.js",
-        thumbnail: "https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=600&h=400&fit=crop",
-        github: "#"
-      }
-    ]
+    tech: "typescript + Canvas",
+    thumbnail: "https://cdn.jsdelivr.net/gh/princekumar-dev74/portfolio/public/preview.png",
+    github: "https://github.com/princekumar-dev74/portfolio.git",
   },
   {
-    id: "certificates",
-    label: "Certificates",
-    title: "Verified Certificates",
-    desc: "Frontend development and creative engineering certifications.",
-    items: [
-      {
-        title: "Advanced React Patterns",
-        desc: "Master complex state management and performance optimization",
-        tech: "Udemy 2024",
-        thumbnail: "https://images.unsplash.com/photo-1552664730-d307ca884978?w=600&h=400&fit=crop"
-      },
-      {
-        title: "Web Design Fundamentals",
-        desc: "Complete guide to modern web design principles",
-        tech: "Coursera 2024",
-        thumbnail: "https://images.unsplash.com/photo-1509042239860-f550ce710b93?w=600&h=400&fit=crop"
-      },
-      {
-        title: "Creative Coding Bootcamp",
-        desc: "Build interactive experiences with creative tech",
-        tech: "Skillshare 2024",
-        thumbnail: "https://images.unsplash.com/photo-1517694712202-14dd9538aa97?w=600&h=400&fit=crop"
-      }
-    ]
+    tech: "Typescript + Canvas API",
+    thumbnail: "https://cdn.jsdelivr.net/gh/princekumar-dev74/Animation@7f2f78f209ffc93bd22d9d5e222cfd23c5fee133/X/Screenshot%202026-05-10%20161948.png",
+    github: "https://www.webkaizen.in",
   },
   {
-    id: "tech",
-    label: "Tech Stack",
-    title: "Tools & Technologies",
-    desc: "React, Next.js, TypeScript, Tailwind CSS, Framer Motion, Three.js.",
-    items: [
-      {
-        title: "React & Next.js",
-        desc: "Building modern web applications with latest features",
-        tech: "Frontend Core",
-        thumbnail: "https://images.unsplash.com/photo-1633356122544-f134324ef6db?w=600&h=400&fit=crop"
-      },
-      {
-        title: "Animation Libraries",
-        desc: "Framer Motion, GSAP for cinematic interactions",
-        tech: "Motion Design",
-        thumbnail: "https://images.unsplash.com/photo-1552664730-d307ca884978?w=600&h=400&fit=crop"
-      },
-      {
-        title: "Styling Solutions",
-        desc: "Tailwind CSS, styled-components, CSS modules",
-        tech: "Design System",
-        thumbnail: "https://images.unsplash.com/photo-1561070791-2526d30994b5?w=600&h=400&fit=crop"
-      }
-    ]
+    tech: "HTML + CSS + JS",
+    thumbnail: "https://cdn.jsdelivr.net/gh/princekumar-dev74/Animation@7f2f78f209ffc93bd22d9d5e222cfd23c5fee133/X/1.png",
+    github: "https://github.com/princekumar-dev74/Animation.git",
   },
 ];
 
-export default function ShowcaseSection() {
-  const [active, setActive] = useState("projects");
+const certificates = [
+  {
+    title: "Advanced React Patterns",
+    tech: "Udemy 2024",
+    thumbnail: "https://camo.githubusercontent.com/24938d39602a5bd139da2eb01794a41689a30207723058da7f5929cba3af1699/68747470733a2f2f63646e2e6a7364656c6976722e6e65742f67682f7072696e63656b756d61722d64657637342f706f7274666f6c696f2f7075626c69632f707265766965772e706e67",
+  },
+  {
+    title: "Web Design Fundamentals",
+    tech: "Coursera 2024",
+    thumbnail: "https://images.unsplash.com/photo-1509042239860-f550ce710b93?w=600&h=400&fit=crop",
+  },
+  {
+    title: "Creative Coding Bootcamp",
+    tech: "Skillshare 2024",
+    thumbnail: "https://images.unsplash.com/photo-1517694712202-14dd9538aa97?w=600&h=400&fit=crop",
+  },
+];
 
-  const current = tabs.find((tab) => tab.id === active);
+const GithubIcon = () => (
+  <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 24 24">
+    <path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z" />
+  </svg>
+);
 
+function ProjectCard({ item }: { item: typeof projects[0] }) {
   return (
-    <section className="relative w-full min-h-screen bg-black overflow-hidden text-white px-6 md:px-20 py-28">
-      {/* Background glow */}
-      <div className="absolute top-1/2 left-1/2 w-[700px] h-[700px] -translate-x-1/2 -translate-y-1/2 bg-white/5 blur-[140px] pointer-events-none" />
-
-      {/* Content */}
-      <div className="relative z-10 flex flex-col items-center">
-        {/* Top label */}
-        <motion.div 
-          className="flex items-center gap-3 mb-6"
-          initial={{ opacity: 0, y: -20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6 }}
+    <div className="group relative rounded-2xl border border-white/20 overflow-hidden bg-white/[0.08] hover:border-white/40 transition-all duration-500 hover:-translate-y-2 hover:shadow-2xl hover:shadow-blue-500/20 backdrop-blur-md" style={{ backdropFilter: "blur(20px)" }}>
+      <div className="relative h-48 overflow-hidden bg-white/5">
+        <img
+          src={item.thumbnail}
+          alt={item.tech}
+          className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700"
+        />
+        <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent" />
+        <div className="absolute inset-0 bg-white/0 group-hover:bg-white/5 transition-colors duration-300" />
+      </div>
+      <div className="p-5 flex items-center justify-between">
+        <span className="text-[10px] uppercase tracking-[0.25em] text-white/40 font-mono">
+          {item.tech}
+        </span>
+        <a
+          href={item.github}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="flex items-center justify-center w-8 h-8 rounded-full bg-white/8 border border-white/15 text-white/60 hover:bg-white/20 hover:text-white hover:border-white/40 transition-all duration-200 active:scale-95"
         >
-          <div className="w-10 h-[1px] bg-white/30" />
-          <span className="text-[11px] uppercase tracking-[0.35em] text-white/50 font-mono">
-            ✦ Showcase
-          </span>
-        </motion.div>
+          <GithubIcon />
+        </a>
+      </div>
+    </div>
+  );
+}
 
-        {/* Heading */}
-        <motion.h1 
-          className="text-center text-[clamp(52px,8vw,120px)] font-black leading-none tracking-tight"
-          initial={{ opacity: 0, y: 30 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8, delay: 0.1 }}
-        >
-          Creative Space
-        </motion.h1>
-
-        {/* Tab Switcher */}
-        <motion.div
-          className="relative mt-14 flex items-center p-2 rounded-full border border-white/10 bg-white/[0.03] backdrop-blur-2xl overflow-hidden"
-          initial={{ opacity: 0, scale: 0.95 }}
-          animate={{ opacity: 1, scale: 1 }}
-          transition={{ duration: 0.6, delay: 0.2 }}
-        >
-          {/* Active pill */}
-          <motion.div
-            layoutId="active-pill"
-            transition={{
-              type: "spring",
-              stiffness: 350,
-              damping: 30,
-            }}
-            className="absolute inset-y-2 rounded-full bg-white/10 border border-white/10 backdrop-blur-2xl shadow-lg"
-            style={{
-              width: "160px",
-              left:
-                active === "projects"
-                  ? "8px"
-                  : active === "certificates"
-                  ? "168px"
-                  : "328px",
-            }}
-          />
-
-          {tabs.map((tab, idx) => (
-            <motion.button
-              key={tab.id}
-              onClick={() => setActive(tab.id)}
-              className="relative z-10 w-[160px] h-[56px] rounded-full text-sm font-medium tracking-wide transition-colors"
-              whileHover={{ scale: 1.02 }}
-              whileTap={{ scale: 0.98 }}
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ delay: 0.3 + idx * 0.1 }}
-            >
-              <span
-                className={
-                  active === tab.id
-                    ? "text-white font-semibold"
-                    : "text-white/40"
-                }
-              >
-                {tab.label}
-              </span>
-            </motion.button>
-          ))}
-        </motion.div>
-
-        {/* Showcase Card */}
-        <div className="relative w-full max-w-6xl mt-16">
-          <AnimatePresence mode="wait">
-            <motion.div
-              key={current?.id}
-              initial={{ opacity: 0, y: 80, scale: 0.96 }}
-              animate={{ opacity: 1, y: 0, scale: 1 }}
-              exit={{ opacity: 0, y: -60, scale: 0.96 }}
-              transition={{
-                duration: 0.8,
-                ease: [0.22, 1, 0.36, 1],
-              }}
-              className="relative overflow-hidden rounded-[42px] border border-white/10 bg-white/[0.03] backdrop-blur-2xl p-10 md:p-16 min-h-[500px]"
-            >
-              {/* Glow effect */}
-              <div className="absolute -top-24 -right-24 w-72 h-72 rounded-full bg-white/10 blur-[120px] pointer-events-none" />
-              <div className="absolute -bottom-32 -left-32 w-96 h-96 rounded-full bg-blue-500/5 blur-[140px] pointer-events-none" />
-
-              {/* Top text */}
-              <motion.div 
-                className="flex items-center gap-3 mb-8"
-                initial={{ opacity: 0, x: -20 }}
-                animate={{ opacity: 1, x: 0 }}
-                transition={{ delay: 0.1 }}
-              >
-                <div className="w-12 h-[1px] bg-white/30" />
-                <span className="text-[11px] tracking-[0.35em] uppercase text-white/45">
-                  {current?.label}
-                </span>
-              </motion.div>
-
-              {/* Title */}
-              <motion.h2
-                initial={{ opacity: 0, y: 30 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.15 }}
-                className="text-[clamp(48px,7vw,96px)] font-black leading-none tracking-tight max-w-4xl"
-              >
-                {current?.title}
-              </motion.h2>
-
-              {/* Description */}
-              <motion.p
-                initial={{ opacity: 0, y: 25 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.2 }}
-                className="mt-8 max-w-2xl text-white/60 text-sm md:text-lg leading-relaxed"
-              >
-                {current?.desc}
-              </motion.p>
-
-              {/* Showcase items grid */}
-              <motion.div
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                transition={{ delay: 0.3 }}
-                className="mt-14 grid md:grid-cols-3 gap-6"
-              >
-                {current?.items.map((item, idx) => (
-                  <motion.div
-                    key={idx}
-                    className="relative rounded-[16px] border border-white/10 overflow-hidden group h-full flex flex-col"
-                    whileHover={{ scale: 1.02 }}
-                    transition={{ duration: 0.3 }}
-                  >
-                    {/* Thumbnail */}
-                    <div className="relative h-52 overflow-hidden bg-white/5">
-                      <img 
-                        src={item.thumbnail}
-                        alt={item.title}
-                        className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
-                      />
-                      <div className="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-black/50" />
-                    </div>
-
-                    {/* Content */}
-                    <div className="relative flex-1 p-5 bg-white/[0.02] backdrop-blur-sm flex flex-col justify-between">
-                      <div>
-                        <h3 className="text-base font-semibold text-white leading-tight">
-                          {item.title}
-                        </h3>
-
-                        <p className="mt-3 text-xs text-white/45 leading-relaxed">
-                          {item.desc}
-                        </p>
-                      </div>
-
-                      <div className="mt-5 pt-4 border-t border-white/5 flex items-center justify-between">
-                        <span className="text-[10px] uppercase tracking-[0.2em] text-white/35 font-mono">
-                          {item.tech}
-                        </span>
-
-                        {item.github && (
-                          <motion.a
-                            href={item.github}
-                            className="inline-flex items-center justify-center w-8 h-8 rounded-full bg-white/10 border border-white/20 hover:bg-white/15 transition-colors"
-                            whileHover={{ scale: 1.1 }}
-                            whileTap={{ scale: 0.95 }}
-                          >
-                            <svg className="w-4 h-4 text-white" fill="currentColor" viewBox="0 0 24 24">
-                              <path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v 3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/>
-                            </svg>
-                          </motion.a>
-                        )}
-                      </div>
-                    </div>
-                  </motion.div>
-                ))}
-              </motion.div>
-            </motion.div>
-          </AnimatePresence>
+function CertCard({ item }: { item: typeof certificates[0] }) {
+  return (
+    <div className="group relative rounded-2xl border border-white/20 overflow-hidden bg-white/[0.08] hover:border-white/40 transition-all duration-500 hover:-translate-y-2 hover:shadow-2xl hover:shadow-blue-500/20 backdrop-blur-md" style={{ backdropFilter: "blur(20px)" }}>
+      <div className="relative h-48 overflow-hidden bg-white/5">
+        <img
+          src={item.thumbnail}
+          alt={item.title}
+          className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700"
+        />
+        <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent" />
+        <div className="absolute bottom-4 left-4 right-4">
+          <p className="text-white font-semibold text-sm leading-snug line-clamp-2 drop-shadow">{item.title}</p>
         </div>
       </div>
+      <div className="px-5 py-4">
+        <span className="text-[10px] uppercase tracking-[0.25em] text-white/40 font-mono">{item.tech}</span>
+      </div>
+    </div>
+  );
+}
+
+function TechGrid() {
+  return (
+    <div className="grid grid-cols-4 sm:grid-cols-6 md:grid-cols-8 gap-4 py-4">
+      {techStack.map((tech) => (
+        <div
+          key={tech.name}
+          className="group flex flex-col items-center gap-2.5 p-3 rounded-xl border border-white/25 bg-white/[0.1] hover:border-white/40 hover:bg-white/[0.15] transition-all duration-300 hover:-translate-y-1 cursor-default shadow-lg shadow-black/30 backdrop-blur-sm"
+          style={{ backdropFilter: "blur(15px)" }}
+        >
+          <div
+            className="w-10 h-10 flex items-center justify-center rounded-lg transition-all duration-300 group-hover:scale-110"
+            style={{ background: `${tech.color}18` }}
+          >
+            <img
+              src={tech.icon}
+              alt={tech.name}
+              className="w-6 h-6 object-contain"
+            />
+          </div>
+          <span className="text-[9px] uppercase tracking-widest text-white/35 group-hover:text-white/60 transition-colors font-mono text-center leading-tight">
+            {tech.name}
+          </span>
+        </div>
+      ))}
+    </div>
+  );
+}
+
+type TabId = "projects" | "certificates" | "tech";
+
+const tabs: { id: TabId; label: string }[] = [
+  { id: "projects", label: "Projects" },
+  { id: "certificates", label: "Certificates" },
+  { id: "tech", label: "Tech Stack" },
+];
+
+export default function ShowcaseSection() {
+  const [active, setActive] = useState<TabId>("projects");
+  const [animKey, setAnimKey] = useState(0);
+  const touchStartX = useRef<number | null>(null);
+
+  const switchTab = useCallback((id: TabId) => {
+    if (id === active) return;
+    setActive(id);
+    setAnimKey((k) => k + 1);
+  }, [active]);
+
+  const handleTouchStart = (e: React.TouchEvent) => {
+    touchStartX.current = e.touches[0].clientX;
+  };
+
+  const handleTouchEnd = (e: React.TouchEvent) => {
+    if (touchStartX.current === null) return;
+    const dx = e.changedTouches[0].clientX - touchStartX.current;
+    if (Math.abs(dx) < 50) return;
+    const order = tabs.map((t) => t.id);
+    const idx = order.indexOf(active);
+    if (dx < 0 && idx < order.length - 1) switchTab(order[idx + 1]);
+    if (dx > 0 && idx > 0) switchTab(order[idx - 1]);
+    touchStartX.current = null;
+  };
+
+  const text = "Portfolio Showcase";
+const [displayedText, setDisplayedText] = useState("");
+
+useEffect(() => {
+  let i = 0;
+
+  const interval = setInterval(() => {
+    setDisplayedText(text.slice(0, i + 1));
+    i++;
+
+    if (i === text.length) clearInterval(interval);
+  }, 100);
+
+  return () => clearInterval(interval);
+}, []);
+
+  const activePillLeft = active === "projects" ? "8px" : active === "certificates" ? "calc(33.333% + 4px)" : "calc(66.666% + 0px)";
+
+  return (
+<section className="relative w-full min-h-[85vh] md:min-h-screen bg-black overflow-hidden text-white px-4 sm:px-8 md:px-16 lg:px-24 py-0 md:py-12 -mt-16 sm:mt-0 md:mt-12">
+      {/* Glassmorphic ambient glow */}
+      <div className="fixed inset-0 pointer-events-none">
+        <div className="absolute top-1/4 left-1/2 -translate-x-1/2 w-96 h-96 bg-blue-500/20 blur-[120px] rounded-full opacity-30" />
+        <div className="absolute bottom-1/4 right-1/4 w-80 h-80 bg-cyan-500/15 blur-[100px] rounded-full opacity-20" />
+        <div className="absolute top-1/2 left-1/4 w-72 h-72 bg-purple-500/10 blur-[90px] rounded-full opacity-15" />
+      </div>
+
+      <div className="relative z-10 flex flex-col items-center max-w-6xl mx-auto">
+
+        {/* Label */}
+        <div className="flex items-center gap-3 mb-5 opacity-0 animate-[fadeSlideDown_0.6s_ease_forwards]">
+          <div className="w-8 h-px bg-white/25" />
+          <span className="text-[10px] uppercase tracking-[0.4em] text-white/40 font-mono">Showcase</span>
+          <div className="w-8 h-px bg-white/25" />
+        </div>
+
+        {/* Heading */}
+        <h1
+          className="text-center font-black leading-none tracking-tight mb-4 opacity-0 animate-[fadeSlideUp_0.8s_ease_0.1s_forwards] whitespace-nowrap"
+          style={{ fontSize: "clamp(32px,6vw,80px)" }}
+        >
+          Portfolio Showcase
+        </h1>
+
+
+        {/* Tab Switcher */}
+        <div
+          className="relative flex items-center p-1.5 rounded-full border border-white/20 bg-white/[0.08] mb-14 w-full max-w-md opacity-0 animate-[fadeSlideUp_0.6s_ease_0.3s_forwards] shadow-2xl shadow-black/40"
+          style={{ backdropFilter: "blur(30px)" }}
+        >
+          {/* Sliding pill */}
+          <div
+            className="absolute top-1.5 bottom-1.5 rounded-full bg-white/20 border border-white/40 transition-[left] duration-300 ease-out shadow-xl shadow-white/10"
+            style={{ width: "calc(33.333% - 4px)", left: activePillLeft, backdropFilter: "blur(15px)" }}
+          />
+          {tabs.map((tab) => (
+            <button
+              key={tab.id}
+              onClick={() => switchTab(tab.id)}
+              className="relative z-10 flex-1 h-12 rounded-full text-xs font-medium tracking-wide transition-colors duration-200"
+            >
+              <span className={active === tab.id ? "text-white font-semibold" : "text-white/35 hover:text-white/60"}>
+                {tab.label}
+              </span>
+            </button>
+          ))}
+        </div>
+
+        {/* Content area with swipe */}
+        <div
+          key={animKey}
+          className="w-full opacity-0 animate-[contentIn_0.5s_cubic-bezier(0.22,1,0.36,1)_forwards]"
+          onTouchStart={handleTouchStart}
+          onTouchEnd={handleTouchEnd}
+        >
+          {active === "projects" && (
+            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-5">
+              {projects.map((item, i) => (
+                <div
+                  key={i}
+                  className="opacity-0"
+                  style={{ animation: `fadeSlideUp 0.5s ease ${i * 0.08}s forwards` }}
+                >
+                  <ProjectCard item={item} />
+                </div>
+              ))}
+            </div>
+          )}
+
+          {active === "certificates" && (
+            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-5">
+              {certificates.map((item, i) => (
+                <div
+                  key={i}
+                  className="opacity-0"
+                  style={{ animation: `fadeSlideUp 0.5s ease ${i * 0.08}s forwards` }}
+                >
+                  <CertCard item={item} />
+                </div>
+              ))}
+            </div>
+          )}
+
+          {active === "tech" && (
+            <div className="opacity-0" style={{ animation: "fadeSlideUp 0.5s ease forwards" }}>
+              <TechGrid />
+            </div>
+          )}
+        </div>
+
+        {/* Swipe hint on mobile */}
+        <p className="mt-8 text-[10px] text-white/20 tracking-widest uppercase font-mono sm:hidden">
+          swipe to navigate
+        </p>
+      </div>
+
+      <style>{`
+        @keyframes fadeSlideDown {
+          from { opacity: 0; transform: translateY(-16px); }
+          to   { opacity: 1; transform: translateY(0); }
+        }
+        @keyframes fadeSlideUp {
+          from { opacity: 0; transform: translateY(24px); }
+          to   { opacity: 1; transform: translateY(0); }
+        }
+        @keyframes contentIn {
+          from { opacity: 0; transform: translateY(32px) scale(0.98); }
+          to   { opacity: 1; transform: translateY(0) scale(1); }
+        }
+      `}</style>
     </section>
   );
 }
