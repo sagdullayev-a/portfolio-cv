@@ -7,6 +7,7 @@ import heroEye from "@/assets/hero-eye.png";
 
 import WelcomeScreen from "@/components/WelcomeScreen";
 import FrontendDeveloperSection from "@/components/FrontendDeveloperSection";
+import Showcase from "./components/showcase";
 
 const logos = ["PRINCE", "WEBKAIZEN", "FRONTEND", "DEVELOPER"];
 
@@ -88,7 +89,7 @@ export default function App() {
         <ul className="hidden md:flex items-center gap-10 text-xs tracking-widest text-white/70 uppercase">
           <li
             onClick={() =>
-              document.getElementById("work")?.scrollIntoView({
+              document.getElementById("Home")?.scrollIntoView({
                 behavior: "smooth",
               })
             }
@@ -108,8 +109,15 @@ export default function App() {
             About
           </li>
 
-          <li className="relative hover:text-white transition-colors cursor-pointer after:absolute after:left-0 after:-bottom-1 after:h-[1px] after:w-0 after:bg-white after:transition-all after:duration-300 hover:after:w-full">
-            Services
+          <li
+            onClick={() =>
+              document.getElementById("showcase")?.scrollIntoView({
+                behavior: "smooth",
+              })
+            }
+            className="relative hover:text-white transition-colors cursor-pointer after:absolute after:left-0 after:-bottom-1 after:h-[1px] after:w-0 after:bg-white after:transition-all after:duration-300 hover:after:w-full"
+          >
+            Showcase
           </li>
 
           <li className="relative hover:text-white transition-colors cursor-pointer after:absolute after:left-0 after:-bottom-1 after:h-[1px] after:w-0 after:bg-white after:transition-all after:duration-300 hover:after:w-full">
@@ -166,11 +174,27 @@ export default function App() {
             About
           </button>
 
-          <button className="relative after:absolute after:left-0 after:-bottom-2 after:h-[1px] after:w-0 after:bg-white after:transition-all hover:after:w-full">
-            Services
+          <button
+            onClick={() => {
+              document.getElementById("showcase")?.scrollIntoView({
+                behavior: "smooth",
+              });
+              setMobileMenu(false);
+            }}
+            className="relative after:absolute after:left-0 after:-bottom-2 after:h-[1px] after:w-0 after:bg-white after:transition-all hover:after:w-full"
+          >
+            Showcase
           </button>
 
-          <button className="relative after:absolute after:left-0 after:-bottom-2 after:h-[1px] after:w-0 after:bg-white after:transition-all hover:after:w-full">
+          <button
+            onClick={() => {
+              document.getElementById("contact")?.scrollIntoView({
+                behavior: "smooth",
+              });
+              setMobileMenu(false);
+            }}
+            className="relative after:absolute after:left-0 after:-bottom-2 after:h-[1px] after:w-0 after:bg-white after:transition-all hover:after:w-full"
+          >
             Contact
           </button>
         </div>
@@ -253,6 +277,9 @@ export default function App() {
 
       <section id="about">
         <FrontendDeveloperSection />
+      </section>
+      <section id="showcase">
+        <Showcase />
       </section>
     </div>
   );

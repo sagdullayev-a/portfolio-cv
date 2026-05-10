@@ -19,35 +19,35 @@ export default function FrontendDeveloperSection() {
     >
       {/* TEXT */}
       <div className="relative z-10 max-w-2xl">
-<motion.div className="flex items-center mb-6">
-  <motion.span
-    animate={{
-      width: ["0ch", "30ch", "30ch", "0ch"],
-    }}
-    transition={{
-      duration: 6,
-      repeat: Infinity,
-      ease: "easeInOut",
-      times: [0, 0.3, 0.8, 1],
-    }}
-    className="inline-block overflow-hidden whitespace-nowrap text-[11px] tracking-[0.3em] uppercase text-white/60 font-mono"
-  >
-    ✦ Available for work
-  </motion.span>
+        <motion.div className="flex items-center mb-6">
+          <motion.span
+            animate={{
+              width: ["0ch", "32ch", "32ch", "0ch"],
+            }}
+            transition={{
+              duration: 6,
+              repeat: Infinity,
+              ease: "easeInOut",
+              times: [0, 0.3, 0.8, 1],
+            }}
+            className="inline-block overflow-hidden whitespace-nowrap text-[11px] tracking-[0.3em] uppercase text-white/60 font-mono"
+          >
+            ✦ Available for work
+          </motion.span>
 
-  <motion.span
-    animate={{
-      opacity: [1, 0, 1],
-    }}
-    transition={{
-      duration: 0.8,
-      repeat: Infinity,
-    }}
-    className="text-white/60 font-mono ml-[2px]"
-  >
-    |
-  </motion.span>
-</motion.div>
+          <motion.span
+            animate={{
+              opacity: [1, 0, 1],
+            }}
+            transition={{
+              duration: 0.8,
+              repeat: Infinity,
+            }}
+            className="text-white/60 font-mono ml-[2px]"
+          >
+            |
+          </motion.span>
+        </motion.div>
 
         <div>
           <motion.h1
