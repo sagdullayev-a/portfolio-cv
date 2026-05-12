@@ -23,12 +23,12 @@ const techStack = [
 
 const projects = [
   {
-    tech: "typescript + Canvas",
+    tech: "typescript + Tailwind",
     thumbnail: "https://cdn.jsdelivr.net/gh/princekumar-dev74/portfolio/public/preview.png",
     github: "https://github.com/princekumar-dev74/portfolio.git",
   },
   {
-    tech: "Typescript + React",
+    tech: "Typescript + Tailwind",
     thumbnail: "https://cdn.jsdelivr.net/gh/princekumar-dev74/Animation@7f2f78f209ffc93bd22d9d5e222cfd23c5fee133/X/Screenshot%202026-05-10%20161948.png",
     github: "https://www.webkaizen.in",
   },
@@ -41,19 +41,14 @@ const projects = [
 
 const certificates = [
   {
-    title: "Advanced React Patterns",
-    tech: "Udemy 2024",
-    thumbnail: "https://camo.githubusercontent.com/24938d39602a5bd139da2eb01794a41689a30207723058da7f5929cba3af1699/68747470733a2f2f63646e2e6a7364656c6976722e6e65742f67682f7072696e63656b756d61722d64657637342f706f7274666f6c696f2f7075626c69632f707265766965772e706e67",
+    title: "upcoming",
+    tech: "#",
+    thumbnail: "#",
   },
   {
-    title: "Web Design Fundamentals",
-    tech: "Coursera 2024",
-    thumbnail: "https://images.unsplash.com/photo-1509042239860-f550ce710b93?w=600&h=400&fit=crop",
-  },
-  {
-    title: "Creative Coding Bootcamp",
-    tech: "Skillshare 2024",
-    thumbnail: "https://images.unsplash.com/photo-1517694712202-14dd9538aa97?w=600&h=400&fit=crop",
+    title: "upcoming",
+    tech: "#",
+    thumbnail: "#",
   },
 ];
 
