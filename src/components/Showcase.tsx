@@ -29,13 +29,13 @@ const projects = [
   },
   {
     tech: "Typescript + Tailwind",
-    thumbnail: "https://cdn.jsdelivr.net/gh/princekumar-dev74/Animation@7f2f78f209ffc93bd22d9d5e222cfd23c5fee133/X/Screenshot%202026-05-10%20161948.png",
+    thumbnail: "https://cdn.jsdelivr.net/gh/princekumar-dev74/web-images-link/website.png",
     github: "https://www.webkaizen.in",
   },
   {
-    tech: "HTML + CSS + JS",
-    thumbnail: "https://cdn.jsdelivr.net/gh/princekumar-dev74/Animation@7f2f78f209ffc93bd22d9d5e222cfd23c5fee133/X/1.png",
-    github: "https://github.com/princekumar-dev74/Animation.git",
+    tech: "Typescript",
+    thumbnail: "https://cdn.jsdelivr.net/gh/princekumar-dev74/portfolio-v1/public/preview.png",
+    github: "https://github.com/princekumar-dev74/portfolio-v1.git",
   },
 ];
 
