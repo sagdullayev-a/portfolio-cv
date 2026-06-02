@@ -684,7 +684,7 @@ export default function About() {
           className="flex flex-col items-center"
         >
           <img
-            src="https://raw.githubusercontent.com/princekumar-dev74/web-images-link/31f4e55d34521861579bab4ab322372fe7d8cec4/Name%20%3D%20Prince%20Singh.png"
+            src="/assets/prince.png"
             alt="Prince Kumar"
             className="
               w-[200px]

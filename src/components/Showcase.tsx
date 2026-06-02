@@ -29,7 +29,7 @@ const projects = [
   },
   {
     tech: "Typescript + Tailwind",
-    thumbnail: "https://cdn.jsdelivr.net/gh/princekumar-dev74/web-images-link/website.png",
+    thumbnail: "/assets/website.png",
     github: "https://www.webkaizen.in",
   },
   {
