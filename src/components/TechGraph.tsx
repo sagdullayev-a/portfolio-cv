@@ -131,16 +131,12 @@ export default function TechGraph() {
       const hovKey = hoveredKeyRef.current;
       const { size, radius } = dimsRef.current;
 
-      // Update rotation if not dragging and not hovering a card
+      // Update rotation if not dragging
       if (!isDragging.current) {
-        if (hovKey) {
-          // Pause rotation on hover
-        } else {
-          rotY.current += velY.current;
-          rotX.current += velX.current;
-          velX.current *= 0.96; // momentum damping
-          velY.current = velY.current * 0.98 + 0.004 * 0.02; // return to slow spin
-        }
+        rotY.current += velY.current;
+        rotX.current += velX.current;
+        velX.current *= 0.96; // momentum damping
+        velY.current = velY.current * 0.98 + 0.004 * 0.02; // return to slow spin
       }
 
       // Map 3D positions with current rotation angles
@@ -397,10 +393,7 @@ export default function TechGraph() {
             </motion.div>
           </AnimatePresence>
 
-          <div className="glass-card !rounded-xl p-5 text-center">
-            <p className="text-sm text-[var(--lg-text-tertiary)]">{t("techGraph.hint")}</p>
-            <p className="text-[11px] text-[var(--lg-text-tertiary)] mt-1 opacity-60">{t("techGraph.hintSub")}</p>
-          </div>
+
         </div>
 
         {/* Right: 3D Dome Sphere */}
@@ -432,6 +425,7 @@ export default function TechGraph() {
             >
               {techStack.map((tech, i) => {
                 const isSelected = selectedTech.key === tech.key;
+                const isHovered = hoveredKey === tech.key;
                 return (
                   <div
                     key={tech.key}
@@ -453,10 +447,10 @@ export default function TechGraph() {
                       onMouseLeave={() => setHoveredKey(null)}
                       className="w-full h-full rounded-[18px] flex flex-col items-center justify-center gap-[5px] transition-all duration-300 hover:scale-125 cursor-pointer"
                       style={{
-                        border: isSelected ? `1.5px solid ${tech.color}` : "1px solid rgba(255,255,255,0.12)",
-                        background: isSelected ? "rgba(255,255,255,0.15)" : "rgba(0,0,0,0.6)",
+                        border: (isSelected || isHovered) ? `1.5px solid ${tech.color}` : "1px solid rgba(255,255,255,0.12)",
+                        background: isSelected ? "rgba(255,255,255,0.15)" : isHovered ? "rgba(255,255,255,0.1)" : "rgba(0,0,0,0.6)",
                         backdropFilter: "blur(12px)",
-                        boxShadow: isSelected ? `0 0 25px 0 ${tech.color}88` : `0 0 20px -8px ${tech.color}55`,
+                        boxShadow: (isSelected || isHovered) ? `0 0 25px 0 ${tech.color}88` : `0 0 20px -8px ${tech.color}55`,
                       }}
                     >
                       <img
@@ -485,13 +479,6 @@ export default function TechGraph() {
               })}
             </div>
 
-            {/* Recenter / Reset Button */}
-            <button
-              onClick={handleReset}
-              className="absolute bottom-4 right-4 z-30 btn-glossy-outline !rounded-full !px-3.5 !py-2 text-[10px] uppercase font-bold tracking-widest flex items-center gap-1.5 shadow-sm hover:!bg-white/45 active:scale-95 transition-all duration-200 cursor-pointer"
-            >
-              🔄 {t("techGraph.recenter")}
-            </button>
           </div>
         </div>
       </div>
