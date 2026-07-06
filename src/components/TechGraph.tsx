@@ -7,6 +7,7 @@ import { useTranslation } from "react-i18next";
    ═══════════════════════════════════════════════════════════════ */
 
 type TechCategory = "FE" | "BE" | "TOOL" | "CLOUD" | "AI" | "DX";
+type Mode = "sphere" | "space" | "grid";
 
 interface TechNode {
   name: string;
@@ -44,43 +45,58 @@ const techStack: TechNode[] = [
   { name: "Terminal",  icon: "https://cdn.simpleicons.org/gnometerminal/4EAA25",     color: "#4EAA25", category: "TOOL",  key: "terminal",   projects: ["allProjects"] }
 ];
 
-/* ═══════════════════════════════════════════════════════════════
-   MAIN TECH GRAPH COMPONENT
-   ═══════════════════════════════════════════════════════════════ */
+interface NodePhysicsState {
+  x: number;
+  y: number;
+  vx: number;
+  vy: number;
+  x3d: number;
+  y3d: number;
+  z3d: number;
+  gridX: number;
+  gridY: number;
+  isDragging: boolean;
+  seed: number;
+}
 
 export default function TechGraph() {
   const { t } = useTranslation();
 
   const [activeCategory, setActiveCategory] = useState<TechCategory | null>(null);
-  const [selectedTech, setSelectedTech] = useState<TechNode>(techStack[4]); // React by default
+  const [selectedTech, setSelectedTech] = useState<TechNode>(techStack[4]); // React default
   const [hoveredKey, setHoveredKey] = useState<string | null>(null);
+  const [mode, setMode] = useState<Mode>("sphere");
 
   const containerRef = useRef<HTMLDivElement>(null);
-  
-  // 3D parameters
+  const sceneRef = useRef<HTMLDivElement>(null);
+  const itemEls = useRef<(HTMLDivElement | null)[]>([]);
+
+  // Mouse coords for repulsion field
+  const mouseRef = useRef({ x: -1000, y: -1000, active: false });
+
+  // 3D rotation parameters
   const rotX = useRef(0.3);
   const rotY = useRef(0);
   const velX = useRef(0);
   const velY = useRef(0.004);
-  const isDragging = useRef(false);
+  const isDraggingBackground = useRef(false);
   const lastMX = useRef(0);
   const lastMY = useRef(0);
   const dragVX = useRef(0);
   const dragVY = useRef(0);
   const rafId = useRef<number>();
-  const itemEls = useRef<(HTMLDivElement | null)[]>([]);
 
-  // Responsive container dimension state
+  // Responsive dimension state
   const [dimensions, setDimensions] = useState({ size: 420, radius: 160 });
 
   useEffect(() => {
     const handleResize = () => {
       if (window.innerWidth < 640) {
-        setDimensions({ size: 300, radius: 105 }); // smaller on mobile
+        setDimensions({ size: 300, radius: 100 });
       } else if (window.innerWidth < 1024) {
-        setDimensions({ size: 360, radius: 130 }); // tablet
+        setDimensions({ size: 360, radius: 130 });
       } else {
-        setDimensions({ size: 420, radius: 160 }); // desktop
+        setDimensions({ size: 420, radius: 160 });
       }
     };
     handleResize();
@@ -88,20 +104,75 @@ export default function TechGraph() {
     return () => window.removeEventListener("resize", handleResize);
   }, []);
 
-  const n = techStack.length;
+  // Card dimensions
+  const cardW = 72;
+  const cardH = 72;
 
-  // Calculate 3D sphere points (Fibonacci sphere distribution)
-  const positions = useMemo(() => {
+  // Initialize nodes physics state once
+  const physicsStates = useRef<NodePhysicsState[]>(
+    techStack.map(() => ({
+      x: 210 - cardW / 2,
+      y: 210 - cardH / 2,
+      vx: 0,
+      vy: 0,
+      x3d: 0,
+      y3d: 0,
+      z3d: 0,
+      gridX: 0,
+      gridY: 0,
+      isDragging: false,
+      seed: Math.random() * 1000,
+    }))
+  );
+
+  // Dynamic calculations for modes when parameters update
+  useEffect(() => {
+    const N = activeCategory
+      ? techStack.filter((node) => node.category === activeCategory).length
+      : techStack.length;
+
+    // Recalculate Fibonacci coordinates for active nodes, scale radius based on N
+    let activeIdx = 0;
     const goldenAngle = Math.PI * (3 - Math.sqrt(5));
-    return Array.from({ length: n }, (_, i) => {
-      const y = 1 - (i / (n - 1)) * 2;
-      const r = Math.sqrt(Math.max(0, 1 - y * y));
-      const theta = goldenAngle * i;
-      return { x: Math.cos(theta) * r, y, z: Math.sin(theta) * r };
-    });
-  }, [n]);
 
-  // Project 3D coordinate onto 2D screen using rotation angles
+    techStack.forEach((node, i) => {
+      const state = physicsStates.current[i];
+      const isActive = !activeCategory || node.category === activeCategory;
+
+      if (isActive) {
+        // Fibonacci coordinates calculation
+        const y = N > 1 ? 1 - (activeIdx / (N - 1)) * 2 : 0;
+        const r = Math.sqrt(Math.max(0, 1 - y * y));
+        const theta = goldenAngle * activeIdx;
+        state.x3d = Math.cos(theta) * r;
+        state.y3d = y;
+        state.z3d = Math.sin(theta) * r;
+
+        // Structured Grid coordinates calculation
+        const cols = dimensions.size < 350 ? 3 : dimensions.size < 400 ? 4 : 5;
+        const colW = 82;
+        const rowH = 82;
+        const gridW = cols * colW;
+        const gridH = Math.ceil(N / cols) * rowH;
+        const startX = (dimensions.size - gridW) / 2 + (colW - cardW) / 2;
+        const startY = (dimensions.size - gridH) / 2 + (rowH - cardH) / 2;
+
+        state.gridX = startX + (activeIdx % cols) * colW;
+        state.gridY = startY + Math.floor(activeIdx / cols) * rowH;
+
+        activeIdx++;
+      } else {
+        // Move inactive items to the center
+        state.x3d = 0;
+        state.y3d = 0;
+        state.z3d = 0;
+        state.gridX = dimensions.size / 2 - cardW / 2;
+        state.gridY = dimensions.size / 2 - cardH / 2;
+      }
+    });
+  }, [activeCategory, dimensions]);
+
+  // Project 3D coordinate onto 2D viewport
   function project(pos: { x: number; y: number; z: number }, rx: number, ry: number) {
     const cosY = Math.cos(ry), sinY = Math.sin(ry);
     const x1 = pos.x * cosY - pos.z * sinY;
@@ -112,105 +183,236 @@ export default function TechGraph() {
     return { x: x1, y: y2, z: z2 };
   }
 
-  // Ref callbacks for mapping elements
+  // Ref bindings for frame callbacks
   const activeCategoryRef = useRef(activeCategory);
   const selectedTechRef = useRef(selectedTech);
   const hoveredKeyRef = useRef(hoveredKey);
   const dimsRef = useRef(dimensions);
+  const modeRef = useRef(mode);
 
   useEffect(() => { activeCategoryRef.current = activeCategory; }, [activeCategory]);
   useEffect(() => { selectedTechRef.current = selectedTech; }, [selectedTech]);
   useEffect(() => { hoveredKeyRef.current = hoveredKey; }, [hoveredKey]);
   useEffect(() => { dimsRef.current = dimensions; }, [dimensions]);
+  useEffect(() => { modeRef.current = mode; }, [mode]);
 
+  // Main physics & animation rendering loop
   useEffect(() => {
-    function render() {
+    let lastTime = performance.now();
+
+    function render(timestamp: number) {
       const els = itemEls.current;
       const actCat = activeCategoryRef.current;
       const selTech = selectedTechRef.current;
       const hovKey = hoveredKeyRef.current;
+      const currentMode = modeRef.current;
       const { size, radius } = dimsRef.current;
+      const mouse = mouseRef.current;
 
-      // Update rotation if not dragging
-      if (!isDragging.current) {
+      const center = size / 2;
+      const N = actCat ? techStack.filter((node) => node.category === actCat).length : techStack.length;
+
+      // Adjust radius based on active N
+      const dynamicRadius = currentMode === "sphere" ? Math.min(radius, 80 + N * 5) : radius;
+
+      // Update background rotation for Sphere mode
+      if (!isDraggingBackground.current && currentMode === "sphere") {
         rotY.current += velY.current;
         rotX.current += velX.current;
-        velX.current *= 0.96; // momentum damping
-        velY.current = velY.current * 0.98 + 0.004 * 0.02; // return to slow spin
+        velX.current *= 0.96;
+        velY.current = velY.current * 0.98 + 0.004 * 0.02;
       }
 
-      // Map 3D positions with current rotation angles
-      const projected = positions.map((pos, i) => ({
-        el: els[i],
-        p: project(pos, rotX.current, rotY.current),
-        node: techStack[i],
-      }));
+      techStack.forEach((node, i) => {
+        const el = els[i];
+        if (!el) return;
 
-      // Sort by depth (Z axis) for rendering correct overlapping z-index
-      projected
-        .slice()
-        .sort((a, b) => a.p.z - b.p.z)
-        .forEach(({ el, p, node }, idx) => {
-          if (!el) return;
+        const state = physicsStates.current[i];
+        const isActive = actCat === null || node.category === actCat;
+        const isSelected = selTech.key === node.key;
+        const isHovered = hovKey === node.key;
 
-          const center = size / 2;
-          const cardRadius = 36; // half of 72px card width
-          const x = p.x * radius + center - cardRadius;
-          const y = p.y * radius + center - cardRadius;
+        // Targets for smooth animation interpolation
+        let targetX = state.x;
+        let targetY = state.y;
+        let targetScale = 1.0;
+        let targetOpacity = 1.0;
+        let zIndex = 10 + i;
 
-          const depth = (p.z + 1) / 2;
-          const isActive = actCat === null || node.category === actCat;
-          const isSelected = selTech.key === node.key;
-          const isHovered = hovKey === node.key;
+        if (!isActive) {
+          // Fade and move inactive items to the center
+          targetX = center - cardW / 2;
+          targetY = center - cardH / 2;
+          targetScale = 0;
+          targetOpacity = 0;
+          zIndex = 0;
 
-          // Opacity & Scale calculation based on depth and filter state
-          const opacity = isActive ? (0.25 + depth * 0.75) : 0;
-          const scale = isActive ? (0.55 + depth * 0.55) * (isSelected ? 1.25 : isHovered ? 1.15 : 1.0) : 0;
-          const pointerEvents = isActive ? "auto" : "none";
+          state.x += (targetX - state.x) * 0.15;
+          state.y += (targetY - state.y) * 0.15;
+        } else {
+          if (currentMode === "sphere") {
+            // Project active nodes on 3D sphere
+            const p = project({ x: state.x3d, y: state.y3d, z: state.z3d }, rotX.current, rotY.current);
+            targetX = p.x * dynamicRadius + center - cardW / 2;
+            targetY = p.y * dynamicRadius + center - cardH / 2;
 
-          el.style.left = `${x}px`;
-          el.style.top = `${y}px`;
-          el.style.opacity = `${opacity}`;
-          el.style.transform = `scale(${scale})`;
-          el.style.zIndex = `${isSelected ? 999 : isHovered ? 990 : idx}`;
-          el.style.pointerEvents = pointerEvents;
-        });
+            const depth = (p.z + 1) / 2;
+            targetScale = 0.55 + depth * 0.55;
+            targetOpacity = 0.25 + depth * 0.75;
+            zIndex = Math.round(depth * 100);
 
+            if (isSelected) {
+              targetScale *= 1.25;
+              zIndex = 999;
+            } else if (isHovered) {
+              targetScale *= 1.15;
+              zIndex = 990;
+            }
+
+            state.x += (targetX - state.x) * 0.1;
+            state.y += (targetY - state.y) * 0.1;
+            state.vx = 0;
+            state.vy = 0;
+
+          } else if (currentMode === "grid") {
+            // Spring align into neat grid positions
+            targetX = state.gridX;
+            targetY = state.gridY;
+            targetScale = 1.0;
+            targetOpacity = 1.0;
+
+            if (isSelected) {
+              targetScale = 1.2;
+              zIndex = 999;
+            } else if (isHovered) {
+              targetScale = 1.1;
+              zIndex = 990;
+            }
+
+            state.x += (targetX - state.x) * 0.15;
+            state.y += (targetY - state.y) * 0.15;
+            state.vx = 0;
+            state.vy = 0;
+
+          } else if (currentMode === "space") {
+            // Zero-G Physics Engine
+            targetOpacity = 1.0;
+            targetScale = 1.0;
+
+            if (isSelected) {
+              targetScale = 1.25;
+              zIndex = 999;
+            } else if (isHovered) {
+              targetScale = 1.15;
+              zIndex = 990;
+            }
+
+            if (state.isDragging) {
+              // Position is set directly via drag mouse move handlers, velocity updated relative to cursor
+            } else {
+              // Apply velocity
+              state.x += state.vx;
+              state.y += state.vy;
+
+              // Apply low friction damping ( frictionless outer-space feel)
+              state.vx *= 0.985;
+              state.vy *= 0.985;
+
+              // Sinusoidal space drift simulation
+              const tVal = timestamp * 0.001;
+              state.x += Math.sin(tVal + state.seed) * 0.12;
+              state.y += Math.cos(tVal * 1.1 + state.seed) * 0.12;
+
+              // Mouse Repulsion Field (Anti-gravity field)
+              if (mouse.active) {
+                const dx = (state.x + cardW / 2) - mouse.x;
+                const dy = (state.y + cardH / 2) - mouse.y;
+                const distance = Math.sqrt(dx * dx + dy * dy);
+
+                if (distance < 150 && distance > 1) {
+                  const force = (1 - distance / 150) * 0.45;
+                  state.vx += (dx / distance) * force;
+                  state.vy += (dy / distance) * force;
+                }
+              }
+
+              // Boundary Collisions with elastic energy loss bouncing
+              const bounce = -0.85;
+              if (state.x < 0) {
+                state.x = 0;
+                state.vx *= bounce;
+              } else if (state.x > size - cardW) {
+                state.x = size - cardW;
+                state.vx *= bounce;
+              }
+
+              if (state.y < 0) {
+                state.y = 0;
+                state.vy *= bounce;
+              } else if (state.y > size - cardH) {
+                state.y = size - cardH;
+                state.vy *= bounce;
+              }
+            }
+          }
+        }
+
+        // Write directly to GPU-accelerated translate3d style transform properties
+        el.style.transform = `translate3d(${state.x}px, ${state.y}px, 0px) scale(${targetScale})`;
+        el.style.opacity = `${targetOpacity}`;
+        el.style.zIndex = `${zIndex}`;
+        el.style.pointerEvents = isActive ? "auto" : "none";
+      });
+
+      lastTime = timestamp;
       rafId.current = requestAnimationFrame(render);
     }
 
     rafId.current = requestAnimationFrame(render);
     return () => { if (rafId.current) cancelAnimationFrame(rafId.current); };
-  }, [positions]);
+  }, []);
 
-  // Mouse Drag Events
-  const onMouseDown = (e: React.MouseEvent) => {
-    if ((e.target as HTMLElement).closest("button")) return; // skip if clicking buttons
-    isDragging.current = true;
+  // Background drag to rotate 3D sphere
+  const onMouseDownBg = (e: React.MouseEvent) => {
+    if (mode !== "sphere") return;
+    if ((e.target as HTMLElement).closest(".tech-card-inner")) return; // skip card clicks
+    isDraggingBackground.current = true;
     lastMX.current = e.clientX;
     lastMY.current = e.clientY;
     dragVX.current = 0;
     dragVY.current = 0;
   };
 
+  const onTouchStartBg = (e: React.TouchEvent) => {
+    if (mode !== "sphere") return;
+    if ((e.target as HTMLElement).closest(".tech-card-inner")) return;
+    isDraggingBackground.current = true;
+    lastMX.current = e.touches[0].clientX;
+    lastMY.current = e.touches[0].clientY;
+    dragVX.current = 0;
+    dragVY.current = 0;
+  };
+
   useEffect(() => {
     const onMouseMove = (e: MouseEvent) => {
-      if (!isDragging.current) return;
-      const dx = e.clientX - lastMX.current;
-      const dy = e.clientY - lastMY.current;
-      dragVX.current = dy * 0.005;
-      dragVY.current = dx * 0.005;
-      rotX.current += dragVX.current;
-      rotY.current += dragVY.current;
-      lastMX.current = e.clientX;
-      lastMY.current = e.clientY;
+      // Background rotation drag move
+      if (isDraggingBackground.current && modeRef.current === "sphere") {
+        const dx = e.clientX - lastMX.current;
+        const dy = e.clientY - lastMY.current;
+        dragVX.current = dy * 0.005;
+        dragVY.current = dx * 0.005;
+        rotX.current += dragVX.current;
+        rotY.current += dragVY.current;
+        lastMX.current = e.clientX;
+        lastMY.current = e.clientY;
+      }
     };
 
     const onMouseUp = () => {
-      if (isDragging.current) {
+      if (isDraggingBackground.current) {
         velX.current = dragVX.current;
         velY.current = dragVY.current || 0.004;
-        isDragging.current = false;
+        isDraggingBackground.current = false;
       }
     };
 
@@ -222,18 +424,8 @@ export default function TechGraph() {
     };
   }, []);
 
-  // Touch Swipe Events (Mobile)
-  const onTouchStart = (e: React.TouchEvent) => {
-    if ((e.target as HTMLElement).closest("button")) return;
-    isDragging.current = true;
-    lastMX.current = e.touches[0].clientX;
-    lastMY.current = e.touches[0].clientY;
-    dragVX.current = 0;
-    dragVY.current = 0;
-  };
-
-  const onTouchMove = (e: React.TouchEvent) => {
-    if (!isDragging.current) return;
+  const onTouchMoveBg = (e: React.TouchEvent) => {
+    if (!isDraggingBackground.current || modeRef.current !== "sphere") return;
     const dx = e.touches[0].clientX - lastMX.current;
     const dy = e.touches[0].clientY - lastMY.current;
     dragVX.current = dy * 0.005;
@@ -244,22 +436,81 @@ export default function TechGraph() {
     lastMY.current = e.touches[0].clientY;
   };
 
-  const onTouchEnd = () => {
-    velX.current = dragVX.current;
-    velY.current = dragVY.current || 0.004;
-    isDragging.current = false;
+  const onTouchEndBg = () => {
+    if (isDraggingBackground.current) {
+      velX.current = dragVX.current;
+      velY.current = dragVY.current || 0.004;
+      isDraggingBackground.current = false;
+    }
   };
 
-  const handleReset = () => {
-    velX.current = 0;
-    velY.current = 0.004;
-    rotX.current = 0.3;
-    rotY.current = 0;
+  // Mouse repulsion field coordinates update
+  const handleMouseMoveContainer = (e: React.MouseEvent) => {
+    if (mode !== "space") return;
+    const rect = sceneRef.current?.getBoundingClientRect();
+    if (rect) {
+      mouseRef.current.x = e.clientX - rect.left;
+      mouseRef.current.y = e.clientY - rect.top;
+      mouseRef.current.active = true;
+    }
+  };
+
+  const handleMouseLeaveContainer = () => {
+    mouseRef.current.active = false;
+    setHoveredKey(null);
+  };
+
+  // Node Dragging pointer capture handlers (Drag & Toss in Space Mode)
+  const dragInfo = useRef<{ index: number; pointerId: number; lastX: number; lastY: number } | null>(null);
+
+  const handlePointerDown = (e: React.PointerEvent, idx: number) => {
+    if (mode !== "space") return;
+    e.stopPropagation();
+    const el = e.currentTarget as HTMLDivElement;
+    el.setPointerCapture(e.pointerId);
+
+    const state = physicsStates.current[idx];
+    state.isDragging = true;
+    dragInfo.current = {
+      index: idx,
+      pointerId: e.pointerId,
+      lastX: e.clientX,
+      lastY: e.clientY,
+    };
+  };
+
+  const handlePointerMove = (e: React.PointerEvent, idx: number) => {
+    if (mode !== "space" || !dragInfo.current || dragInfo.current.index !== idx) return;
+    e.stopPropagation();
+
+    const state = physicsStates.current[idx];
+    const dx = e.clientX - dragInfo.current.lastX;
+    const dy = e.clientY - dragInfo.current.lastY;
+
+    state.x += dx;
+    state.y += dy;
+
+    // Track frame velocity for toss physics
+    state.vx = dx;
+    state.vy = dy;
+
+    dragInfo.current.lastX = e.clientX;
+    dragInfo.current.lastY = e.clientY;
+  };
+
+  const handlePointerUp = (e: React.PointerEvent, idx: number) => {
+    if (mode !== "space" || !dragInfo.current || dragInfo.current.index !== idx) return;
+    e.stopPropagation();
+    const el = e.currentTarget as HTMLDivElement;
+    el.releasePointerCapture(e.pointerId);
+
+    const state = physicsStates.current[idx];
+    state.isDragging = false;
+    dragInfo.current = null;
   };
 
   const handleCategoryChange = (cat: TechCategory | null) => {
     setActiveCategory(cat);
-    // Find first node matching category, or default to React (techStack[4])
     if (cat === null) {
       setSelectedTech(techStack[4]);
     } else {
@@ -274,9 +525,9 @@ export default function TechGraph() {
   };
 
   return (
-    <div className="space-y-8">
-      {/* Horizontal Line Label Decoration */}
-      <div className="flex items-center justify-center gap-4 mb-4">
+    <div className="space-y-8 select-none">
+      {/* Dynamic Header Badge Decoration */}
+      <div className="flex items-center justify-center gap-4 mb-2">
         <div className="h-px flex-1 bg-gradient-to-r from-transparent to-[var(--lg-text-tertiary)]/20" />
         <span className="text-[10px] tracking-[0.3em] font-mono text-[var(--lg-text-tertiary)] uppercase whitespace-nowrap">
           {t("techGraph.subtitle", { count: techStack.length })}
@@ -284,29 +535,30 @@ export default function TechGraph() {
         <div className="h-px flex-1 bg-gradient-to-l from-transparent to-[var(--lg-text-tertiary)]/20" />
       </div>
 
-      {/* Header */}
-      <div className="text-center">
-        <h2
-          className="text-3xl md:text-4xl font-black tracking-tight mb-3"
-          style={{
-            background: "linear-gradient(135deg, var(--lg-text-primary), var(--lg-text-secondary))",
-            WebkitBackgroundClip: "text",
-            WebkitTextFillColor: "transparent",
-            backgroundClip: "text",
-          }}
-        >
-          {t("techGraph.title")}
-        </h2>
-        <p className="text-sm text-[var(--lg-text-secondary)] max-w-md mx-auto">
-          {t("techGraph.description")}
-        </p>
+      {/* 3-Way Mode Switcher */}
+      <div className="flex justify-center">
+        <div className="glass-panel p-1 flex gap-1 rounded-full relative z-30">
+          {(["sphere", "space", "grid"] as Mode[]).map((m) => (
+            <button
+              key={m}
+              onClick={() => setMode(m)}
+              className={`px-4 py-2 text-xs font-bold rounded-full transition-all duration-300 flex items-center gap-1.5 cursor-pointer uppercase tracking-wider ${
+                mode === m
+                  ? "bg-gradient-to-r from-[var(--lg-accent-start)] to-[var(--lg-accent-end)] text-white shadow-md shadow-indigo-500/20"
+                  : "text-[var(--lg-text-secondary)] hover:text-white hover:bg-white/10"
+              }`}
+            >
+              {t(`techGraph.modes.${m}`)}
+            </button>
+          ))}
+        </div>
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-5 gap-6">
-        {/* Left: Filters + Info Card */}
+        {/* Left Info Panel */}
         <div className="lg:col-span-2 space-y-4">
           {/* Category Filters */}
-          <div className="glass-panel p-5">
+          <div className="glass-panel p-5 relative z-25">
             <p className="text-xs text-[var(--lg-text-tertiary)] uppercase tracking-wider font-medium mb-3">
               {t("techGraph.categories")}
             </p>
@@ -337,7 +589,7 @@ export default function TechGraph() {
             </div>
           </div>
 
-          {/* Selected Node Info Card */}
+          {/* Selected Node Details */}
           <AnimatePresence mode="wait">
             <motion.div
               key={selectedTech.key}
@@ -347,7 +599,6 @@ export default function TechGraph() {
               transition={{ type: "spring", stiffness: 300, damping: 25 }}
               className="glass-panel-strong p-6 relative overflow-hidden group min-h-[220px] flex flex-col justify-center border border-white/15 bg-white/[0.05]"
             >
-              {/* Glowing color stripe matching the logo */}
               <div
                 className="absolute top-0 left-0 right-0 h-1 transition-all duration-500"
                 style={{ backgroundColor: selectedTech.color }}
@@ -368,12 +619,10 @@ export default function TechGraph() {
                 </div>
               </div>
 
-              {/* Description */}
               <p className="text-white/70 text-sm leading-relaxed mb-4">
                 {t(`techGraph.nodes.${selectedTech.key}.description`)}
               </p>
 
-              {/* Projects */}
               <div className="space-y-1.5 mt-2">
                 <span className="text-[10px] text-[var(--lg-text-tertiary)] uppercase tracking-wider">
                   {t("techGraph.projectsLabel")}
@@ -392,32 +641,34 @@ export default function TechGraph() {
               </div>
             </motion.div>
           </AnimatePresence>
-
-
         </div>
 
-        {/* Right: 3D Dome Sphere */}
+        {/* Right Canvas Area */}
         <div className="lg:col-span-3 flex flex-col items-center">
           <div
             ref={containerRef}
-            className="relative w-full flex items-center justify-center select-none cursor-grab active:cursor-grabbing touch-none"
+            className={`relative w-full flex items-center justify-center overflow-hidden rounded-2xl border border-white/5 bg-slate-950/20 backdrop-blur-3xl select-none ${
+              mode === "sphere" ? "cursor-grab active:cursor-grabbing" : "cursor-default"
+            }`}
             style={{ height: "460px" }}
-            onMouseDown={onMouseDown}
-            onTouchStart={onTouchStart}
-            onTouchMove={onTouchMove}
-            onTouchEnd={onTouchEnd}
-            onMouseLeave={() => setHoveredKey(null)}
+            onMouseDown={onMouseDownBg}
+            onTouchStart={onTouchStartBg}
+            onTouchMove={onTouchMoveBg}
+            onTouchEnd={onTouchEndBg}
+            onMouseMove={handleMouseMoveContainer}
+            onMouseLeave={handleMouseLeaveContainer}
           >
-            {/* Ambient glow */}
+            {/* Background ambient glow */}
             <div
               className="absolute inset-0 pointer-events-none"
               style={{
-                background: "radial-gradient(ellipse at center, rgba(255,255,255,0.03) 0%, transparent 70%)",
+                background: "radial-gradient(ellipse at center, rgba(99,102,241,0.04) 0%, transparent 70%)",
               }}
             />
 
-            {/* Scene */}
+            {/* Simulated physics boundary box */}
             <div
+              ref={sceneRef}
               className="relative"
               style={{
                 width: `${dimensions.size}px`,
@@ -427,16 +678,21 @@ export default function TechGraph() {
               {techStack.map((tech, i) => {
                 const isSelected = selectedTech.key === tech.key;
                 const isHovered = hoveredKey === tech.key;
+
                 return (
                   <div
                     key={tech.key}
                     ref={(el) => { itemEls.current[i] = el; }}
+                    onPointerDown={(e) => handlePointerDown(e, i)}
+                    onPointerMove={(e) => handlePointerMove(e, i)}
+                    onPointerUp={(e) => handlePointerUp(e, i)}
                     style={{
                       position: "absolute",
-                      width: "72px",
-                      height: "72px",
+                      width: `${cardW}px`,
+                      height: `${cardH}px`,
                       transformStyle: "preserve-3d",
                       willChange: "transform, opacity",
+                      touchAction: "none",
                     }}
                   >
                     <div
@@ -446,7 +702,7 @@ export default function TechGraph() {
                       }}
                       onMouseEnter={() => setHoveredKey(tech.key)}
                       onMouseLeave={() => setHoveredKey(null)}
-                      className="w-full h-full rounded-[18px] flex flex-col items-center justify-center gap-[5px] transition-all duration-300 hover:scale-125 cursor-pointer"
+                      className="tech-card-inner w-full h-full rounded-[18px] flex flex-col items-center justify-center gap-[5px] transition-all duration-300 hover:scale-125 cursor-pointer select-none"
                       style={{
                         border: isHovered
                           ? `1.5px solid ${tech.color}`
@@ -470,9 +726,11 @@ export default function TechGraph() {
                         src={tech.icon}
                         alt={tech.name}
                         loading="lazy"
-                        style={{ width: "30px", height: "30px", objectFit: "contain" }}
+                        draggable="false"
+                        style={{ width: "30px", height: "30px", objectFit: "contain", pointerEvents: "none" }}
                       />
                       <span
+                        className="select-none pointer-events-none"
                         style={{
                           fontSize: "9px",
                           color: isSelected ? "#fff" : "rgba(255,255,255,0.5)",
@@ -491,7 +749,6 @@ export default function TechGraph() {
                 );
               })}
             </div>
-
           </div>
         </div>
       </div>

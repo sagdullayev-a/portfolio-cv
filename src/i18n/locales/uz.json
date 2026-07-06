@@ -67,6 +67,11 @@
     "recenter": "Qayta tiklash",
     "allProjects": "Barcha loyihalar",
     "aiExperiments": "AI tajribalar",
+    "modes": {
+      "sphere": "🌐 3D Sfera",
+      "space": "🚀 Kosmos (Zero-G)",
+      "grid": "📦 Panjara (Grid)"
+    },
     "nodes": {
       "react": {
         "description": "Komponent-asosli yondashuv va Virtual DOM bilan ishlovchi eng mashhur UI kutubxona.",

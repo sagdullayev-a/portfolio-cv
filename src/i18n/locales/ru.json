@@ -67,6 +67,11 @@
     "recenter": "Сбросить",
     "allProjects": "Все проекты",
     "aiExperiments": "AI эксперименты",
+    "modes": {
+      "sphere": "🌐 3D Сфера",
+      "space": "🚀 Космос (Zero-G)",
+      "grid": "📦 Сетка (Grid)"
+    },
     "nodes": {
       "react": {
         "description": "Самая популярная библиотека интерфейсов, работающая на основе компонентного подхода и Virtual DOM.",

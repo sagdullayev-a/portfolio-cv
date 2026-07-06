@@ -67,6 +67,11 @@
     "recenter": "Recenter",
     "allProjects": "All projects",
     "aiExperiments": "AI experiments",
+    "modes": {
+      "sphere": "🌐 3D Sphere",
+      "space": "🚀 Space (Zero-G)",
+      "grid": "📦 Grid Layout"
+    },
     "nodes": {
       "react": {
         "description": "The most popular UI library working with component-based approach and Virtual DOM.",
