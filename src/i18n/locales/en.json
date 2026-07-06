@@ -69,64 +69,64 @@
     "aiExperiments": "AI experiments",
     "nodes": {
       "react": {
-        "description": "A modern and fast UI library. Provides high performance through a component-based approach and Virtual DOM.",
+        "description": "The most popular UI library working with component-based approach and Virtual DOM.",
         "useCase": "In all projects"
       },
       "nextjs": {
-        "description": "A full-stack framework for React. Features Server-Side Rendering (SSR), SEO optimization, and fast routing.",
+        "description": "Full-stack framework for React. Features SSR, SEO optimization and fast routing.",
         "useCase": "In production projects"
       },
       "typescript": {
-        "description": "A statically typed superset of JavaScript. Catches errors during coding and simplifies project scaling.",
+        "description": "Statically typed superset of JS. Catches errors during coding.",
         "useCase": "Always"
       },
       "tailwind": {
-        "description": "A utility-first CSS framework. Enables creating modern, responsive, and unique designs in seconds.",
+        "description": "Utility-first CSS framework. Allows creating unique designs in seconds.",
         "useCase": "For styling"
       },
       "html5": {
-        "description": "Creating semantic and accessible HTML structures.",
+        "description": "The main skeleton and semantic structure of web pages.",
         "useCase": "Always"
       },
       "css3": {
-        "description": "For animations, glassmorphism, and responsive design.",
+        "description": "Responsible for modern design, animations, and responsive interfaces.",
         "useCase": "Always"
       },
       "javascript": {
-        "description": "For adding interactive and dynamic functionality.",
+        "description": "Gives interactive logic and dynamic functionality to web pages.",
         "useCase": "Always"
       },
       "nodejs": {
-        "description": "A powerful environment for running JavaScript on the server side. Ideal for asynchronous and high-load systems.",
+        "description": "A powerful server-side JavaScript runtime built for high-load systems.",
         "useCase": "In API projects"
       },
       "python": {
-        "description": "For data analysis and AI scripts.",
+        "description": "The most popular language for backend, AI, and data analysis.",
         "useCase": "In AI projects"
       },
       "firebase": {
-        "description": "Authentication, database, and hosting.",
+        "description": "Google's cloud platform. Simplifies real-time database and authentication.",
         "useCase": "For MVPs and prototypes"
       },
       "git": {
-        "description": "Version control and collaboration.",
+        "description": "Distributed version control system tracking changes in code.",
         "useCase": "Always"
       },
       "github": {
-        "description": "Code hosting and the open source community.",
+        "description": "A hub for developers to store code, collaborate, and share open source projects.",
         "useCase": "Always"
       },
       "vercel": {
-        "description": "Automatic deployments and preview environments.",
+        "description": "Frontend and serverless deployment platform by the creators of Next.js.",
         "useCase": "For production deploys"
       },
-      "threejs": {
-        "description": "3D graphics and interactive visualizations.",
-        "useCase": "In 3D projects"
+      "netlify": {
+        "description": "Automated CI/CD and hosting service for modern web projects.",
+        "useCase": "For CI/CD and hosting"
       },
-      "framer": {
-        "description": "Smooth animations and page transitions.",
-        "useCase": "For UI animation"
+      "terminal": {
+        "description": "The fastest way to communicate with systems and projects via command line.",
+        "useCase": "Always"
       }
     }
   },

@@ -69,64 +69,64 @@
     "aiExperiments": "AI tajribalar",
     "nodes": {
       "react": {
-        "description": "Zamonaviy va tezkor UI kutubxonasi. Komponent-asosli yondashuv va Virtual DOM orqali yuqori unumdorlikni ta'minlaydi.",
+        "description": "Komponent-asosli yondashuv va Virtual DOM bilan ishlovchi eng mashhur UI kutubxona.",
         "useCase": "Barcha loyihalarda"
       },
       "nextjs": {
-        "description": "React uchun to'liq stekli freymvork. Server-side rendering (SSR), SEO optimizatsiyasi va tezkor routing tizimiga ega.",
+        "description": "React uchun Full-stack freymvork. SSR, SEO va tezkor routing tizimiga ega.",
         "useCase": "Production loyihalarda"
       },
       "typescript": {
-        "description": "JavaScript-ning statik tiplashtirilgan super-to'plami. Xatolarni koddagi yozish jarayonida aniqlaydi va loyihani kengaytirishni osonlashtiradi.",
+        "description": "Statik tiplashtirilgan JS super-to'plami. Xatolarni yozish vaqtida ushlaydi.",
         "useCase": "Har doim"
       },
       "tailwind": {
-        "description": "Utility-first CSS freymvorki. Sanoqli soniyalarda zamonaviy, responsiv va unikal dizaynlarni yaratish imkonini beradi.",
+        "description": "Utility-first CSS freymvorki. Sanoqli soniyalarda unikal dizayn yaratish imkonini beradi.",
         "useCase": "Styling uchun"
       },
       "html5": {
-        "description": "Semantik va accessible HTML tuzilmalar yaratish.",
+        "description": "Web sahifalarning asosiy skeleti va semantik strukturasi.",
         "useCase": "Har doim"
       },
       "css3": {
-        "description": "Animatsiyalar, glassmorphism va responsive dizayn uchun.",
+        "description": "Zamonaviy dizayn, animatsiyalar va responsiv interfeyslar mas'uli.",
         "useCase": "Har doim"
       },
       "javascript": {
-        "description": "Interaktiv va dinamik funksionalliklni qo'shish uchun.",
+        "description": "Web sahifalarga jonlovchi interaktivlik va mantiqiy jarayonlarni beradi.",
         "useCase": "Har doim"
       },
       "nodejs": {
-        "description": "JavaScript-ni server tomonida ishga tushiruvchi kuchli muhit. Asinxron va yuqori yuklanishlarga chidamli tizimlar uchun ideal.",
+        "description": "JavaScript-ni server tomonida ishlatuvchi, yuqori yuklanishlarga chidamli muhit.",
         "useCase": "API loyihalarda"
       },
       "python": {
-        "description": "Ma'lumotlar tahlili va AI skriptlar uchun.",
+        "description": "Backend, sun'iy intellekt va ma'lumotlar tahlili uchun eng mashhur til.",
         "useCase": "AI loyihalarda"
       },
       "firebase": {
-        "description": "Autentifikatsiya, ma'lumotlar bazasi va hosting.",
+        "description": "Google-ning Cloud platformasi. Real-time ma'lumotlar bazasi va autentifikatsiyani osonlashtiradi.",
         "useCase": "MVP va prototiplar"
       },
       "git": {
-        "description": "Versiya nazorati va hamkorlik.",
+        "description": "Koddagi o'zgarishlarni kuzatuvchi taqsimlangan versiyani boshqarish tizimi.",
         "useCase": "Har doim"
       },
       "github": {
-        "description": "Kod hosting va open source hamjamiyat.",
+        "description": "Dasturchilarning kodingizni saqlash, jamoaviy ishlash va ochiq manbalar xabi.",
         "useCase": "Har doim"
       },
       "vercel": {
-        "description": "Avtomatik deploy va preview muhitlari.",
+        "description": "Next.js yaratuvchilari tomonidan taqdim etilgan frontend va serverless deploy platformasi.",
         "useCase": "Production deploy"
       },
-      "threejs": {
-        "description": "3D grafika va interaktiv vizualizatsiyalar.",
-        "useCase": "3D loyihalarda"
+      "netlify": {
+        "description": "Zamonaviy web-loyihalar uchun avtomatlashtirilgan CI/CD va hosting xizmati.",
+        "useCase": "CI/CD va hosting"
       },
-      "framer": {
-        "description": "Yumshoq animatsiyalar va page transitionlar.",
-        "useCase": "UI animatsiya"
+      "terminal": {
+        "description": "Tizim va loyihalar bilan buyruqlar satri orqali eng tezkor muloqot vositasi.",
+        "useCase": "Har doim"
       }
     }
   },
