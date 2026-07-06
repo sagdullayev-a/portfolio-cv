@@ -6,11 +6,8 @@ export default function WelcomeScreen() {
   const icons = [Code2, User, Globe];
 
   useEffect(() => {
-    // scroll band
     document.body.style.overflow = "hidden";
-
     return () => {
-      // welcome screen hatne ke baad scroll wapas
       document.body.style.overflow = "auto";
     };
   }, []);
@@ -27,12 +24,28 @@ export default function WelcomeScreen() {
           ease: [0.22, 1, 0.36, 1],
         },
       }}
-      className="fixed inset-0 z-[99999] flex items-center justify-center bg-black overflow-hidden p-5"
+      className="fixed inset-0 z-[99999] flex items-center justify-center overflow-hidden p-5"
+      style={{
+        background:
+          "linear-gradient(135deg, var(--lg-bg-start) 0%, var(--lg-bg-mid) 50%, var(--lg-bg-end) 100%)",
+      }}
     >
-      {/* Background Glow */}
-      <div className="absolute inset-0 pointer-events-none">
-        <div className="absolute top-[-120px] left-1/2 -translate-x-1/2 w-[420px] h-[420px] bg-white/10 blur-[120px] rounded-full" />
-        <div className="absolute bottom-[-150px] right-[-80px] w-[300px] h-[300px] bg-white/5 blur-[100px] rounded-full" />
+      {/* Background Glow Blobs */}
+      <div className="absolute inset-0 pointer-events-none overflow-hidden">
+        <div
+          className="absolute top-[-120px] left-1/2 -translate-x-1/2 w-[420px] h-[420px] rounded-full"
+          style={{
+            background: "radial-gradient(circle, rgba(99,102,241,0.15), transparent 70%)",
+            filter: "blur(80px)",
+          }}
+        />
+        <div
+          className="absolute bottom-[-150px] right-[-80px] w-[300px] h-[300px] rounded-full"
+          style={{
+            background: "radial-gradient(circle, rgba(139,92,246,0.1), transparent 70%)",
+            filter: "blur(60px)",
+          }}
+        />
       </div>
 
       <motion.div
@@ -42,7 +55,7 @@ export default function WelcomeScreen() {
           duration: 1.2,
           ease: [0.22, 1, 0.36, 1],
         }}
-        className="relative text-center text-white flex flex-col items-center gap-5 w-full max-w-[340px]"
+        className="relative text-center flex flex-col items-center gap-5 w-full max-w-[340px]"
       >
         {/* Icons */}
         <motion.div
@@ -79,12 +92,10 @@ export default function WelcomeScreen() {
                 duration: 1.3,
                 ease: [0.22, 1, 0.36, 1],
               }}
-              whileHover={{
-                scale: 1.08,
-              }}
-              className="w-[48px] h-[48px] rounded-full border border-white/10 flex items-center justify-center bg-white/5 backdrop-blur-md shadow-[0_0_25px_rgba(255,255,255,0.05)]"
+              whileHover={{ scale: 1.08 }}
+              className="glass-panel w-[48px] h-[48px] !rounded-full flex items-center justify-center"
             >
-              <Icon size={20} color="white" />
+              <Icon size={20} className="text-[var(--lg-accent-start)]" />
             </motion.div>
           ))}
         </motion.div>
@@ -100,7 +111,7 @@ export default function WelcomeScreen() {
                 duration: 1.1,
                 ease: [0.22, 1, 0.36, 1],
               }}
-              className="text-[clamp(22px,5vw,34px)] font-black tracking-tight"
+              className="text-[clamp(22px,5vw,34px)] font-black tracking-tight text-[var(--lg-text-primary)]"
             >
               Welcome
             </motion.span>
@@ -113,7 +124,7 @@ export default function WelcomeScreen() {
                 duration: 1.1,
                 ease: [0.22, 1, 0.36, 1],
               }}
-              className="text-[clamp(22px,5vw,34px)] font-black tracking-tight"
+              className="text-[clamp(22px,5vw,34px)] font-black tracking-tight text-[var(--lg-text-primary)]"
             >
               to my
             </motion.span>
@@ -128,6 +139,12 @@ export default function WelcomeScreen() {
               ease: [0.22, 1, 0.36, 1],
             }}
             className="text-[clamp(24px,6vw,38px)] font-black tracking-tight leading-tight text-center"
+            style={{
+              background: "linear-gradient(135deg, var(--lg-accent-start), var(--lg-accent-end))",
+              WebkitBackgroundClip: "text",
+              WebkitTextFillColor: "transparent",
+              backgroundClip: "text",
+            }}
           >
             Portfolio Website
           </motion.h1>
@@ -136,12 +153,12 @@ export default function WelcomeScreen() {
         {/* Subtitle */}
         <motion.p
           initial={{ opacity: 0 }}
-          animate={{ opacity: 0.7 }}
+          animate={{ opacity: 0.8 }}
           transition={{
             delay: 1.8,
             duration: 1,
           }}
-          className="text-sm text-white/60 tracking-wide"
+          className="text-sm text-[var(--lg-text-secondary)] tracking-wide"
         >
           Creating Websites That Feel Alive.
         </motion.p>
@@ -154,7 +171,7 @@ export default function WelcomeScreen() {
             delay: 2,
             duration: 0.5,
           }}
-          className="px-4 py-2 rounded-full border border-white/10 bg-white/5 backdrop-blur-md text-xs tracking-[0.25em] text-white/70 shadow-[0_0_30px_rgba(255,255,255,0.04)] overflow-hidden"
+          className="glass-panel !rounded-full px-4 py-2 text-xs tracking-[0.25em] text-[var(--lg-text-secondary)] overflow-hidden"
         >
           <motion.span
             initial={{ width: "0ch" }}
@@ -170,21 +187,19 @@ export default function WelcomeScreen() {
           </motion.span>
 
           <motion.span
-            animate={{
-              opacity: [1, 0, 1],
-            }}
+            animate={{ opacity: [1, 0, 1] }}
             transition={{
               duration: 0.5,
               repeat: Infinity,
             }}
-            className="ml-[2px]"
+            className="ml-[2px] text-[var(--lg-accent-start)]"
           >
             |
           </motion.span>
         </motion.div>
 
         {/* Bottom Loading Line */}
-        <div className="mt-10 w-[240px] bg-white/20 h-[2px] overflow-hidden rounded-full">
+        <div className="mt-10 w-[240px] h-[3px] overflow-hidden rounded-full" style={{ background: "rgba(99,102,241,0.15)" }}>
           <motion.div
             initial={{ width: "10%" }}
             animate={{ width: "100%" }}
@@ -192,7 +207,10 @@ export default function WelcomeScreen() {
               duration: 6.5,
               ease: [0.22, 1, 0.36, 1],
             }}
-            className="h-full bg-white"
+            className="h-full rounded-full"
+            style={{
+              background: "linear-gradient(90deg, var(--lg-accent-start), var(--lg-accent-end))",
+            }}
           />
         </div>
       </motion.div>

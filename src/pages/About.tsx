@@ -2,11 +2,13 @@ import { motion } from "framer-motion";
 import { ArrowLeft, Download } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
+import { useTranslation } from "react-i18next";
 import html2pdf from "html2pdf.js";
 
 export default function About() {
+  const { t } = useTranslation();
   const navigate = useNavigate();
-  const text = "About Myself";
+  const text = t("aboutPage.heading");
 
   const [displayedText, setDisplayedText] = useState("");
   const [countdown, setCountdown] = useState(null);
@@ -35,7 +37,7 @@ export default function About() {
 
     startTyping();
     return () => clearInterval(interval);
-  }, []);
+  }, [text]);
 
   // DOWNLOAD FUNCTION - FIXED
   const handleDownload = () => {
@@ -631,11 +633,12 @@ export default function About() {
 
 
   return (
-    <div className="relative min-h-screen bg-black overflow-hidden text-white px-4 sm:px-6 py-10">
-      {/* ANIMATED BACKGROUND EFFECTS */}
-      <div className="fixed inset-0 pointer-events-none">
-        <div className="absolute top-20 left-10 w-72 h-72 bg-white/5 rounded-full blur-3xl opacity-20" />
-        <div className="absolute bottom-20 right-10 w-72 h-72 bg-white/5 rounded-full blur-3xl opacity-20" />
+    <div className="relative min-h-screen overflow-hidden text-[var(--lg-text-primary)] px-4 sm:px-6 py-10">
+      {/* ── Background Blobs ─────────────────────────────── */}
+      <div className="fixed inset-0 pointer-events-none overflow-hidden z-0">
+        <div className="lg-blob lg-blob-1 -top-[200px] -left-[100px]" />
+        <div className="lg-blob lg-blob-2 top-[40%] -right-[150px]" />
+        <div className="lg-blob lg-blob-3 bottom-[-100px] left-[30%]" />
       </div>
 
       {/* BACK BUTTON */}
@@ -643,31 +646,11 @@ export default function About() {
         initial={{ opacity: 0, x: -20 }}
         animate={{ opacity: 1, x: 0 }}
         transition={{ duration: 0.5 }}
-        onClick={() => navigate(-1)}
-        className="
-          fixed
-          top-5
-          left-5
-          z-50
-          flex
-          items-center
-          gap-2
-          px-4
-          py-2
-          rounded-full
-          border
-          border-white/15
-          bg-white/8
-          backdrop-blur-xl
-          hover:bg-white/15
-          hover:border-white/30
-          transition-all
-          duration-300
-          shadow-lg
-        "
+        onClick={() => navigate("/")}
+        className="fixed top-5 left-5 z-50 btn-glossy-outline !rounded-full !px-4 !py-2 shadow-lg"
       >
         <ArrowLeft size={18} />
-        <span className="hidden sm:inline">Back</span>
+        <span className="hidden sm:inline">{t("aboutPage.back")}</span>
       </motion.button>
 
       {/* MAIN CONTENT */}
@@ -692,10 +675,10 @@ export default function About() {
               md:w-[320px]
               rounded-2xl
               border
-              border-white/15
+              border-[var(--lg-glass-border)]
               object-cover
-              shadow-[0_20px_60px_rgba(0,0,0,0.6)]
-              hover:border-white/25
+              shadow-[0_20px_60px_rgba(31,38,135,0.06)]
+              hover:border-[var(--lg-accent-start)]/30
               transition-all
               duration-300
             "
@@ -706,14 +689,13 @@ export default function About() {
             className="
               mt-6
               h-[1px]
-              bg-gradient-to-r
-              from-transparent
-              via-white/20
-              to-transparent
               w-[90vw]
               sm:w-[400px]
               md:w-[500px]
             "
+            style={{
+              background: "linear-gradient(90deg, transparent, var(--lg-accent-start)/30, transparent)",
+            }}
           />
         </motion.div>
 
@@ -726,26 +708,10 @@ export default function About() {
             delay: 0.2,
             ease: [0.22, 1, 0.36, 1],
           }}
-          className="
-            relative
-            w-full
-            max-w-4xl
-            h-[500px]
-            sm:h-[550px]
-            md:h-[600px]
-            rounded-3xl
-            border
-            border-white/10
-            bg-white/5
-            backdrop-blur-3xl
-            overflow-hidden
-            shadow-[0_20px_70px_rgba(0,0,0,0.5)]
-            group
-          "
+          className="relative w-full max-w-4xl h-[500px] sm:h-[550px] md:h-[600px] glass-panel-strong overflow-hidden group"
         >
           {/* GLASS LIGHT EFFECT */}
-          <div className="absolute inset-0 bg-gradient-to-br from-white/8 via-transparent to-transparent pointer-events-none" />
-          <div className="absolute inset-0 bg-gradient-to-t from-black/20 via-transparent to-transparent pointer-events-none" />
+          <div className="absolute inset-0 bg-gradient-to-br from-white/30 via-transparent to-transparent pointer-events-none" />
 
           {/* HEADER SECTION */}
           <div
@@ -759,8 +725,8 @@ export default function About() {
               py-6
               sm:py-8
               border-b
-              border-white/10
-              bg-black/30
+              border-[var(--lg-glass-border-subtle)]
+              bg-white/20
               backdrop-blur-2xl
             "
           >
@@ -771,10 +737,11 @@ export default function About() {
                 md:text-5xl
                 font-extrabold
                 tracking-tight
+                text-[var(--lg-text-primary)]
               "
             >
               {displayedText}
-              <span className="animate-pulse ml-2">|</span>
+              <span className="animate-pulse ml-2 text-[var(--lg-accent-start)]">|</span>
             </h1>
           </div>
 
@@ -791,66 +758,41 @@ export default function About() {
               py-8
               scrollbar-thin
               scrollbar-track-transparent
-              scrollbar-thumb-white/10
-              hover:scrollbar-thumb-white/20
+              scrollbar-thumb-[var(--lg-accent-start)]/10
+              hover:scrollbar-thumb-[var(--lg-accent-start)]/20
             "
           >
-            <div
-              className="
-                text-white/70
-                text-sm
-                sm:text-base
-                leading-8
-                tracking-wide
-                space-y-6
-              "
-            >
+            <div className="text-[var(--lg-text-secondary)] text-sm sm:text-base leading-8 tracking-wide space-y-6">
               <p>
-                I'm currently a Class 12 student with PCMB, but honestly,
-                my main interest is not in Biology anymore. Before 9th class,
-                I used to think that I would go into the medical field in the
-                future, but as time passed, I started getting more interested
-                in computers and technology.
+                {t("aboutPage.p1")}
               </p>
 
               <p>
-                In 11th class, I explored coding more seriously and slowly
-                developed a strong interest in programming, cybersecurity,
-                and AI.
+                {t("aboutPage.p2")}
               </p>
 
               <p>
-                Now, coding is something I genuinely enjoy. I like learning
-                new programming languages, building things, and understanding
-                how technology works behind the scenes.
+                {t("aboutPage.p3")}
               </p>
 
               <p>
-                Out of everything in tech, ethical hacking and cybersecurity
-                interest me the most because I find it exciting to learn about
-                system security, vulnerabilities, and how hackers think.
+                {t("aboutPage.p4")}
               </p>
 
               <p>
-                At the same time, I also enjoy using AI tools and understanding
-                how AI can make work smarter and easier.
+                {t("aboutPage.p5")}
               </p>
 
               <p>
-                After completing Class 12, I want to move completely into the
-                coding and tech field. My goal is to build a future in
-                cybersecurity, ethical hacking, and AI.
+                {t("aboutPage.p6")}
               </p>
 
               <p>
-                I know there's still a lot to learn, but I enjoy the process
-                and always try to improve my skills step by step.
+                {t("aboutPage.p7")}
               </p>
 
               <p>
-                For me, technology is not just a career option anymore —
-                it's something I truly connect with and see myself doing
-                in the future.
+                {t("aboutPage.p8")}
               </p>
             </div>
           </div>
@@ -866,36 +808,8 @@ export default function About() {
           }}
           onClick={handleDownload}
           disabled={downloading}
-          className="
-            group
-            relative
-            overflow-hidden
-            flex
-            items-center
-            justify-center
-            gap-3
-            px-8
-            sm:px-10
-            py-3
-            sm:py-4
-            rounded-2xl
-            border
-            border-white/15
-            bg-white/8
-            backdrop-blur-xl
-            hover:bg-white/15
-            hover:border-white/30
-            disabled:opacity-50
-            disabled:cursor-not-allowed
-            transition-all
-            duration-300
-            shadow-[0_10px_40px_rgba(0,0,0,0.4)]
-            hover:shadow-[0_15px_50px_rgba(255,255,255,0.08)]
-          "
+          className="btn-glossy !px-8 sm:!px-10 !py-3 sm:!py-4 shadow-lg disabled:opacity-50 disabled:cursor-not-allowed"
         >
-          {/* BUTTON GLOW EFFECT */}
-          <div className="absolute inset-0 bg-gradient-to-r from-white/0 via-white/10 to-white/0 opacity-0 group-hover:opacity-100 transition-all duration-500" />
-
           {/* BUTTON CONTENT */}
           <div className="relative z-10 flex items-center gap-3">
             <Download
@@ -908,7 +822,7 @@ export default function About() {
               "
             />
             <span className="font-semibold tracking-wide">
-              {downloading ? `Downloading in ${countdown}s` : "Download Resume"}
+              {downloading ? t("aboutPage.downloading", { seconds: countdown }) : t("aboutPage.downloadBtn")}
             </span>
           </div>
         </motion.button>

@@ -1,0 +1,177 @@
+{
+  "navbar": {
+    "home": "Home",
+    "about": "About",
+    "showcase": "Showcase",
+    "contact": "Contact"
+  },
+  "hero": {
+    "tagline_1": "Creating",
+    "tagline_2": "Websites",
+    "tagline_3": "That Feel",
+    "tagline_4": "Alive.",
+    "description": "Turning creative ideas into interactive and high-quality web experiences.",
+    "cta": "WEBKAIZEN"
+  },
+  "chat": {
+    "online": "Online",
+    "mode": "CHAT MODE",
+    "askLabel": "Ask a question",
+    "greeting": "Hey! 👋 Welcome to Prince's personal page. I specialize in modern interfaces and web development. Pick a question below or just explore the site!",
+    "questions": {
+      "q0": "Who are you?",
+      "q1": "Why programming?",
+      "q2": "What technologies do you use?",
+      "q3": "Are you open to projects?"
+    },
+    "answers": {
+      "a0": "Hey there! I'm Prince — a frontend developer specialized in building modern web interfaces. I love working with React, Next.js, and TypeScript. Currently studying at PDP University and always learning something new. 🚀",
+      "a1": "Programming gives me the power to turn ideas into reality. Creating a site with a beautiful design and smooth animations feels like crafting a piece of art to me. Every pixel matters! ✨",
+      "a2": "My core stack: React.js, Next.js, TypeScript, Tailwind CSS. I also work with Node.js, Firebase, Three.js, and Framer Motion. Always excited to try new tools! 💻",
+      "a3": "Absolutely! I'm always open to freelance projects and collaborations. Currently working on my portfolio, WebKaizen, and more. Head over to the Contact section to reach out! 🤝"
+    },
+    "status": {
+      "statusLabel": "Status",
+      "statusValue": "Available for work",
+      "locationLabel": "Location",
+      "locationValue": "Tashkent, UZ",
+      "focusLabel": "Focus",
+      "focusValue": "Frontend + AI"
+    },
+    "stats": {
+      "title": "By the numbers",
+      "experience": "Experience",
+      "experienceUnit": "yr",
+      "projects": "Projects",
+      "projectsUnit": "",
+      "technologies": "Technologies",
+      "technologiesUnit": "",
+      "focus": "Focus",
+      "focusValue": "FE",
+      "focusUnit": "+ AI"
+    },
+    "interests": {
+      "title": "Current interests"
+    }
+  },
+  "techGraph": {
+    "title": "Tech Stack",
+    "description": "Technologies I work with — explore them on a 3D globe",
+    "categories": "Categories",
+    "all": "All",
+    "whenLabel": "When I use it",
+    "projectsLabel": "Projects",
+    "hint": "🌐 Click a technology on the globe",
+    "hintSub": "You can drag to rotate",
+    "allProjects": "All projects",
+    "aiExperiments": "AI experiments",
+    "nodes": {
+      "react": {
+        "description": "My primary UI library. I build complex interfaces using component-based architecture.",
+        "useCase": "In all projects"
+      },
+      "nextjs": {
+        "description": "I use it for server-side rendering and static generation. SEO-optimized websites.",
+        "useCase": "In production projects"
+      },
+      "typescript": {
+        "description": "For safe and readable code. I use it in every single project.",
+        "useCase": "Always"
+      },
+      "tailwind": {
+        "description": "For fast, beautiful CSS. The utility-first approach works great.",
+        "useCase": "For styling"
+      },
+      "html5": {
+        "description": "Creating semantic and accessible HTML structures.",
+        "useCase": "Always"
+      },
+      "css3": {
+        "description": "For animations, glassmorphism, and responsive design.",
+        "useCase": "Always"
+      },
+      "javascript": {
+        "description": "For adding interactive and dynamic functionality.",
+        "useCase": "Always"
+      },
+      "nodejs": {
+        "description": "For building backend APIs and servers.",
+        "useCase": "In API projects"
+      },
+      "python": {
+        "description": "For data analysis and AI scripts.",
+        "useCase": "In AI projects"
+      },
+      "firebase": {
+        "description": "Authentication, database, and hosting.",
+        "useCase": "For MVPs and prototypes"
+      },
+      "git": {
+        "description": "Version control and collaboration.",
+        "useCase": "Always"
+      },
+      "github": {
+        "description": "Code hosting and the open source community.",
+        "useCase": "Always"
+      },
+      "vercel": {
+        "description": "Automatic deployments and preview environments.",
+        "useCase": "For production deploys"
+      },
+      "threejs": {
+        "description": "3D graphics and interactive visualizations.",
+        "useCase": "In 3D projects"
+      },
+      "framer": {
+        "description": "Smooth animations and page transitions.",
+        "useCase": "For UI animation"
+      }
+    }
+  },
+  "frontendSection": {
+    "available": "✦ Available for work",
+    "title1": "Frontend",
+    "title2": "Developer",
+    "description": "Building modern websites with clean, responsive, elegant interfaces. Turning ideas and designs into engaging digital experiences.",
+    "showCard": "Show Card",
+    "hideCard": "Hide Card",
+    "aboutBtn": "About Me"
+  },
+  "showcase": {
+    "label": "Showcase",
+    "title": "Portfolio Showcase",
+    "tabs": {
+      "projects": "Projects",
+      "certificates": "Certificates",
+      "tech": "Tech Stack"
+    }
+  },
+  "contact": {
+    "label": "Contact",
+    "title": "Let's Build Together",
+    "description": "Have an idea, project, or collaboration in mind? Send me a message and let's create something clean, modern, and impactful together.",
+    "sendTitle": "Send Message",
+    "sendDirect": "Direct",
+    "sendDescription": "Your message opens directly in WhatsApp—no spam, just real connection.",
+    "namePlaceholder": "Your Name",
+    "messagePlaceholder": "Write your message...",
+    "sendBtn": "Send Message",
+    "replyTime": "Usually replies within a few hours",
+    "followMe": "Follow Me",
+    "copyright": "Copyright © {year} All Rights Reserved | Created by"
+  },
+  "aboutPage": {
+    "back": "Back",
+    "heading": "About Myself",
+    "downloadBtn": "Download Resume",
+    "downloading": "Downloading in {{seconds}}s",
+    "p1": "I'm currently a Class 12 student with PCMB, but honestly, my main interest is not in Biology anymore. Before 9th class, I used to think that I would go into the medical field in the future, but as time passed, I started getting more interested in computers and technology.",
+    "p2": "In 11th class, I explored coding more seriously and slowly developed a strong interest in programming, cybersecurity, and AI.",
+    "p3": "Now, coding is something I genuinely enjoy. I like learning new programming languages, building things, and understanding how technology works behind the scenes.",
+    "p4": "Out of everything in tech, ethical hacking and cybersecurity interest me the most because I find it exciting to learn about system security, vulnerabilities, and how hackers think.",
+    "p5": "At the same time, I also enjoy using AI tools and understanding how AI can make work smarter and easier.",
+    "p6": "After completing Class 12, I want to move completely into the coding and tech field. My goal is to build a future in cybersecurity, ethical hacking, and AI.",
+    "p7": "I know there's still a lot to learn, but I enjoy the process and always try to improve my skills step by step.",
+    "p8": "For me, technology is not just a career option anymore — it's something I truly connect with and see myself doing in the future."
+  }
+}

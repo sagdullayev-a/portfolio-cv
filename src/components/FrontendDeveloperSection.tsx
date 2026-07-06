@@ -1,10 +1,12 @@
 import { useEffect, useRef, useState, lazy, Suspense } from "react";
 import { motion, useInView, AnimatePresence } from "framer-motion";
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 
 const BandCard = lazy(() => import("./BandCard"));
 
 export default function FrontendDeveloperSection() {
+  const { t } = useTranslation();
   const ref = useRef<HTMLElement>(null);
   const inView = useInView(ref, { amount: 0.4 });
 
@@ -22,13 +24,11 @@ export default function FrontendDeveloperSection() {
       const t = setTimeout(() => {
         navigate("/about");
       }, 1800);
-
       return () => clearTimeout(t);
     }
   }, [goAbout, navigate]);
 
   return (
-
     <motion.section
       ref={ref}
       id="frontend"
@@ -41,23 +41,23 @@ export default function FrontendDeveloperSection() {
       animate={
         goAbout
           ? {
-            x: "-40vw",
-            scale: 0.92,
-            opacity: 0,
-            filter: "blur(8px)",
-          }
+              x: "-40vw",
+              scale: 0.92,
+              opacity: 0,
+              filter: "blur(8px)",
+            }
           : {
-            x: 0,
-            scale: 1,
-            opacity: 1,
-            filter: "blur(0px)",
-          }
+              x: 0,
+              scale: 1,
+              opacity: 1,
+              filter: "blur(0px)",
+            }
       }
       transition={{
         duration: 1.8,
         ease: [0.16, 1, 0.3, 1],
       }}
-      className="relative w-full min-h-screen bg-black text-white overflow-hidden flex items-start px-6 md:px-20 pt-16 md:pt-28 select-none"
+      className="relative w-full min-h-screen overflow-hidden flex items-start px-6 md:px-20 pt-16 md:pt-28 select-none"
     >
       {/* TEXT */}
       <div className="relative z-10 max-w-2xl">
@@ -72,20 +72,18 @@ export default function FrontendDeveloperSection() {
               ease: "easeInOut",
               times: [0, 0.3, 0.8, 1],
             }}
-            className="inline-block overflow-hidden whitespace-nowrap text-[11px] tracking-[0.3em] uppercase text-white/60 font-mono"
+            className="inline-block overflow-hidden whitespace-nowrap text-[11px] tracking-[0.3em] uppercase text-[var(--lg-accent-start)] font-mono"
           >
-            ✦ Available for work
+            {t("frontendSection.available")}
           </motion.span>
 
           <motion.span
-            animate={{
-              opacity: [1, 0, 1],
-            }}
+            animate={{ opacity: [1, 0, 1] }}
             transition={{
               duration: 0.8,
               repeat: Infinity,
             }}
-            className="text-white/60 font-mono ml-[2px]"
+            className="text-[var(--lg-accent-start)] font-mono ml-[2px]"
           >
             |
           </motion.span>
@@ -94,69 +92,71 @@ export default function FrontendDeveloperSection() {
         <div>
           <motion.h1
             initial={{ opacity: 0, scale: 0.85, y: 50 }}
-            animate={inView ? { opacity: 1, scale: 1, y: 0 } : { opacity: 0, scale: 0.85, y: 50 }}
+            animate={
+              inView
+                ? { opacity: 1, scale: 1, y: 0 }
+                : { opacity: 0, scale: 0.85, y: 50 }
+            }
             transition={{ duration: 1, ease: [0.22, 1, 0.36, 1] }}
-            className="font-extrabold leading-[1.05] tracking-tight text-white text-[clamp(56px,9vw,120px)]"
+            className="font-extrabold leading-[1.05] tracking-tight text-[var(--lg-text-primary)] text-[clamp(56px,9vw,120px)]"
           >
-            Frontend
+            {t("frontendSection.title1")}
           </motion.h1>
 
           <motion.h1
             initial={{ opacity: 0, x: -80, rotate: -4 }}
-            animate={inView ? { opacity: 1, x: 0, rotate: 0 } : { opacity: 0, x: -80, rotate: -4 }}
-            transition={{ duration: 1, delay: 0.25, ease: [0.22, 1, 0.36, 1] }}
-            className="font-extrabold leading-[1.05] tracking-tight text-white/70 text-[clamp(56px,9vw,120px)] mb-6"
+            animate={
+              inView
+                ? { opacity: 1, x: 0, rotate: 0 }
+                : { opacity: 0, x: -80, rotate: -4 }
+            }
+            transition={{
+              duration: 1,
+              delay: 0.25,
+              ease: [0.22, 1, 0.36, 1],
+            }}
+            className="font-extrabold leading-[1.05] tracking-tight text-[var(--lg-text-secondary)] text-[clamp(56px,9vw,120px)] mb-6"
           >
-            Developer
+            {t("frontendSection.title2")}
           </motion.h1>
         </div>
 
         <motion.p
           initial={{ opacity: 0, y: 30 }}
-          animate={inView ? { opacity: 1, y: 0 } : { opacity: 0, y: 30 }}
+          animate={
+            inView
+              ? { opacity: 1, y: 0 }
+              : { opacity: 0, y: 30 }
+          }
           transition={{ duration: 1, delay: 0.6 }}
-          className="relative text-sm sm:text-base lg:text-xl
-    leading-relaxed max-w-md
-    font-[Poppins] font-medium
-    tracking-wide
-    text-transparent bg-clip-text
-    bg-[length:200%_auto]
-    bg-gradient-to-r
-    from-white via-white/60 to-white
-    animate-[shine_4s_linear_infinite]"
+          className="text-sm sm:text-base lg:text-xl leading-relaxed max-w-md font-[Poppins] font-medium tracking-wide text-[var(--lg-text-secondary)]"
         >
-          Building modern websites with clean, responsive, elegant interfaces.
-          Turning ideas and designs into engaging digital experiences.
+          {t("frontendSection.description")}
         </motion.p>
 
         <motion.div
           initial={{ opacity: 0, y: 20 }}
-          animate={inView ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
+          animate={
+            inView
+              ? { opacity: 1, y: 0 }
+              : { opacity: 0, y: 20 }
+          }
           transition={{ duration: 1, delay: 0.8 }}
           className="mt-6 flex flex-wrap gap-4"
         >
-          {["Next.js", "React.js", "TypeScript", "Tailwind CSS"].map((tech) => (
-            <div
-              key={tech}
-              className="
-        relative group px-5 py-2.5 rounded-2xl
-        text-sm font-medium text-white/90
-        bg-white/5 backdrop-blur-xl
-        border border-white/10
-        overflow-hidden
-        transition-all duration-300
-      "
-            >
-              {/* animated border fill */}
-              <span className="absolute inset-0 scale-x-0 group-hover:scale-x-100 origin-left transition-transform duration-300 bg-gradient-to-r from-white/20 via-white/10 to-transparent"></span>
-
-              {/* glowing border line */}
-              <span className="absolute inset-0 rounded-2xl border border-white/30 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></span>
-
-              {/* text */}
-              <span className="relative z-10">{tech}</span>
-            </div>
-          ))}
+          {["Next.js", "React.js", "TypeScript", "Tailwind CSS"].map(
+            (tech) => (
+              <div
+                key={tech}
+                className="glass-card relative group px-5 py-2.5 !rounded-2xl text-sm font-medium text-[var(--lg-text-primary)] overflow-hidden"
+              >
+                {/* animated border fill */}
+                <span className="absolute inset-0 scale-x-0 group-hover:scale-x-100 origin-left transition-transform duration-300 bg-gradient-to-r from-[var(--lg-accent-start)]/10 via-[var(--lg-accent-end)]/5 to-transparent" />
+                {/* text */}
+                <span className="relative z-10">{tech}</span>
+              </div>
+            )
+          )}
         </motion.div>
 
         <div className="mt-8 flex flex-col [@media(min-width:540px)]:flex-row items-start md:items-center gap-4">
@@ -166,9 +166,9 @@ export default function FrontendDeveloperSection() {
             animate={inView ? { opacity: 1, y: 0 } : {}}
             transition={{ duration: 0.8, delay: 0.9 }}
             onClick={() => setShowCard((s) => !s)}
-            className="inline-flex items-center gap-2 border border-accent text-accent px-6 py-3 text-xs tracking-[0.25em] uppercase font-semibold hover:bg-accent hover:text-black transition-all duration-200 rounded-full relative z-20"
+            className="btn-glossy-outline relative z-20"
           >
-            {showCard ? "Hide Card" : "Show Card"}
+            {showCard ? t("frontendSection.hideCard") : t("frontendSection.showCard")}
           </motion.button>
 
           {/* About Button */}
@@ -177,9 +177,9 @@ export default function FrontendDeveloperSection() {
             animate={inView ? { opacity: 1, x: 0 } : {}}
             transition={{ duration: 1.1, delay: 1.4 }}
             onClick={() => setGoAbout(true)}
-            className="inline-flex items-center gap-2 border border-white/30 text-white px-6 py-3 text-xs uppercase font-bold hover:bg-white hover:text-black rounded-full transition"
+            className="btn-glossy relative z-20"
           >
-            About Me
+            {t("frontendSection.aboutBtn")}
           </motion.button>
         </div>
       </div>

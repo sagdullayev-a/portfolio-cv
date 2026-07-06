@@ -1,0 +1,177 @@
+{
+  "navbar": {
+    "home": "Bosh sahifa",
+    "about": "Haqimda",
+    "showcase": "Showcase",
+    "contact": "Aloqa"
+  },
+  "hero": {
+    "tagline_1": "Creating",
+    "tagline_2": "Websites",
+    "tagline_3": "That Feel",
+    "tagline_4": "Alive.",
+    "description": "Ijodiy g'oyalarni interaktiv va yuqori sifatli veb-tajribalarga aylaantiraman.",
+    "cta": "WEBKAIZEN"
+  },
+  "chat": {
+    "online": "Onlayn",
+    "mode": "SUHBAT REJIMI",
+    "askLabel": "Savol bering",
+    "greeting": "Salom! 👋 Men Princening shaxsiy sahifasiga xush kelibsiz. Zamonaviy interfeyslar va dasturlash bilan shug'ullanaman. Quyidagi savollardan birini tanlang yoki shunchaki saytni o'rganing!",
+    "questions": {
+      "q0": "Siz kimsiz?",
+      "q1": "Nega aynan dasturlash?",
+      "q2": "Qanday texnologiyalar bilan ishlaysiz?",
+      "q3": "Loyihalar bilan ishlaysizmi?"
+    },
+    "answers": {
+      "a0": "Salom! Men Prince — frontend dasturchi, zamonaviy veb-interfeyslar yaratishga ixtisoslashganman. React, Next.js va TypeScript bilan ishlashni yaxshi ko'raman. Hozirda PDP University'da o'qiyapman va yangi texnologiyalarni o'rganishni to'xtatmayman. 🚀",
+      "a1": "Dasturlash menga g'oyalarni haqiqatga aylantirish imkonini beradi. Yaxshi dizayni va silliq animatsiyalari bo'lgan sayt yaratish — bu men uchun san'at asari yaratish bilan teng. Har bir piksel muhim! ✨",
+      "a2": "Asosiy stackim: React.js, Next.js, TypeScript, Tailwind CSS. Bundan tashqari Node.js, Firebase, Three.js va Framer Motion bilan ham ishlayman. Har doim yangi toollarni sinab ko'rishga tayyorman! 💻",
+      "a3": "Ha, albatta! Freelance loyihalar va hamkorlik uchun doim ochiqman. Portfolio saytim, WebKaizen va boshqa loyihalar ustida faol ishlayapman. Bog'lanish uchun Contact bo'limiga o'ting! 🤝"
+    },
+    "status": {
+      "statusLabel": "Holat",
+      "statusValue": "Ishga mavjud",
+      "locationLabel": "Joylashuv",
+      "locationValue": "Toshkent, UZ",
+      "focusLabel": "Fokus",
+      "focusValue": "Frontend + AI"
+    },
+    "stats": {
+      "title": "Raqamlarda",
+      "experience": "Tajriba",
+      "experienceUnit": "yil",
+      "projects": "Loyihalar",
+      "projectsUnit": "ta",
+      "technologies": "Texnologiyalar",
+      "technologiesUnit": "ta",
+      "focus": "Fokus",
+      "focusValue": "FE",
+      "focusUnit": "+ AI"
+    },
+    "interests": {
+      "title": "So'nggi qiziqishlar"
+    }
+  },
+  "techGraph": {
+    "title": "Texnologik Stek",
+    "description": "Men ishlatadigan texnologiyalar — 3D globusda aylanib ko'ring",
+    "categories": "Kategoriyalar",
+    "all": "Barchasi",
+    "whenLabel": "Qachon ishlataman",
+    "projectsLabel": "Loyihalar",
+    "hint": "🌐 Globusdagi texnologiyani bosing",
+    "hintSub": "Sichqoncha bilan aylantirishingiz mumkin",
+    "allProjects": "Barcha loyihalar",
+    "aiExperiments": "AI tajribalar",
+    "nodes": {
+      "react": {
+        "description": "Asosiy UI kutubxonam. Komponent asosidagi arxitektura bilan murakkab interfeyslar yarataman.",
+        "useCase": "Barcha loyihalarda"
+      },
+      "nextjs": {
+        "description": "Server-side rendering va static generation uchun ishlataman. SEO-optimallashtirilgan saytlar.",
+        "useCase": "Production loyihalarda"
+      },
+      "typescript": {
+        "description": "Xavfsiz va o'qilishi oson kod yozish uchun. Hamma loyihamda ishlataman.",
+        "useCase": "Har doim"
+      },
+      "tailwind": {
+        "description": "Tezkor va chiroyli CSS yozish uchun. Utility-first yondashuv yaxshi ishlaydi.",
+        "useCase": "Styling uchun"
+      },
+      "html5": {
+        "description": "Semantik va accessible HTML tuzilmalar yaratish.",
+        "useCase": "Har doim"
+      },
+      "css3": {
+        "description": "Animatsiyalar, glassmorphism va responsive dizayn uchun.",
+        "useCase": "Har doim"
+      },
+      "javascript": {
+        "description": "Interaktiv va dinamik funksionalliklni qo'shish uchun.",
+        "useCase": "Har doim"
+      },
+      "nodejs": {
+        "description": "Backend API va serverlar yaratish uchun.",
+        "useCase": "API loyihalarda"
+      },
+      "python": {
+        "description": "Ma'lumotlar tahlili va AI skriptlar uchun.",
+        "useCase": "AI loyihalarda"
+      },
+      "firebase": {
+        "description": "Autentifikatsiya, ma'lumotlar bazasi va hosting.",
+        "useCase": "MVP va prototiplar"
+      },
+      "git": {
+        "description": "Versiya nazorati va hamkorlik.",
+        "useCase": "Har doim"
+      },
+      "github": {
+        "description": "Kod hosting va open source hamjamiyat.",
+        "useCase": "Har doim"
+      },
+      "vercel": {
+        "description": "Avtomatik deploy va preview muhitlari.",
+        "useCase": "Production deploy"
+      },
+      "threejs": {
+        "description": "3D grafika va interaktiv vizualizatsiyalar.",
+        "useCase": "3D loyihalarda"
+      },
+      "framer": {
+        "description": "Yumshoq animatsiyalar va page transitionlar.",
+        "useCase": "UI animatsiya"
+      }
+    }
+  },
+  "frontendSection": {
+    "available": "✦ Ish uchun ochiqman",
+    "title1": "Frontend",
+    "title2": "Developer",
+    "description": "Zamonaviy veb-saytlarni qurishda toza, moslashuvchan va elegant interfeyslar yarataman. G'oyalarni jonli raqamli tajribalarga aylaantiraman.",
+    "showCard": "Kartani ko'rish",
+    "hideCard": "Yashirish",
+    "aboutBtn": "Men haqimda"
+  },
+  "showcase": {
+    "label": "Showcase",
+    "title": "Portfolio Showcase",
+    "tabs": {
+      "projects": "Loyihalar",
+      "certificates": "Sertifikatlar",
+      "tech": "Tech Stack"
+    }
+  },
+  "contact": {
+    "label": "Contact",
+    "title": "Birgalikda Yarataylik",
+    "description": "G'oya, loyiha yoki hamkorlik rejangiz bormi? Xabar yuboring va birgalikda zamonaviy, chiroyli narsa yarataylik.",
+    "sendTitle": "Xabar Yuborish",
+    "sendDirect": "To'gridan-to'g'ri",
+    "sendDescription": "Xabaringiz to'g'ridan-to'g'ri WhatsApp'da ochiladi — spam yo'q, haqiqiy muloqot.",
+    "namePlaceholder": "Ismingiz",
+    "messagePlaceholder": "Xabaringizni yozing...",
+    "sendBtn": "Xabar Yuborish",
+    "replyTime": "Odatda bir necha soat ichida javob beraman",
+    "followMe": "Kuzating",
+    "copyright": "Copyright © {year} Barcha huquqlar himoyalangan | Yaratuvchi"
+  },
+  "aboutPage": {
+    "back": "Orqaga",
+    "heading": "Men Haqimda",
+    "downloadBtn": "Rezyume Yuklab Olish",
+    "downloading": "Yuklab olinmoqda: {{seconds}}s",
+    "p1": "Hozirda men 12-sinf o'quvchisiman (PCMB), lekin asosiy qiziqishim biologiya emas. 9-sinfgacha tibbiyot sohasida bo'laman, deb o'ylardim, lekin vaqt o'tishi bilan kompyuter va texnologiyaga mehr qo'yib qoldim.",
+    "p2": "11-sinfda dasturlashni jiddiyroq o'rganishni boshladim va asta-sekin dasturlash, kiberxavfsizlik va sun'iy intellektga kuchli qiziqish uyg'ondi.",
+    "p3": "Endi dasturlash — bu men chindan ham zavq oladigan narsa. Yangi dasturlash tillarini o'rganish, biror narsa qurish va texnologiyaning ortida nima yotishini tushunish — bularning barchasi menga yoqadi.",
+    "p4": "Texnologiyaning barcha sohalaridan etik xakerlash va kiberxavfsizlik meni eng ko'p qiziqtiradi, chunki tizim xavfsizligi, zaifliklar va xakerlarning fikrlash usulini o'rganish — bu juda qiziqarli.",
+    "p5": "Shu bilan birga, AI vositalaridan foydalanish va sun'iy intellektning ishni qanday yanada samarali qilishini tushunishni ham yaxshi ko'raman.",
+    "p6": "12-sinfni tugatgandan so'ng, to'liq dasturlash va texnologiya sohasiga o'tmoqchiman. Maqsadim — kiberxavfsizlik, etik xakerlash va AI sohasida kelajak qurish.",
+    "p7": "Hali o'rganadigan narsalar juda ko'p, lekin jarayon menga yoqadi va har doim mahoratimni bosqichma-bosqich oshirishga harakat qilaman.",
+    "p8": "Men uchun texnologiya endi shunchaki martaba tanlovi emas — bu men chin dildan bog'langan va kelajakda o'zimni ko'radigan sohadir."
+  }
+}
