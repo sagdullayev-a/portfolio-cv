@@ -56,30 +56,32 @@
   },
   "techGraph": {
     "title": "Tech Stack",
-    "description": "Technologies I work with — explore them on a 3D globe",
+    "subtitle": "{{count}} TECHNOLOGIES · DAILY DRIVER",
+    "description": "Technologies I work with — an interactive floating cloud",
     "categories": "Categories",
     "all": "All",
     "whenLabel": "When I use it",
     "projectsLabel": "Projects",
-    "hint": "🌐 Click a technology on the globe",
-    "hintSub": "You can drag to rotate",
+    "hint": "🌐 Click a technology card",
+    "hintSub": "Select to view details",
+    "recenter": "Recenter",
     "allProjects": "All projects",
     "aiExperiments": "AI experiments",
     "nodes": {
       "react": {
-        "description": "My primary UI library. I build complex interfaces using component-based architecture.",
+        "description": "A modern and fast UI library. Provides high performance through a component-based approach and Virtual DOM.",
         "useCase": "In all projects"
       },
       "nextjs": {
-        "description": "I use it for server-side rendering and static generation. SEO-optimized websites.",
+        "description": "A full-stack framework for React. Features Server-Side Rendering (SSR), SEO optimization, and fast routing.",
         "useCase": "In production projects"
       },
       "typescript": {
-        "description": "For safe and readable code. I use it in every single project.",
+        "description": "A statically typed superset of JavaScript. Catches errors during coding and simplifies project scaling.",
         "useCase": "Always"
       },
       "tailwind": {
-        "description": "For fast, beautiful CSS. The utility-first approach works great.",
+        "description": "A utility-first CSS framework. Enables creating modern, responsive, and unique designs in seconds.",
         "useCase": "For styling"
       },
       "html5": {
@@ -95,7 +97,7 @@
         "useCase": "Always"
       },
       "nodejs": {
-        "description": "For building backend APIs and servers.",
+        "description": "A powerful environment for running JavaScript on the server side. Ideal for asynchronous and high-load systems.",
         "useCase": "In API projects"
       },
       "python": {

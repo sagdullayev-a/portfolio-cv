@@ -56,30 +56,32 @@
   },
   "techGraph": {
     "title": "Texnologik Stek",
-    "description": "Men ishlatadigan texnologiyalar — 3D globusda aylanib ko'ring",
+    "subtitle": "{{count}} TEXNOLOGIYA · KUNDALIK STEK",
+    "description": "Men ishlatadigan texnologiyalar — erkin suzuvchi interaktiv bulut",
     "categories": "Kategoriyalar",
     "all": "Barchasi",
     "whenLabel": "Qachon ishlataman",
     "projectsLabel": "Loyihalar",
-    "hint": "🌐 Globusdagi texnologiyani bosing",
-    "hintSub": "Sichqoncha bilan aylantirishingiz mumkin",
+    "hint": "🌐 Texnologiya kartochkasini bosing",
+    "hintSub": "Tafsilotlarni ko'rish uchun tanlang",
+    "recenter": "Qayta tiklash",
     "allProjects": "Barcha loyihalar",
     "aiExperiments": "AI tajribalar",
     "nodes": {
       "react": {
-        "description": "Asosiy UI kutubxonam. Komponent asosidagi arxitektura bilan murakkab interfeyslar yarataman.",
+        "description": "Zamonaviy va tezkor UI kutubxonasi. Komponent-asosli yondashuv va Virtual DOM orqali yuqori unumdorlikni ta'minlaydi.",
         "useCase": "Barcha loyihalarda"
       },
       "nextjs": {
-        "description": "Server-side rendering va static generation uchun ishlataman. SEO-optimallashtirilgan saytlar.",
+        "description": "React uchun to'liq stekli freymvork. Server-side rendering (SSR), SEO optimizatsiyasi va tezkor routing tizimiga ega.",
         "useCase": "Production loyihalarda"
       },
       "typescript": {
-        "description": "Xavfsiz va o'qilishi oson kod yozish uchun. Hamma loyihamda ishlataman.",
+        "description": "JavaScript-ning statik tiplashtirilgan super-to'plami. Xatolarni koddagi yozish jarayonida aniqlaydi va loyihani kengaytirishni osonlashtiradi.",
         "useCase": "Har doim"
       },
       "tailwind": {
-        "description": "Tezkor va chiroyli CSS yozish uchun. Utility-first yondashuv yaxshi ishlaydi.",
+        "description": "Utility-first CSS freymvorki. Sanoqli soniyalarda zamonaviy, responsiv va unikal dizaynlarni yaratish imkonini beradi.",
         "useCase": "Styling uchun"
       },
       "html5": {
@@ -95,7 +97,7 @@
         "useCase": "Har doim"
       },
       "nodejs": {
-        "description": "Backend API va serverlar yaratish uchun.",
+        "description": "JavaScript-ni server tomonida ishga tushiruvchi kuchli muhit. Asinxron va yuqori yuklanishlarga chidamli tizimlar uchun ideal.",
         "useCase": "API loyihalarda"
       },
       "python": {
