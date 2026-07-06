@@ -406,6 +406,7 @@ export default function TechGraph() {
             onTouchStart={onTouchStart}
             onTouchMove={onTouchMove}
             onTouchEnd={onTouchEnd}
+            onMouseLeave={() => setHoveredKey(null)}
           >
             {/* Ambient glow */}
             <div
@@ -447,10 +448,22 @@ export default function TechGraph() {
                       onMouseLeave={() => setHoveredKey(null)}
                       className="w-full h-full rounded-[18px] flex flex-col items-center justify-center gap-[5px] transition-all duration-300 hover:scale-125 cursor-pointer"
                       style={{
-                        border: (isSelected || isHovered) ? `1.5px solid ${tech.color}` : "1px solid rgba(255,255,255,0.12)",
-                        background: isSelected ? "rgba(255,255,255,0.15)" : isHovered ? "rgba(255,255,255,0.1)" : "rgba(0,0,0,0.6)",
+                        border: isHovered
+                          ? `1.5px solid ${tech.color}`
+                          : isSelected
+                          ? "1.5px solid rgba(255,255,255,0.4)"
+                          : "1px solid rgba(255,255,255,0.12)",
+                        background: isSelected
+                          ? "rgba(255,255,255,0.15)"
+                          : isHovered
+                          ? "rgba(255,255,255,0.1)"
+                          : "rgba(0,0,0,0.6)",
                         backdropFilter: "blur(12px)",
-                        boxShadow: (isSelected || isHovered) ? `0 0 25px 0 ${tech.color}88` : `0 0 20px -8px ${tech.color}55`,
+                        boxShadow: isHovered
+                          ? `0 0 25px 0 ${tech.color}88`
+                          : isSelected
+                          ? "0 4px 15px rgba(255,255,255,0.06)"
+                          : "0 0 15px -8px rgba(255,255,255,0.1)",
                       }}
                     >
                       <img
