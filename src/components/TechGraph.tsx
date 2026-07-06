@@ -704,10 +704,8 @@ export default function TechGraph() {
                       onMouseLeave={() => setHoveredKey(null)}
                       className="tech-card-inner w-full h-full rounded-[18px] flex flex-col items-center justify-center gap-[5px] transition-all duration-300 hover:scale-125 cursor-pointer select-none"
                       style={{
-                        border: isHovered
+                        border: (isSelected || isHovered)
                           ? `1.5px solid ${tech.color}`
-                          : isSelected
-                          ? "1.5px solid rgba(255,255,255,0.4)"
                           : "1px solid rgba(255,255,255,0.12)",
                         background: isSelected
                           ? "rgba(255,255,255,0.15)"
@@ -715,11 +713,9 @@ export default function TechGraph() {
                           ? "rgba(255,255,255,0.1)"
                           : "rgba(0,0,0,0.6)",
                         backdropFilter: "blur(12px)",
-                        boxShadow: isHovered
+                        boxShadow: (isSelected || isHovered)
                           ? `0 0 25px 0 ${tech.color}88`
-                          : isSelected
-                          ? "0 4px 15px rgba(255,255,255,0.06)"
-                          : "0 0 15px -8px rgba(255,255,255,0.1)",
+                          : `0 0 20px -8px ${tech.color}55`,
                       }}
                     >
                       <img
