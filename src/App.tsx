@@ -1,5 +1,5 @@
 import { ArrowUpRight, Menu, X, Command } from "lucide-react";
-import { useEffect, useState, useRef } from "react";
+import { useEffect, useState, useRef, lazy, Suspense } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import { useTranslation } from "react-i18next";
 import gsap from "gsap";
@@ -16,6 +16,9 @@ import { Routes, Route, useLocation, useNavigate } from "react-router-dom";
 import About from "./pages/About";
 
 gsap.registerPlugin(ScrollToPlugin);
+
+const Spline = lazy(() => import("@splinetool/react-spline"));
+const HERO_SPLINE_URL = "SPLINE_SCENE_URL_PLACEHOLDER";
 
 const logos = ["PRINCE", "WEBKAIZEN", "FRONTEND", "DEVELOPER"];
 
@@ -41,6 +44,14 @@ export default function App() {
   const [pendingScroll, setPendingScroll] = useState<string | null>(null);
   const [scrolled, setScrolled] = useState(false);
   const [navbarVisible, setNavbarVisible] = useState(true);
+  const [isMobile, setIsMobile] = useState(false);
+
+  useEffect(() => {
+    const checkMobile = () => setIsMobile(window.innerWidth < 640);
+    checkMobile();
+    window.addEventListener("resize", checkMobile);
+    return () => window.removeEventListener("resize", checkMobile);
+  }, []);
 
   const lastScrollY = useRef(0);
   const ticking = useRef(false);
@@ -365,19 +376,27 @@ export default function App() {
                 </div>
 
                 <div className="absolute inset-0 flex items-center justify-center">
-                  <img src={heroEye} alt="Hero" className="h-[80%] w-[80%] object-contain object-center opacity-15 mix-blend-multiply" />
+                  {isMobile ? (
+                    <img src={heroEye} alt="Hero" className="h-[80%] w-[80%] object-contain object-center opacity-15 mix-blend-multiply" />
+                  ) : (
+                    <div className="w-full h-full relative z-0">
+                      <Suspense fallback={<HeroSplineFallback />}>
+                        <Spline scene={HERO_SPLINE_URL} />
+                      </Suspense>
+                    </div>
+                  )}
                 </div>
 
-                <div className="relative z-10 w-full h-full flex flex-col justify-between px-6 md:px-12 pt-28 pb-10">
+                <div className="relative z-10 w-full h-full flex flex-col justify-between px-6 md:px-12 pt-28 pb-10 pointer-events-none">
                   <h1
                     onClick={() => setColorMode((prev) => (prev + 1) % colors.length)}
-                    className={`font-display uppercase leading-[0.85] tracking-[-0.03em] text-[clamp(2.5rem,14vw,10rem)] cursor-pointer transition-all duration-300 ${colors[colorMode]}`}
+                    className={`font-display uppercase leading-[0.85] tracking-[-0.03em] text-[clamp(2.5rem,14vw,10rem)] cursor-pointer transition-all duration-300 pointer-events-auto ${colors[colorMode]}`}
                   >
                     {displayed || "\u00A0"}
                   </h1>
 
                   <p
-                    className="md:absolute md:top-28 md:right-12 mt-4 md:mt-0 text-right text-3xl md:text-4xl lg:text-5xl leading-[1.05] max-w-md font-[Poppins] font-bold tracking-wide"
+                    className="md:absolute md:top-28 md:right-12 mt-4 md:mt-0 text-right text-3xl md:text-4xl lg:text-5xl leading-[1.05] max-w-md font-[Poppins] font-bold tracking-wide pointer-events-none"
                     style={{
                       background: `linear-gradient(135deg, var(--lg-text-primary), var(--lg-text-secondary))`,
                       WebkitBackgroundClip: "text",
@@ -391,11 +410,11 @@ export default function App() {
                     <br />{t("hero.tagline_4")}
                   </p>
 
-                  <div className="flex flex-col md:flex-row md:items-end md:justify-between gap-6 mt-auto">
-                    <p className="text-sm sm:text-base lg:text-xl leading-relaxed max-w-md font-[Poppins] font-medium tracking-wide text-[var(--lg-text-secondary)]">
+                  <div className="flex flex-col md:flex-row md:items-end md:justify-between gap-6 mt-auto pointer-events-none">
+                    <p className="text-sm sm:text-base lg:text-xl leading-relaxed max-w-md font-[Poppins] font-medium tracking-wide text-[var(--lg-text-secondary)] pointer-events-auto">
                       {t("hero.description")}
                     </p>
-                    <a href="https://www.webkaizen.in" target="_blank" rel="noopener noreferrer">
+                    <a href="https://www.webkaizen.in" target="_blank" rel="noopener noreferrer" className="pointer-events-auto">
                       <button className="btn-glossy">
                         {t("hero.cta")}
                         <ArrowUpRight size={16} />
@@ -436,6 +455,19 @@ export default function App() {
         />
         <Route path="/about" element={<About />} />
       </Routes>
+    </div>
+  );
+}
+
+function HeroSplineFallback() {
+  return (
+    <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
+      <div className="w-[80%] h-[80%] max-w-4xl max-h-[500px] glass-panel-strong overflow-hidden relative flex items-center justify-center opacity-40">
+        <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/10 to-transparent -translate-x-full animate-[shimmer_2s_infinite]" />
+        <div className="text-[var(--lg-text-tertiary)] font-mono text-xs uppercase tracking-[0.25em] animate-pulse">
+          Loading 3D Scene...
+        </div>
+      </div>
     </div>
   );
 }

@@ -33,6 +33,9 @@ export default defineConfig({
             if (id.includes("framer-motion") || id.includes("gsap")) {
               return "vendor-animation";
             }
+            if (id.includes("splinetool")) {
+              return "vendor-spline";
+            }
             return "vendor-core";
           }
         },
