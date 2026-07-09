@@ -67,15 +67,14 @@ export default function App() {
   const textX = useTransform(springX, [-0.5, 0.5], [-8, 8]);
   const textY = useTransform(springY, [-0.5, 0.5], [-8, 8]);
 
-  const btnX = useTransform(springX, [-0.5, 0.5], [-5, 5]);
-  const btnY = useTransform(springY, [-0.5, 0.5], [-5, 5]);
+  // Scroll Storytelling Transforms (Hero Viewport 1 to Viewport 2 transitions)
+  const heroElementsOpacity = useTransform(scrollY, [0, 250], [1, 0]);
+  const heroElementsY = useTransform(scrollY, [0, 250], [0, -30]);
 
-  // Scroll Transforms (Dampening, Fade and Scale on Scroll)
-  const bgOpacity = useTransform(scrollY, [0, 500], [1, 0.7]);
-  const splineScale = useTransform(scrollY, [0, 400], [1, 0.8]);
-  const splineOpacity = useTransform(scrollY, [0, 300], [1, 0.3]);
-  const textYScroll = useTransform(scrollY, [0, 400], [0, -40]);
-  const textOpacity = useTransform(scrollY, [0, 300], [1, 0]);
+  const bgOpacity = useTransform(scrollY, [0, 600], [1, 0.8]);
+  const splineScale = useTransform(scrollY, [0, 600], [1.1, 0.75]);
+  const splineOpacity = useTransform(scrollY, [0, 600], [1, 0]);
+  const splineYScroll = useTransform(scrollY, [0, 600], [0, -50]);
 
   useEffect(() => {
     const handleMouseMove = (e: MouseEvent) => {
@@ -390,162 +389,96 @@ export default function App() {
           path="/"
           element={
             <div className="relative z-10">
-              {/* ═══ HERO ═══ */}
-              <section id="Home" className="relative w-full min-h-screen lg:h-screen overflow-hidden flex flex-col justify-center">
-                {/* Layer 1: Animated background (radial gradient) */}
-                <motion.div
-                  style={{ opacity: bgOpacity, x: bgX, y: bgY }}
-                  className="absolute inset-0 pointer-events-none overflow-hidden z-0 bg-gradient-to-b from-[#F5F7FA] via-[#E8EDF5] to-[#DCE3F0]"
-                />
-
-                {/* Layer 2: Gradient blobs (floating blurred light blobs) */}
-                <motion.div
-                  style={{ x: blobX, y: blobY }}
-                  className="absolute inset-0 pointer-events-none z-0"
-                >
-                  <div className="absolute top-[-10%] left-[20%] w-[500px] h-[500px] rounded-full opacity-40"
-                    style={{ background: "radial-gradient(circle, rgba(186,230,253,0.5), transparent 70%)", filter: "blur(100px)", animation: "blobFloat1 25s ease-in-out infinite" }} />
-                  <div className="absolute bottom-[10%] right-[10%] w-[600px] h-[600px] rounded-full opacity-35"
-                    style={{ background: "radial-gradient(circle, rgba(237,233,254,0.6), transparent 70%)", filter: "blur(120px)", animation: "blobFloat2 30s ease-in-out infinite" }} />
-                  <div className="absolute top-[30%] right-[30%] w-[400px] h-[400px] rounded-full opacity-25"
-                    style={{ background: "radial-gradient(circle, rgba(255,255,255,0.7), transparent 70%)", filter: "blur(80px)", animation: "blobFloat1 20s ease-in-out infinite" }} />
-                </motion.div>
-
-                {/* Layer 3: Spline Scene */}
-                <motion.div
-                  style={{ scale: splineScale, opacity: splineOpacity, x: splineX, y: splineY }}
-                  className="relative w-full h-[45vh] mt-8 lg:mt-0 lg:absolute lg:inset-y-0 lg:right-0 lg:w-[50%] z-10 flex items-center justify-center overflow-hidden pointer-events-auto"
-                >
-                  <iframe
-                    src="https://my.spline.design/interactiveaiwebsite-iEJdikEMPai70V0dx4x3hr2d/"
-                    title="Interactive 3D Hero Scene"
-                    className="w-full h-full border-none bg-transparent scale-110 lg:scale-125 translate-x-4 lg:translate-x-12"
-                    allow="autoplay; fullscreen"
-                    onLoad={() => setIframeLoaded(true)}
-                  ></iframe>
-                </motion.div>
-
-                {/* Premium Loading Shimmer Loader */}
-                <AnimatePresence>
-                  {!iframeLoaded && (
-                    <motion.div
-                      initial={{ opacity: 1 }}
-                      exit={{ opacity: 0 }}
-                      transition={{ duration: 0.8, ease: "easeInOut" }}
-                      className="absolute inset-0 z-15 flex items-center justify-center bg-gradient-to-b from-[#F5F7FA] via-[#E8EDF5] to-[#DCE3F0] pointer-events-none"
-                    >
-                      <div className="flex flex-col items-center gap-3">
-                        <div className="w-10 h-10 rounded-full border-2 border-[var(--lg-accent-start)]/30 border-t-[var(--lg-accent-start)] animate-spin" />
-                        <div className="text-[var(--lg-text-tertiary)] font-mono text-[10px] uppercase tracking-[0.25em] animate-pulse">
-                          Loading 3D Scene...
-                        </div>
-                      </div>
-                    </motion.div>
-                  )}
-                </AnimatePresence>
-
-                {/* Layer 4: Text content */}
-                <div className="relative z-20 w-full max-w-7xl mx-auto px-6 md:px-12 lg:px-20 flex flex-col justify-center pointer-events-none pt-28 pb-10 lg:py-0">
+              {/* ═══ HERO (Viewport 1 Scroll Track) ═══ */}
+              <section id="Home" className="relative w-full h-[140vh] z-10 pointer-events-none">
+                {/* Sticky Container */}
+                <div className="sticky top-0 w-full h-screen overflow-hidden pointer-events-auto">
+                  {/* Layer 1: Animated background (radial gradient) */}
                   <motion.div
-                    style={{ y: textYScroll, opacity: textOpacity }}
-                    className="w-full lg:w-[45%] flex flex-col items-start text-left"
+                    style={{ opacity: bgOpacity, x: bgX, y: bgY }}
+                    className="absolute inset-0 pointer-events-none overflow-hidden z-0 bg-gradient-to-b from-[#F5F7FA] via-[#E8EDF5] to-[#DCE3F0]"
+                  />
+
+                  {/* Layer 2: Gradient blobs (floating blurred light blobs) */}
+                  <motion.div
+                    style={{ x: blobX, y: blobY }}
+                    className="absolute inset-0 pointer-events-none z-0"
                   >
-                    <motion.div
-                      style={{ x: textX, y: textY }}
-                      className="flex flex-col items-start"
-                    >
-                      {/* Badge */}
+                    <div className="absolute top-[-10%] left-[20%] w-[500px] h-[500px] rounded-full opacity-40"
+                      style={{ background: "radial-gradient(circle, rgba(186,230,253,0.5), transparent 70%)", filter: "blur(100px)", animation: "blobFloat1 25s ease-in-out infinite" }} />
+                    <div className="absolute bottom-[10%] right-[10%] w-[600px] h-[600px] rounded-full opacity-35"
+                      style={{ background: "radial-gradient(circle, rgba(237,233,254,0.6), transparent 70%)", filter: "blur(120px)", animation: "blobFloat2 30s ease-in-out infinite" }} />
+                    <div className="absolute top-[30%] right-[30%] w-[400px] h-[400px] rounded-full opacity-25"
+                      style={{ background: "radial-gradient(circle, rgba(255,255,255,0.7), transparent 70%)", filter: "blur(80px)", animation: "blobFloat1 20s ease-in-out infinite" }} />
+                  </motion.div>
+
+                  {/* Layer 3: Spline Scene */}
+                  <motion.div
+                    style={{ scale: splineScale, opacity: splineOpacity, x: splineX, y: splineY, translateY: splineYScroll }}
+                    className="absolute inset-0 z-10 flex items-center justify-center overflow-hidden pointer-events-auto"
+                  >
+                    <iframe
+                      src="https://my.spline.design/interactiveaiwebsite-iEJdikEMPai70V0dx4x3hr2d/"
+                      title="Interactive 3D Hero Scene"
+                      className="w-full h-full border-none bg-transparent scale-110 md:scale-125"
+                      allow="autoplay; fullscreen"
+                      onLoad={() => setIframeLoaded(true)}
+                    ></iframe>
+                  </motion.div>
+
+                  {/* Premium Loading Shimmer Loader */}
+                  <AnimatePresence>
+                    {!iframeLoaded && (
                       <motion.div
-                        initial={{ opacity: 0, y: 15 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        transition={{ duration: 0.8, ease: "easeOut" }}
-                        className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full glass-panel text-[11px] font-mono tracking-[0.2em] text-[var(--lg-text-secondary)] uppercase pointer-events-auto mb-6"
+                        initial={{ opacity: 1 }}
+                        exit={{ opacity: 0 }}
+                        transition={{ duration: 0.8, ease: "easeInOut" }}
+                        className="absolute inset-0 z-15 flex items-center justify-center bg-gradient-to-b from-[#F5F7FA] via-[#E8EDF5] to-[#DCE3F0] pointer-events-none"
                       >
-                        <span className="w-1.5 h-1.5 rounded-full bg-[var(--lg-accent-start)] animate-pulse" />
-                        {t("hero.badge")}
+                        <div className="flex flex-col items-center gap-3">
+                          <div className="w-10 h-10 rounded-full border-2 border-[var(--lg-accent-start)]/30 border-t-[var(--lg-accent-start)] animate-spin" />
+                          <div className="text-[var(--lg-text-tertiary)] font-mono text-[10px] uppercase tracking-[0.25em] animate-pulse">
+                            Loading 3D Scene...
+                          </div>
+                        </div>
                       </motion.div>
+                    )}
+                  </AnimatePresence>
 
-                      {/* Heading */}
-                      <motion.h1
-                        initial={{ opacity: 0, y: 30 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        transition={{ duration: 1, delay: 0.2, ease: [0.16, 1, 0.3, 1] }}
-                        className="font-sans font-extrabold leading-[1.1] tracking-tight text-[clamp(2.25rem,6vw,4.25rem)] max-w-[550px] text-[var(--lg-text-primary)] pointer-events-auto"
-                        style={{
-                          background: `linear-gradient(135deg, var(--lg-text-primary) 30%, var(--lg-text-secondary) 100%)`,
-                          WebkitBackgroundClip: "text",
-                          WebkitTextFillColor: "transparent",
-                          backgroundClip: "text"
-                        }}
-                      >
-                        {t("hero.heading")}
-                      </motion.h1>
+                  {/* Layer 4: Role Labels */}
+                  {/* Left Label */}
+                  <motion.div
+                    style={{ opacity: heroElementsOpacity, y: heroElementsY, x: textX }}
+                    className="absolute left-6 md:left-12 lg:left-20 top-1/2 -translate-y-1/2 z-20 pointer-events-none hidden md:block"
+                  >
+                    <div className="-rotate-90 origin-center font-mono text-[10px] uppercase tracking-[0.3em] text-[var(--lg-text-tertiary)] whitespace-nowrap">
+                      AI Engineer
+                    </div>
+                  </motion.div>
 
-                      {/* Description */}
-                      <motion.p
-                        initial={{ opacity: 0, y: 20 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        transition={{ duration: 1, delay: 0.4, ease: [0.16, 1, 0.3, 1] }}
-                        className="mt-6 text-base md:text-lg text-[var(--lg-text-secondary)] max-w-[420px] leading-relaxed font-[Poppins] font-medium pointer-events-auto"
-                      >
-                        {t("hero.description_new")}
-                      </motion.p>
-
-                      {/* Buttons */}
-                      <motion.div
-                        style={{ x: btnX, y: btnY }}
-                        initial={{ opacity: 0, y: 20 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        transition={{ duration: 1, delay: 0.6, ease: [0.16, 1, 0.3, 1] }}
-                        className="mt-10 flex flex-col sm:flex-row items-center gap-4 w-full sm:w-auto pointer-events-auto"
-                      >
-                        {/* Primary Button */}
-                        <button
-                          onClick={() => {
-                            const target = document.getElementById("showcase");
-                            if (target) {
-                              gsap.to(window, { duration: 1, scrollTo: { y: target, offsetY: 70 }, ease: "power2.out" });
-                            }
-                          }}
-                          className="group relative btn-glossy w-full sm:w-auto px-8 py-3.5 flex items-center justify-center gap-2 cursor-pointer font-semibold uppercase tracking-wider text-xs rounded-full bg-gradient-to-r from-[var(--lg-accent-start)] to-[var(--lg-accent-end)] text-white shadow-lg shadow-indigo-500/20 transition-all duration-300 hover:scale-105 hover:shadow-indigo-500/40"
-                        >
-                          <span className="relative z-10 flex items-center gap-2">
-                            {t("hero.explore")}
-                            <ArrowUpRight size={16} className="transition-transform duration-300 group-hover:translate-x-1 group-hover:-translate-y-1" />
-                          </span>
-                        </button>
-
-                        {/* Secondary Button */}
-                        <button
-                          onClick={() => {
-                            const target = document.getElementById("contact");
-                            if (target) {
-                              gsap.to(window, { duration: 1, scrollTo: { y: target, offsetY: 70 }, ease: "power2.out" });
-                            }
-                          }}
-                          className="w-full sm:w-auto px-8 py-3.5 flex items-center justify-center gap-2 cursor-pointer font-semibold uppercase tracking-wider text-xs rounded-full border border-white/20 bg-white/10 backdrop-blur-md shadow-sm text-[var(--lg-text-primary)] hover:bg-white/35 hover:border-white/40 transition-all duration-300"
-                        >
-                          {t("hero.contact")}
-                        </button>
-                      </motion.div>
-                    </motion.div>
+                  {/* Right Label */}
+                  <motion.div
+                    style={{ opacity: heroElementsOpacity, y: heroElementsY, x: textX }}
+                    className="absolute right-6 md:right-12 lg:right-20 top-1/2 -translate-y-1/2 z-20 pointer-events-none hidden md:block"
+                  >
+                    <div className="rotate-90 origin-center font-mono text-[10px] uppercase tracking-[0.3em] text-[var(--lg-text-tertiary)] whitespace-nowrap">
+                      Full Stack Developer
+                    </div>
                   </motion.div>
 
                   {/* Scroll Indicator */}
                   <motion.div
-                    initial={{ opacity: 0 }}
-                    animate={{ opacity: 1 }}
-                    transition={{ delay: 1, duration: 0.8 }}
-                    className="absolute bottom-8 left-1/2 -translate-x-1/2 flex flex-col items-center gap-1 cursor-pointer pointer-events-auto"
+                    style={{ opacity: heroElementsOpacity, y: heroElementsY }}
+                    className="absolute bottom-8 left-1/2 -translate-x-1/2 flex flex-col items-center gap-1 cursor-pointer pointer-events-auto z-20"
                     onClick={() => {
-                      const target = document.getElementById("about");
+                      const target = document.getElementById("Intro");
                       if (target) {
-                        gsap.to(window, { duration: 1, scrollTo: { y: target, offsetY: 70 }, ease: "power2.out" });
+                        gsap.to(window, { duration: 1, scrollTo: { y: target, offsetY: 0 }, ease: "power2.out" });
                       }
                     }}
                   >
                     <span className="text-[9px] uppercase tracking-[0.25em] font-mono text-[var(--lg-text-tertiary)]">
-                      Scroll
+                      Scroll to Explore
                     </span>
                     <motion.div
                       animate={{ y: [0, 6, 0] }}
@@ -554,6 +487,85 @@ export default function App() {
                     >
                       <ChevronDown size={16} />
                     </motion.div>
+                  </motion.div>
+                </div>
+              </section>
+
+              {/* ═══ INTRO SECTION (Viewport 2 Content Intro) ═══ */}
+              <section id="Intro" className="relative w-full min-h-screen flex flex-col justify-center items-center text-center px-6 md:px-12 lg:px-20 py-24 z-20 bg-gradient-to-b from-[#DCE3F0] to-[#F5F7FA]">
+                <div className="max-w-4xl mx-auto flex flex-col items-center relative z-10">
+                  {/* Section Indicator */}
+                  <motion.div
+                    initial={{ opacity: 0, y: 15 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    viewport={{ once: true, margin: "-100px" }}
+                    transition={{ duration: 0.8 }}
+                    className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full glass-panel text-[11px] font-mono tracking-[0.25em] text-[var(--lg-text-secondary)] uppercase mb-6"
+                  >
+                    <span>01 • {t("hero.badge")}</span>
+                  </motion.div>
+
+                  {/* Heading */}
+                  <motion.h2
+                    initial={{ opacity: 0, y: 30 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    viewport={{ once: true, margin: "-100px" }}
+                    transition={{ duration: 1, delay: 0.1, ease: [0.16, 1, 0.3, 1] }}
+                    className="font-sans font-extrabold leading-[1.1] tracking-tight text-[clamp(2.25rem,6vw,4.25rem)] max-w-3xl text-[var(--lg-text-primary)]"
+                    style={{
+                      background: `linear-gradient(135deg, var(--lg-text-primary) 30%, var(--lg-text-secondary) 100%)`,
+                      WebkitBackgroundClip: "text",
+                      WebkitTextFillColor: "transparent",
+                      backgroundClip: "text"
+                    }}
+                  >
+                    {t("hero.heading")}
+                  </motion.h2>
+
+                  {/* Description */}
+                  <motion.p
+                    initial={{ opacity: 0, y: 20 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    viewport={{ once: true, margin: "-100px" }}
+                    transition={{ duration: 1, delay: 0.2, ease: [0.16, 1, 0.3, 1] }}
+                    className="mt-6 text-base md:text-lg lg:text-xl text-[var(--lg-text-secondary)] max-w-[550px] leading-relaxed font-[Poppins] font-medium"
+                  >
+                    {t("hero.description_new")}
+                  </motion.p>
+
+                  {/* CTA Buttons */}
+                  <motion.div
+                    initial={{ opacity: 0, y: 20 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    viewport={{ once: true, margin: "-100px" }}
+                    transition={{ duration: 1, delay: 0.3, ease: [0.16, 1, 0.3, 1] }}
+                    className="mt-10 flex flex-col sm:flex-row items-center gap-4 w-full sm:w-auto"
+                  >
+                    <button
+                      onClick={() => {
+                        const target = document.getElementById("showcase");
+                        if (target) {
+                          gsap.to(window, { duration: 1, scrollTo: { y: target, offsetY: 70 }, ease: "power2.out" });
+                        }
+                      }}
+                      className="group relative btn-glossy w-full sm:w-auto px-8 py-3.5 flex items-center justify-center gap-2 cursor-pointer font-semibold uppercase tracking-wider text-xs rounded-full bg-gradient-to-r from-[var(--lg-accent-start)] to-[var(--lg-accent-end)] text-white shadow-lg shadow-indigo-500/20 transition-all duration-300 hover:scale-105 hover:shadow-indigo-500/40"
+                    >
+                      <span className="relative z-10 flex items-center gap-2">
+                        {t("hero.explore")}
+                        <ArrowUpRight size={16} className="transition-transform duration-300 group-hover:translate-x-1 group-hover:-translate-y-1" />
+                      </span>
+                    </button>
+                    <button
+                      onClick={() => {
+                        const target = document.getElementById("contact");
+                        if (target) {
+                          gsap.to(window, { duration: 1, scrollTo: { y: target, offsetY: 70 }, ease: "power2.out" });
+                        }
+                      }}
+                      className="glass-panel w-full sm:w-auto px-8 py-3.5 flex items-center justify-center gap-2 cursor-pointer font-semibold uppercase tracking-wider text-xs rounded-full text-[var(--lg-text-primary)] hover:bg-white/40 transition-colors"
+                    >
+                      {t("hero.contact")}
+                    </button>
                   </motion.div>
                 </div>
               </section>
