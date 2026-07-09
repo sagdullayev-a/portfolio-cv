@@ -1,6 +1,6 @@
 import { ArrowUpRight, Menu, X, Command, ChevronDown } from "lucide-react";
 import { useEffect, useState, useRef, lazy, Suspense, Component, ErrorInfo, ReactNode } from "react";
-import { AnimatePresence, motion } from "framer-motion";
+import { AnimatePresence, motion, useScroll, useTransform, useMotionValue, useSpring } from "framer-motion";
 import { useTranslation } from "react-i18next";
 import gsap from "gsap";
 import { ScrollToPlugin } from "gsap/ScrollToPlugin";
@@ -44,6 +44,48 @@ export default function App() {
   const [navbarVisible, setNavbarVisible] = useState(true);
   const [isMobile, setIsMobile] = useState(false);
   const [iframeLoaded, setIframeLoaded] = useState(false);
+
+  // Scroll and Mouse coordinates for Layer Parallax
+  const { scrollY } = useScroll();
+
+  const mouseX = useMotionValue(0);
+  const mouseY = useMotionValue(0);
+
+  const springX = useSpring(mouseX, { damping: 50, stiffness: 200 });
+  const springY = useSpring(mouseY, { damping: 50, stiffness: 200 });
+
+  // Layer Parallax Transforms
+  const bgX = useTransform(springX, [-0.5, 0.5], [-5, 5]);
+  const bgY = useTransform(springY, [-0.5, 0.5], [-5, 5]);
+
+  const blobX = useTransform(springX, [-0.5, 0.5], [-15, 15]);
+  const blobY = useTransform(springY, [-0.5, 0.5], [-15, 15]);
+
+  const splineX = useTransform(springX, [-0.5, 0.5], [-25, 25]);
+  const splineY = useTransform(springY, [-0.5, 0.5], [-25, 25]);
+
+  const textX = useTransform(springX, [-0.5, 0.5], [-8, 8]);
+  const textY = useTransform(springY, [-0.5, 0.5], [-8, 8]);
+
+  const btnX = useTransform(springX, [-0.5, 0.5], [-5, 5]);
+  const btnY = useTransform(springY, [-0.5, 0.5], [-5, 5]);
+
+  // Scroll Transforms (Dampening, Fade and Scale on Scroll)
+  const bgOpacity = useTransform(scrollY, [0, 500], [1, 0.7]);
+  const splineScale = useTransform(scrollY, [0, 400], [1, 0.8]);
+  const splineOpacity = useTransform(scrollY, [0, 300], [1, 0.3]);
+  const textYScroll = useTransform(scrollY, [0, 400], [0, -40]);
+  const textOpacity = useTransform(scrollY, [0, 300], [1, 0]);
+
+  useEffect(() => {
+    const handleMouseMove = (e: MouseEvent) => {
+      const { innerWidth, innerHeight } = window;
+      mouseX.set((e.clientX / innerWidth) - 0.5);
+      mouseY.set((e.clientY / innerHeight) - 0.5);
+    };
+    window.addEventListener("mousemove", handleMouseMove);
+    return () => window.removeEventListener("mousemove", handleMouseMove);
+  }, []);
 
   useEffect(() => {
     const checkMobile = () => setIsMobile(window.innerWidth < 640);
@@ -349,27 +391,39 @@ export default function App() {
           element={
             <div className="relative z-10">
               {/* ═══ HERO ═══ */}
-              <section id="Home" className="relative w-full h-screen min-h-[640px] overflow-hidden">
-                {/* Background decorative soft gradients & blurred blobs */}
-                <div className="absolute inset-0 pointer-events-none overflow-hidden z-0 bg-gradient-to-b from-[#F5F7FA] via-[#E8EDF5] to-[#DCE3F0]">
+              <section id="Home" className="relative w-full min-h-screen lg:h-screen overflow-hidden flex flex-col justify-center">
+                {/* Layer 1: Animated background (radial gradient) */}
+                <motion.div
+                  style={{ opacity: bgOpacity, x: bgX, y: bgY }}
+                  className="absolute inset-0 pointer-events-none overflow-hidden z-0 bg-gradient-to-b from-[#F5F7FA] via-[#E8EDF5] to-[#DCE3F0]"
+                />
+
+                {/* Layer 2: Gradient blobs (floating blurred light blobs) */}
+                <motion.div
+                  style={{ x: blobX, y: blobY }}
+                  className="absolute inset-0 pointer-events-none z-0"
+                >
                   <div className="absolute top-[-10%] left-[20%] w-[500px] h-[500px] rounded-full opacity-40"
                     style={{ background: "radial-gradient(circle, rgba(186,230,253,0.5), transparent 70%)", filter: "blur(100px)", animation: "blobFloat1 25s ease-in-out infinite" }} />
                   <div className="absolute bottom-[10%] right-[10%] w-[600px] h-[600px] rounded-full opacity-35"
                     style={{ background: "radial-gradient(circle, rgba(237,233,254,0.6), transparent 70%)", filter: "blur(120px)", animation: "blobFloat2 30s ease-in-out infinite" }} />
                   <div className="absolute top-[30%] right-[30%] w-[400px] h-[400px] rounded-full opacity-25"
                     style={{ background: "radial-gradient(circle, rgba(255,255,255,0.7), transparent 70%)", filter: "blur(80px)", animation: "blobFloat1 20s ease-in-out infinite" }} />
-                </div>
+                </motion.div>
 
-                {/* Fullscreen Spline iframe */}
-                <div className="absolute inset-0 z-10 w-full h-full overflow-hidden pointer-events-auto">
+                {/* Layer 3: Spline Scene */}
+                <motion.div
+                  style={{ scale: splineScale, opacity: splineOpacity, x: splineX, y: splineY }}
+                  className="relative w-full h-[45vh] mt-8 lg:mt-0 lg:absolute lg:inset-y-0 lg:right-0 lg:w-[50%] z-10 flex items-center justify-center overflow-hidden pointer-events-auto"
+                >
                   <iframe
                     src="https://my.spline.design/interactiveaiwebsite-iEJdikEMPai70V0dx4x3hr2d/"
                     title="Interactive 3D Hero Scene"
-                    className="w-full h-full border-none bg-transparent"
+                    className="w-full h-full border-none bg-transparent scale-110 lg:scale-125 translate-x-4 lg:translate-x-12"
                     allow="autoplay; fullscreen"
                     onLoad={() => setIframeLoaded(true)}
                   ></iframe>
-                </div>
+                </motion.div>
 
                 {/* Premium Loading Shimmer Loader */}
                 <AnimatePresence>
@@ -390,75 +444,91 @@ export default function App() {
                   )}
                 </AnimatePresence>
 
-                {/* Minimalist Overlay Content */}
-                <div className="relative z-20 w-full h-full flex flex-col items-center justify-center text-center px-6 md:px-12 lg:px-20 pt-28 pb-16 pointer-events-none">
-                  {/* Badge */}
+                {/* Layer 4: Text content */}
+                <div className="relative z-20 w-full max-w-7xl mx-auto px-6 md:px-12 lg:px-20 flex flex-col justify-center pointer-events-none pt-28 pb-10 lg:py-0">
                   <motion.div
-                    initial={{ opacity: 0, y: 15 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ duration: 0.8, ease: "easeOut" }}
-                    className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full glass-panel text-[11px] font-mono tracking-[0.2em] text-[var(--lg-text-secondary)] uppercase pointer-events-auto mb-6"
+                    style={{ y: textYScroll, opacity: textOpacity }}
+                    className="w-full lg:w-[45%] flex flex-col items-start text-left"
                   >
-                    <span className="w-1.5 h-1.5 rounded-full bg-[var(--lg-accent-start)] animate-pulse" />
-                    {t("hero.badge")}
-                  </motion.div>
-
-                  {/* Heading */}
-                  <motion.h1
-                    initial={{ opacity: 0, y: 30 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ duration: 1, delay: 0.2, ease: [0.16, 1, 0.3, 1] }}
-                    className="font-sans font-extrabold leading-[1.1] tracking-tight text-[clamp(2.25rem,6vw,4.25rem)] max-w-3xl text-[var(--lg-text-primary)] pointer-events-auto"
-                    style={{
-                      background: `linear-gradient(135deg, var(--lg-text-primary) 30%, var(--lg-text-secondary) 100%)`,
-                      WebkitBackgroundClip: "text",
-                      WebkitTextFillColor: "transparent",
-                      backgroundClip: "text"
-                    }}
-                  >
-                    {t("hero.heading")}
-                  </motion.h1>
-
-                  {/* Description */}
-                  <motion.p
-                    initial={{ opacity: 0, y: 20 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ duration: 1, delay: 0.4, ease: [0.16, 1, 0.3, 1] }}
-                    className="mt-6 text-base md:text-lg text-[var(--lg-text-secondary)] max-w-[500px] leading-relaxed font-[Poppins] font-medium pointer-events-auto"
-                  >
-                    {t("hero.description_new")}
-                  </motion.p>
-
-                  {/* Buttons */}
-                  <motion.div
-                    initial={{ opacity: 0, y: 20 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ duration: 1, delay: 0.6, ease: [0.16, 1, 0.3, 1] }}
-                    className="mt-10 flex flex-col sm:flex-row items-center gap-4 w-full sm:w-auto pointer-events-auto"
-                  >
-                    <button
-                      onClick={() => {
-                        const target = document.getElementById("showcase");
-                        if (target) {
-                          gsap.to(window, { duration: 1, scrollTo: { y: target, offsetY: 70 }, ease: "power2.out" });
-                        }
-                      }}
-                      className="btn-glossy w-full sm:w-auto px-8 py-3.5 flex items-center justify-center gap-2 cursor-pointer font-semibold uppercase tracking-wider text-xs rounded-full bg-gradient-to-r from-[var(--lg-accent-start)] to-[var(--lg-accent-end)] text-white shadow-lg shadow-indigo-500/20"
+                    <motion.div
+                      style={{ x: textX, y: textY }}
+                      className="flex flex-col items-start"
                     >
-                      {t("hero.explore")}
-                      <ArrowUpRight size={16} />
-                    </button>
-                    <button
-                      onClick={() => {
-                        const target = document.getElementById("contact");
-                        if (target) {
-                          gsap.to(window, { duration: 1, scrollTo: { y: target, offsetY: 70 }, ease: "power2.out" });
-                        }
-                      }}
-                      className="glass-panel w-full sm:w-auto px-8 py-3.5 flex items-center justify-center gap-2 cursor-pointer font-semibold uppercase tracking-wider text-xs rounded-full text-[var(--lg-text-primary)] hover:bg-white/40 transition-colors"
-                    >
-                      {t("hero.contact")}
-                    </button>
+                      {/* Badge */}
+                      <motion.div
+                        initial={{ opacity: 0, y: 15 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        transition={{ duration: 0.8, ease: "easeOut" }}
+                        className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full glass-panel text-[11px] font-mono tracking-[0.2em] text-[var(--lg-text-secondary)] uppercase pointer-events-auto mb-6"
+                      >
+                        <span className="w-1.5 h-1.5 rounded-full bg-[var(--lg-accent-start)] animate-pulse" />
+                        {t("hero.badge")}
+                      </motion.div>
+
+                      {/* Heading */}
+                      <motion.h1
+                        initial={{ opacity: 0, y: 30 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        transition={{ duration: 1, delay: 0.2, ease: [0.16, 1, 0.3, 1] }}
+                        className="font-sans font-extrabold leading-[1.1] tracking-tight text-[clamp(2.25rem,6vw,4.25rem)] max-w-[550px] text-[var(--lg-text-primary)] pointer-events-auto"
+                        style={{
+                          background: `linear-gradient(135deg, var(--lg-text-primary) 30%, var(--lg-text-secondary) 100%)`,
+                          WebkitBackgroundClip: "text",
+                          WebkitTextFillColor: "transparent",
+                          backgroundClip: "text"
+                        }}
+                      >
+                        {t("hero.heading")}
+                      </motion.h1>
+
+                      {/* Description */}
+                      <motion.p
+                        initial={{ opacity: 0, y: 20 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        transition={{ duration: 1, delay: 0.4, ease: [0.16, 1, 0.3, 1] }}
+                        className="mt-6 text-base md:text-lg text-[var(--lg-text-secondary)] max-w-[420px] leading-relaxed font-[Poppins] font-medium pointer-events-auto"
+                      >
+                        {t("hero.description_new")}
+                      </motion.p>
+
+                      {/* Buttons */}
+                      <motion.div
+                        style={{ x: btnX, y: btnY }}
+                        initial={{ opacity: 0, y: 20 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        transition={{ duration: 1, delay: 0.6, ease: [0.16, 1, 0.3, 1] }}
+                        className="mt-10 flex flex-col sm:flex-row items-center gap-4 w-full sm:w-auto pointer-events-auto"
+                      >
+                        {/* Primary Button */}
+                        <button
+                          onClick={() => {
+                            const target = document.getElementById("showcase");
+                            if (target) {
+                              gsap.to(window, { duration: 1, scrollTo: { y: target, offsetY: 70 }, ease: "power2.out" });
+                            }
+                          }}
+                          className="group relative btn-glossy w-full sm:w-auto px-8 py-3.5 flex items-center justify-center gap-2 cursor-pointer font-semibold uppercase tracking-wider text-xs rounded-full bg-gradient-to-r from-[var(--lg-accent-start)] to-[var(--lg-accent-end)] text-white shadow-lg shadow-indigo-500/20 transition-all duration-300 hover:scale-105 hover:shadow-indigo-500/40"
+                        >
+                          <span className="relative z-10 flex items-center gap-2">
+                            {t("hero.explore")}
+                            <ArrowUpRight size={16} className="transition-transform duration-300 group-hover:translate-x-1 group-hover:-translate-y-1" />
+                          </span>
+                        </button>
+
+                        {/* Secondary Button */}
+                        <button
+                          onClick={() => {
+                            const target = document.getElementById("contact");
+                            if (target) {
+                              gsap.to(window, { duration: 1, scrollTo: { y: target, offsetY: 70 }, ease: "power2.out" });
+                            }
+                          }}
+                          className="w-full sm:w-auto px-8 py-3.5 flex items-center justify-center gap-2 cursor-pointer font-semibold uppercase tracking-wider text-xs rounded-full border border-white/20 bg-white/10 backdrop-blur-md shadow-sm text-[var(--lg-text-primary)] hover:bg-white/35 hover:border-white/40 transition-all duration-300"
+                        >
+                          {t("hero.contact")}
+                        </button>
+                      </motion.div>
+                    </motion.div>
                   </motion.div>
 
                   {/* Scroll Indicator */}
