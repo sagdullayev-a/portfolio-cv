@@ -18,7 +18,7 @@ import About from "./pages/About";
 gsap.registerPlugin(ScrollToPlugin);
 
 const Spline = lazy(() => import("@splinetool/react-spline"));
-const HERO_SPLINE_URL = "SPLINE_SCENE_URL_PLACEHOLDER";
+const HERO_SPLINE_URL = "https://prod.spline.design/iEJdikEMPai70V0dx4x3hr2d/scene.splinecode";
 
 class ErrorBoundary extends Component<{ fallback: ReactNode; children: ReactNode }, { hasError: boolean }> {
   public state = { hasError: false };
