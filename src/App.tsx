@@ -377,7 +377,7 @@ export default function App() {
 
                 <div className="absolute inset-0 flex items-center justify-center">
                   {isMobile ? (
-                    <img src={heroEye} alt="Hero" className="h-[80%] w-[80%] object-contain object-center opacity-15 mix-blend-multiply" />
+                    <HeroSplineFallback isMobile={true} />
                   ) : (
                     <div className="w-full h-full relative z-0">
                       <Suspense fallback={<HeroSplineFallback />}>
@@ -459,14 +459,23 @@ export default function App() {
   );
 }
 
-function HeroSplineFallback() {
+function HeroSplineFallback({ isMobile = false }: { isMobile?: boolean }) {
   return (
     <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
       <div className="w-[80%] h-[80%] max-w-4xl max-h-[500px] glass-panel-strong overflow-hidden relative flex items-center justify-center opacity-40">
-        <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/10 to-transparent -translate-x-full animate-[shimmer_2s_infinite]" />
-        <div className="text-[var(--lg-text-tertiary)] font-mono text-xs uppercase tracking-[0.25em] animate-pulse">
-          Loading 3D Scene...
-        </div>
+        {!isMobile && (
+          <>
+            <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/10 to-transparent -translate-x-full animate-[shimmer_2s_infinite]" />
+            <div className="text-[var(--lg-text-tertiary)] font-mono text-xs uppercase tracking-[0.25em] animate-pulse">
+              Loading 3D Scene...
+            </div>
+          </>
+        )}
+        {isMobile && (
+          <div className="relative w-32 h-32 rounded-full bg-gradient-to-tr from-white/20 to-white/5 border border-white/20 backdrop-blur-xl shadow-lg flex items-center justify-center animate-[floatCard_6s_ease-in-out_infinite]">
+            <div className="w-12 h-12 rounded-full bg-[var(--lg-accent-start)]/10 blur-md" />
+          </div>
+        )}
       </div>
     </div>
   );
