@@ -420,7 +420,7 @@ export default function App() {
                     <iframe
                       src="https://my.spline.design/interactiveaiwebsite-iEJdikEMPai70V0dx4x3hr2d/"
                       title="Interactive 3D Hero Scene"
-                      className="w-full h-full border-none bg-transparent scale-110 md:scale-125"
+                      className="w-full h-full border-none bg-transparent"
                       allow="autoplay; fullscreen"
                       onLoad={() => setIframeLoaded(true)}
                     ></iframe>
