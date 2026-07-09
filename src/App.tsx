@@ -1,5 +1,5 @@
 import { ArrowUpRight, Menu, X, Command } from "lucide-react";
-import { useEffect, useState, useRef, lazy, Suspense } from "react";
+import { useEffect, useState, useRef, lazy, Suspense, Component, ErrorInfo, ReactNode } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import { useTranslation } from "react-i18next";
 import gsap from "gsap";
@@ -19,6 +19,25 @@ gsap.registerPlugin(ScrollToPlugin);
 
 const Spline = lazy(() => import("@splinetool/react-spline"));
 const HERO_SPLINE_URL = "SPLINE_SCENE_URL_PLACEHOLDER";
+
+class ErrorBoundary extends Component<{ fallback: ReactNode; children: ReactNode }, { hasError: boolean }> {
+  public state = { hasError: false };
+
+  public static getDerivedStateFromError(): { hasError: boolean } {
+    return { hasError: true };
+  }
+
+  public componentDidCatch(error: Error, errorInfo: ErrorInfo) {
+    console.error("Spline Error Boundary caught an error:", error, errorInfo);
+  }
+
+  public render() {
+    if (this.state.hasError) {
+      return this.props.fallback;
+    }
+    return this.props.children;
+  }
+}
 
 const logos = ["PRINCE", "WEBKAIZEN", "FRONTEND", "DEVELOPER"];
 
@@ -376,13 +395,15 @@ export default function App() {
                 </div>
 
                 <div className="absolute inset-0 flex items-center justify-center">
-                  {isMobile ? (
-                    <HeroSplineFallback isMobile={true} />
+                  {isMobile || HERO_SPLINE_URL === "SPLINE_SCENE_URL_PLACEHOLDER" ? (
+                    <HeroSplineFallback isMobile={isMobile} />
                   ) : (
                     <div className="w-full h-full relative z-0">
-                      <Suspense fallback={<HeroSplineFallback />}>
-                        <Spline scene={HERO_SPLINE_URL} />
-                      </Suspense>
+                      <ErrorBoundary fallback={<HeroSplineFallback />}>
+                        <Suspense fallback={<HeroSplineFallback />}>
+                          <Spline scene={HERO_SPLINE_URL} />
+                        </Suspense>
+                      </ErrorBoundary>
                     </div>
                   )}
                 </div>
