@@ -396,7 +396,10 @@ export default function App() {
 
                 <div className="absolute inset-0 flex items-center justify-center">
                   {isMobile || HERO_SPLINE_URL === "SPLINE_SCENE_URL_PLACEHOLDER" ? (
-                    <HeroSplineFallback isMobile={isMobile} />
+                    <HeroSplineFallback
+                      isMobile={isMobile}
+                      isPlaceholder={HERO_SPLINE_URL === "SPLINE_SCENE_URL_PLACEHOLDER"}
+                    />
                   ) : (
                     <div className="w-full h-full relative z-0">
                       <ErrorBoundary fallback={<HeroSplineFallback />}>
@@ -480,11 +483,19 @@ export default function App() {
   );
 }
 
-function HeroSplineFallback({ isMobile = false }: { isMobile?: boolean }) {
+function HeroSplineFallback({
+  isMobile = false,
+  isPlaceholder = false,
+}: {
+  isMobile?: boolean;
+  isPlaceholder?: boolean;
+}) {
+  const showPlaceholder = isMobile || isPlaceholder;
+
   return (
     <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
       <div className="w-[80%] h-[80%] max-w-4xl max-h-[500px] glass-panel-strong overflow-hidden relative flex items-center justify-center opacity-40">
-        {!isMobile && (
+        {!showPlaceholder && (
           <>
             <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/10 to-transparent -translate-x-full animate-[shimmer_2s_infinite]" />
             <div className="text-[var(--lg-text-tertiary)] font-mono text-xs uppercase tracking-[0.25em] animate-pulse">
@@ -492,9 +503,9 @@ function HeroSplineFallback({ isMobile = false }: { isMobile?: boolean }) {
             </div>
           </>
         )}
-        {isMobile && (
-          <div className="relative w-32 h-32 rounded-full bg-gradient-to-tr from-white/20 to-white/5 border border-white/20 backdrop-blur-xl shadow-lg flex items-center justify-center animate-[floatCard_6s_ease-in-out_infinite]">
-            <div className="w-12 h-12 rounded-full bg-[var(--lg-accent-start)]/10 blur-md" />
+        {showPlaceholder && (
+          <div className="relative w-32 h-32 md:w-48 md:h-48 rounded-full bg-gradient-to-tr from-white/20 to-white/5 border border-white/20 backdrop-blur-xl shadow-lg flex items-center justify-center animate-[floatCard_6s_ease-in-out_infinite]">
+            <div className="w-12 h-12 md:w-16 md:h-16 rounded-full bg-[var(--lg-accent-start)]/10 blur-md" />
           </div>
         )}
       </div>
