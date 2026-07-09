@@ -647,14 +647,15 @@ export default function About() {
         animate={{ opacity: 1, x: 0 }}
         transition={{ duration: 0.5 }}
         onClick={() => navigate("/")}
-        className="fixed top-5 left-5 z-50 btn-glossy-outline !rounded-full !px-4 !py-2 shadow-lg"
+        className="fixed top-5 left-5 z-50 btn-glossy-outline !rounded-full w-11 h-11 sm:w-auto sm:h-auto sm:px-5 sm:py-2.5 flex items-center justify-center gap-2 shadow-lg"
+        aria-label="Back to home"
       >
         <ArrowLeft size={18} />
         <span className="hidden sm:inline">{t("aboutPage.back")}</span>
       </motion.button>
 
       {/* MAIN CONTENT */}
-      <div className="relative z-20 flex flex-col items-center justify-center min-h-screen gap-8 pt-28 pb-12">
+      <div className="relative z-20 flex flex-col items-center justify-center min-h-screen gap-8 pt-28 pb-12 px-4 sm:px-6 md:px-12">
 
         {/* IMAGE SECTION */}
         <motion.div
@@ -808,7 +809,7 @@ export default function About() {
           }}
           onClick={handleDownload}
           disabled={downloading}
-          className="btn-glossy !px-8 sm:!px-10 !py-3 sm:!py-4 shadow-lg disabled:opacity-50 disabled:cursor-not-allowed"
+          className="btn-glossy !px-8 sm:!px-10 py-3.5 sm:!py-4 shadow-lg disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center min-h-[48px]"
         >
           {/* BUTTON CONTENT */}
           <div className="relative z-10 flex items-center gap-3">

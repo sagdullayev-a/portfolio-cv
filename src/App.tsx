@@ -289,7 +289,8 @@ export default function App() {
           {/* Mobile toggle */}
           <button
             onClick={() => setMobileMenu(!mobileMenu)}
-            className="md:hidden text-[var(--lg-text-primary)] p-1.5 rounded-full hover:bg-white/40 transition-colors ml-1"
+            className="md:hidden text-[var(--lg-text-primary)] w-11 h-11 flex items-center justify-center rounded-full hover:bg-white/40 transition-colors ml-1"
+            aria-label="Toggle Menu"
           >
             {mobileMenu ? <X size={20} /> : <Menu size={20} />}
           </button>
@@ -323,7 +324,7 @@ export default function App() {
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: i * 0.1 }}
                 onClick={() => scrollTo(item.id)}
-                className="text-sm uppercase tracking-[0.3em] font-semibold text-[var(--lg-text-primary)] hover:text-[var(--lg-accent-start)] transition-colors"
+                className="w-full max-w-xs py-3.5 text-sm uppercase tracking-[0.3em] font-semibold text-[var(--lg-text-primary)] hover:text-[var(--lg-accent-start)] transition-colors flex items-center justify-center min-h-[44px]"
               >
                 {t(`navbar.${item.key}`)}
               </motion.button>
@@ -335,7 +336,7 @@ export default function App() {
                 <button
                   key={lang}
                   onClick={() => { handleLangChange(lang); setMobileMenu(false); }}
-                  className={`text-xs font-semibold px-3 py-1.5 rounded-full transition-all duration-200 ${
+                  className={`text-xs font-semibold min-w-[44px] min-h-[44px] px-4 py-2.5 rounded-full transition-all duration-200 ${
                     activeLang === lang
                       ? "bg-gradient-to-r from-[var(--lg-accent-start)] to-[var(--lg-accent-end)] text-white"
                       : "glass-card text-[var(--lg-text-tertiary)]"
@@ -370,7 +371,7 @@ export default function App() {
                 <div className="relative z-10 w-full h-full flex flex-col justify-between px-6 md:px-12 pt-28 pb-10">
                   <h1
                     onClick={() => setColorMode((prev) => (prev + 1) % colors.length)}
-                    className={`font-display uppercase leading-[0.85] tracking-[-0.03em] text-[22vw] md:text-[14vw] lg:text-[13rem] cursor-pointer transition-all duration-300 ${colors[colorMode]}`}
+                    className={`font-display uppercase leading-[0.85] tracking-[-0.03em] text-[clamp(2.5rem,14vw,10rem)] cursor-pointer transition-all duration-300 ${colors[colorMode]}`}
                   >
                     {displayed || "\u00A0"}
                   </h1>

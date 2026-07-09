@@ -105,8 +105,8 @@ export default function TechGraph() {
   }, []);
 
   // Card dimensions
-  const cardW = 72;
-  const cardH = 72;
+  const cardW = dimensions.size < 350 ? 54 : 72;
+  const cardH = dimensions.size < 350 ? 54 : 72;
 
   // Initialize nodes physics state once
   const physicsStates = useRef<NodePhysicsState[]>(
@@ -150,8 +150,8 @@ export default function TechGraph() {
 
         // Structured Grid coordinates calculation
         const cols = dimensions.size < 350 ? 3 : dimensions.size < 400 ? 4 : 5;
-        const colW = 82;
-        const rowH = 82;
+        const colW = dimensions.size < 350 ? 62 : 82;
+        const rowH = dimensions.size < 350 ? 62 : 82;
         const gridW = cols * colW;
         const gridH = Math.ceil(N / cols) * rowH;
         const startX = (dimensions.size - gridW) / 2 + (colW - cardW) / 2;
@@ -211,6 +211,8 @@ export default function TechGraph() {
 
       const center = size / 2;
       const N = actCat ? techStack.filter((node) => node.category === actCat).length : techStack.length;
+      const cW = size < 350 ? 54 : 72;
+      const cH = size < 350 ? 54 : 72;
 
       // Adjust radius based on active N
       const dynamicRadius = currentMode === "sphere" ? Math.min(radius, 80 + N * 5) : radius;
@@ -241,8 +243,8 @@ export default function TechGraph() {
 
         if (!isActive) {
           // Fade and move inactive items to the center
-          targetX = center - cardW / 2;
-          targetY = center - cardH / 2;
+          targetX = center - cW / 2;
+          targetY = center - cH / 2;
           targetScale = 0;
           targetOpacity = 0;
           zIndex = 0;
@@ -253,8 +255,8 @@ export default function TechGraph() {
           if (currentMode === "sphere") {
             // Project active nodes on 3D sphere
             const p = project({ x: state.x3d, y: state.y3d, z: state.z3d }, rotX.current, rotY.current);
-            targetX = p.x * dynamicRadius + center - cardW / 2;
-            targetY = p.y * dynamicRadius + center - cardH / 2;
+            targetX = p.x * dynamicRadius + center - cW / 2;
+            targetY = p.y * dynamicRadius + center - cH / 2;
 
             const depth = (p.z + 1) / 2;
             targetScale = 0.55 + depth * 0.55;
@@ -325,8 +327,8 @@ export default function TechGraph() {
 
               // Mouse Repulsion Field (Anti-gravity field)
               if (mouse.active) {
-                const dx = (state.x + cardW / 2) - mouse.x;
-                const dy = (state.y + cardH / 2) - mouse.y;
+                const dx = (state.x + cW / 2) - mouse.x;
+                const dy = (state.y + cH / 2) - mouse.y;
                 const distance = Math.sqrt(dx * dx + dy * dy);
 
                 if (distance < 150 && distance > 1) {
@@ -341,16 +343,16 @@ export default function TechGraph() {
               if (state.x < 0) {
                 state.x = 0;
                 state.vx *= bounce;
-              } else if (state.x > size - cardW) {
-                state.x = size - cardW;
+              } else if (state.x > size - cW) {
+                state.x = size - cW;
                 state.vx *= bounce;
               }
 
               if (state.y < 0) {
                 state.y = 0;
                 state.vy *= bounce;
-              } else if (state.y > size - cardH) {
-                state.y = size - cardH;
+              } else if (state.y > size - cH) {
+                state.y = size - cH;
                 state.vy *= bounce;
               }
             }
@@ -562,10 +564,10 @@ export default function TechGraph() {
             <p className="text-xs text-[var(--lg-text-tertiary)] uppercase tracking-wider font-medium mb-3">
               {t("techGraph.categories")}
             </p>
-            <div className="flex flex-wrap gap-2">
+            <div className="flex flex-nowrap overflow-x-auto gap-2 pb-2 scrollbar-none snap-x snap-mandatory -mx-2 px-2 sm:flex-wrap sm:overflow-visible sm:mx-0 sm:px-0 sm:pb-0">
               <button
                 onClick={() => handleCategoryChange(null)}
-                className={`px-3 py-1.5 text-xs font-semibold rounded-full transition-all duration-200 cursor-pointer ${
+                className={`px-3.5 py-2.5 sm:py-1.5 text-xs font-semibold rounded-full transition-all duration-200 cursor-pointer min-h-[40px] sm:min-h-0 flex items-center justify-center snap-start ${
                   activeCategory === null
                     ? "bg-gradient-to-r from-[var(--lg-accent-start)] to-[var(--lg-accent-end)] text-white shadow-md"
                     : "glass-card text-[var(--lg-text-secondary)] hover:bg-white/40"
@@ -577,7 +579,7 @@ export default function TechGraph() {
                 <button
                   key={cat.id}
                   onClick={() => handleCategoryChange(cat.id)}
-                  className={`px-3 py-1.5 text-xs font-semibold rounded-full transition-all duration-200 flex items-center gap-1.5 cursor-pointer ${
+                  className={`px-3.5 py-2.5 sm:py-1.5 text-xs font-semibold rounded-full transition-all duration-200 flex items-center gap-1.5 cursor-pointer min-h-[40px] sm:min-h-0 flex items-center justify-center snap-start ${
                     activeCategory === cat.id ? "text-white shadow-md" : "glass-card text-[var(--lg-text-secondary)] hover:bg-white/40"
                   }`}
                   style={activeCategory === cat.id ? { background: cat.color } : undefined}

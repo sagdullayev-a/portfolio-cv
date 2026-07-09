@@ -157,10 +157,10 @@ export default function AiChatBlock() {
                   key={i}
                   onClick={() => handleQuestion(i)}
                   disabled={askedQuestions.has(i) || typing}
-                  className={`px-4 py-2 text-xs font-medium rounded-full transition-all duration-300 ${
+                  className={`px-4 py-2.5 sm:py-2 text-xs font-medium rounded-full transition-all duration-300 min-h-[40px] sm:min-h-0 flex items-center justify-center cursor-pointer ${
                     askedQuestions.has(i)
                       ? "opacity-40 cursor-not-allowed glass-card"
-                      : "glass-card hover:!bg-[rgba(99,102,241,0.1)] cursor-pointer text-[var(--lg-text-primary)]"
+                      : "glass-card hover:!bg-[rgba(99,102,241,0.1)] text-[var(--lg-text-primary)]"
                   }`}
                 >
                   {item.q}
@@ -208,7 +208,7 @@ export default function AiChatBlock() {
                   initial={{ opacity: 0, scale: 0.9 }}
                   animate={{ opacity: 1, scale: 1 }}
                   transition={{ delay: 0.9 + i * 0.08 }}
-                  className="relative p-3 rounded-xl overflow-hidden group"
+                  className="relative p-2.5 sm:p-3 rounded-xl overflow-hidden group"
                   style={{ background: "rgba(255,255,255,0.3)" }}
                 >
                   <div
@@ -218,10 +218,10 @@ export default function AiChatBlock() {
                   <div className="relative z-10 text-center">
                     <div className="text-lg mb-1">{stat.icon}</div>
                     <div className="flex items-baseline justify-center gap-0.5">
-                      <span className="text-xl font-black" style={{ color: stat.accent }}>{stat.value}</span>
-                      <span className="text-[11px] font-semibold text-[var(--lg-text-tertiary)]">{stat.unit}</span>
+                      <span className="text-lg sm:text-xl font-black" style={{ color: stat.accent }}>{stat.value}</span>
+                      <span className="text-[10px] sm:text-[11px] font-semibold text-[var(--lg-text-tertiary)]">{stat.unit}</span>
                     </div>
-                    <div className="text-[10px] text-[var(--lg-text-tertiary)] mt-0.5 leading-tight">{stat.label}</div>
+                    <div className="text-[9px] sm:text-[10px] text-[var(--lg-text-tertiary)] mt-0.5 leading-tight">{stat.label}</div>
                   </div>
                 </motion.div>
               ))}

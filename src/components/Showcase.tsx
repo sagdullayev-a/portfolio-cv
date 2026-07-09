@@ -253,7 +253,7 @@ export default function ShowcaseSection() {
             <button
               key={tabId}
               onClick={() => switchTab(tabId)}
-              className="relative z-10 flex-1 h-12 rounded-full text-xs font-medium tracking-wide transition-colors duration-200"
+              className="relative z-10 flex-1 h-11 sm:h-12 rounded-full text-[10px] sm:text-xs font-medium tracking-wide transition-colors duration-200 flex items-center justify-center"
             >
               <span
                 className={
