@@ -1,11 +1,10 @@
-import { ArrowUpRight, Menu, X, Command } from "lucide-react";
+import { ArrowUpRight, Menu, X, Command, ChevronDown } from "lucide-react";
 import { useEffect, useState, useRef, lazy, Suspense, Component, ErrorInfo, ReactNode } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import { useTranslation } from "react-i18next";
 import gsap from "gsap";
 import { ScrollToPlugin } from "gsap/ScrollToPlugin";
 import favicon from "/favicon.ico";
-import heroEye from "@/assets/hero-eye.png";
 
 import WelcomeScreen from "@/components/WelcomeScreen";
 import FrontendDeveloperSection from "@/components/FrontendDeveloperSection";
@@ -76,15 +75,7 @@ export default function App() {
   const ticking = useRef(false);
   const logoRef = useRef<HTMLDivElement>(null);
 
-  const text = "PRINCE";
-  const [displayed, setDisplayed] = useState("");
-  const [colorMode, setColorMode] = useState(0);
 
-  const colors = [
-    "bg-gradient-to-b from-[var(--lg-text-primary)] via-[var(--lg-text-secondary)] to-[var(--lg-text-tertiary)] text-transparent bg-clip-text",
-    "text-[var(--lg-text-primary)]",
-    "bg-gradient-to-b from-[var(--lg-accent-start)] to-[var(--lg-accent-end)] text-transparent bg-clip-text",
-  ];
 
   // Active language from i18n (normalise to uppercase 2-letter code)
   const activeLang = (i18n.language?.slice(0, 2).toUpperCase() ?? "UZ") as Lang;
@@ -113,16 +104,7 @@ export default function App() {
     return () => clearInterval(interval);
   }, []);
 
-  useEffect(() => {
-    setDisplayed("");
-    let i = 0;
-    function type() {
-      setDisplayed(text.slice(0, i + 1));
-      i++;
-      if (i < text.length) setTimeout(type, 200);
-    }
-    type();
-  }, []);
+
 
   // Scroll detection — hide/show navbar
   useEffect(() => {
@@ -387,21 +369,25 @@ export default function App() {
             <div className="relative z-10">
               {/* ═══ HERO ═══ */}
               <section id="Home" className="relative w-full h-screen min-h-[640px] overflow-hidden">
-                <div className="absolute inset-0 pointer-events-none overflow-hidden">
-                  <div className="absolute top-[10%] left-[10%] w-[300px] h-[300px] rounded-full opacity-20"
-                    style={{ background: "radial-gradient(circle, rgba(99,102,241,0.3), transparent 70%)", filter: "blur(60px)", animation: "blobFloat1 15s ease-in-out infinite" }} />
-                  <div className="absolute bottom-[20%] right-[15%] w-[250px] h-[250px] rounded-full opacity-15"
-                    style={{ background: "radial-gradient(circle, rgba(139,92,246,0.3), transparent 70%)", filter: "blur(50px)", animation: "blobFloat2 18s ease-in-out infinite" }} />
+                {/* Background decorative soft gradients & blurred blobs */}
+                <div className="absolute inset-0 pointer-events-none overflow-hidden z-0 bg-gradient-to-b from-[#F5F7FA] via-[#E8EDF5] to-[#DCE3F0]">
+                  <div className="absolute top-[-10%] left-[20%] w-[500px] h-[500px] rounded-full opacity-40"
+                    style={{ background: "radial-gradient(circle, rgba(186,230,253,0.5), transparent 70%)", filter: "blur(100px)", animation: "blobFloat1 25s ease-in-out infinite" }} />
+                  <div className="absolute bottom-[10%] right-[10%] w-[600px] h-[600px] rounded-full opacity-35"
+                    style={{ background: "radial-gradient(circle, rgba(237,233,254,0.6), transparent 70%)", filter: "blur(120px)", animation: "blobFloat2 30s ease-in-out infinite" }} />
+                  <div className="absolute top-[30%] right-[30%] w-[400px] h-[400px] rounded-full opacity-25"
+                    style={{ background: "radial-gradient(circle, rgba(255,255,255,0.7), transparent 70%)", filter: "blur(80px)", animation: "blobFloat1 20s ease-in-out infinite" }} />
                 </div>
 
-                <div className="absolute inset-0 flex items-center justify-center">
+                {/* Fullscreen Spline or Fallback */}
+                <div className="absolute inset-0 z-10 flex items-center justify-center">
                   {isMobile || HERO_SPLINE_URL === "SPLINE_SCENE_URL_PLACEHOLDER" ? (
                     <HeroSplineFallback
                       isMobile={isMobile}
                       isPlaceholder={HERO_SPLINE_URL === "SPLINE_SCENE_URL_PLACEHOLDER"}
                     />
                   ) : (
-                    <div className="w-full h-full relative z-0">
+                    <div className="w-full h-full relative">
                       <ErrorBoundary fallback={<HeroSplineFallback />}>
                         <Suspense fallback={<HeroSplineFallback />}>
                           <Spline scene={HERO_SPLINE_URL} />
@@ -411,40 +397,101 @@ export default function App() {
                   )}
                 </div>
 
-                <div className="relative z-10 w-full h-full flex flex-col justify-between px-6 md:px-12 pt-28 pb-10 pointer-events-none">
-                  <h1
-                    onClick={() => setColorMode((prev) => (prev + 1) % colors.length)}
-                    className={`font-display uppercase leading-[0.85] tracking-[-0.03em] text-[clamp(2.5rem,14vw,10rem)] cursor-pointer transition-all duration-300 pointer-events-auto ${colors[colorMode]}`}
+                {/* Minimalist Overlay Content */}
+                <div className="relative z-20 w-full h-full flex flex-col items-center justify-center text-center px-6 md:px-12 lg:px-20 pt-28 pb-16 pointer-events-none">
+                  {/* Badge */}
+                  <motion.div
+                    initial={{ opacity: 0, y: 15 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.8, ease: "easeOut" }}
+                    className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full glass-panel text-[11px] font-mono tracking-[0.2em] text-[var(--lg-text-secondary)] uppercase pointer-events-auto mb-6"
                   >
-                    {displayed || "\u00A0"}
-                  </h1>
+                    <span className="w-1.5 h-1.5 rounded-full bg-[var(--lg-accent-start)] animate-pulse" />
+                    {t("hero.badge")}
+                  </motion.div>
 
-                  <p
-                    className="md:absolute md:top-28 md:right-12 mt-4 md:mt-0 text-right text-3xl md:text-4xl lg:text-5xl leading-[1.05] max-w-md font-[Poppins] font-bold tracking-wide pointer-events-none"
+                  {/* Heading */}
+                  <motion.h1
+                    initial={{ opacity: 0, y: 30 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 1, delay: 0.2, ease: [0.16, 1, 0.3, 1] }}
+                    className="font-sans font-extrabold leading-[1.1] tracking-tight text-[clamp(2.25rem,6vw,4.25rem)] max-w-3xl text-[var(--lg-text-primary)] pointer-events-auto"
                     style={{
-                      background: `linear-gradient(135deg, var(--lg-text-primary), var(--lg-text-secondary))`,
+                      background: `linear-gradient(135deg, var(--lg-text-primary) 30%, var(--lg-text-secondary) 100%)`,
                       WebkitBackgroundClip: "text",
                       WebkitTextFillColor: "transparent",
-                      backgroundClip: "text",
+                      backgroundClip: "text"
                     }}
                   >
-                    {t("hero.tagline_1")}
-                    <br />{t("hero.tagline_2")}
-                    <br />{t("hero.tagline_3")}
-                    <br />{t("hero.tagline_4")}
-                  </p>
+                    {t("hero.heading")}
+                  </motion.h1>
 
-                  <div className="flex flex-col md:flex-row md:items-end md:justify-between gap-6 mt-auto pointer-events-none">
-                    <p className="text-sm sm:text-base lg:text-xl leading-relaxed max-w-md font-[Poppins] font-medium tracking-wide text-[var(--lg-text-secondary)] pointer-events-auto">
-                      {t("hero.description")}
-                    </p>
-                    <a href="https://www.webkaizen.in" target="_blank" rel="noopener noreferrer" className="pointer-events-auto">
-                      <button className="btn-glossy">
-                        {t("hero.cta")}
-                        <ArrowUpRight size={16} />
-                      </button>
-                    </a>
-                  </div>
+                  {/* Description */}
+                  <motion.p
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 1, delay: 0.4, ease: [0.16, 1, 0.3, 1] }}
+                    className="mt-6 text-base md:text-lg text-[var(--lg-text-secondary)] max-w-[500px] leading-relaxed font-[Poppins] font-medium pointer-events-auto"
+                  >
+                    {t("hero.description_new")}
+                  </motion.p>
+
+                  {/* Buttons */}
+                  <motion.div
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 1, delay: 0.6, ease: [0.16, 1, 0.3, 1] }}
+                    className="mt-10 flex flex-col sm:flex-row items-center gap-4 w-full sm:w-auto pointer-events-auto"
+                  >
+                    <button
+                      onClick={() => {
+                        const target = document.getElementById("showcase");
+                        if (target) {
+                          gsap.to(window, { duration: 1, scrollTo: { y: target, offsetY: 70 }, ease: "power2.out" });
+                        }
+                      }}
+                      className="btn-glossy w-full sm:w-auto px-8 py-3.5 flex items-center justify-center gap-2 cursor-pointer font-semibold uppercase tracking-wider text-xs rounded-full bg-gradient-to-r from-[var(--lg-accent-start)] to-[var(--lg-accent-end)] text-white shadow-lg shadow-indigo-500/20"
+                    >
+                      {t("hero.explore")}
+                      <ArrowUpRight size={16} />
+                    </button>
+                    <button
+                      onClick={() => {
+                        const target = document.getElementById("contact");
+                        if (target) {
+                          gsap.to(window, { duration: 1, scrollTo: { y: target, offsetY: 70 }, ease: "power2.out" });
+                        }
+                      }}
+                      className="glass-panel w-full sm:w-auto px-8 py-3.5 flex items-center justify-center gap-2 cursor-pointer font-semibold uppercase tracking-wider text-xs rounded-full text-[var(--lg-text-primary)] hover:bg-white/40 transition-colors"
+                    >
+                      {t("hero.contact")}
+                    </button>
+                  </motion.div>
+
+                  {/* Scroll Indicator */}
+                  <motion.div
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    transition={{ delay: 1, duration: 0.8 }}
+                    className="absolute bottom-8 left-1/2 -translate-x-1/2 flex flex-col items-center gap-1 cursor-pointer pointer-events-auto"
+                    onClick={() => {
+                      const target = document.getElementById("about");
+                      if (target) {
+                        gsap.to(window, { duration: 1, scrollTo: { y: target, offsetY: 70 }, ease: "power2.out" });
+                      }
+                    }}
+                  >
+                    <span className="text-[9px] uppercase tracking-[0.25em] font-mono text-[var(--lg-text-tertiary)]">
+                      Scroll
+                    </span>
+                    <motion.div
+                      animate={{ y: [0, 6, 0] }}
+                      transition={{ repeat: Infinity, duration: 1.8, ease: "easeInOut" }}
+                      className="text-[var(--lg-text-secondary)]"
+                    >
+                      <ChevronDown size={16} />
+                    </motion.div>
+                  </motion.div>
                 </div>
               </section>
 
@@ -494,21 +541,19 @@ function HeroSplineFallback({
 
   return (
     <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
-      <div className="w-[80%] h-[80%] max-w-4xl max-h-[500px] glass-panel-strong overflow-hidden relative flex items-center justify-center opacity-40">
-        {!showPlaceholder && (
-          <>
-            <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/10 to-transparent -translate-x-full animate-[shimmer_2s_infinite]" />
-            <div className="text-[var(--lg-text-tertiary)] font-mono text-xs uppercase tracking-[0.25em] animate-pulse">
-              Loading 3D Scene...
-            </div>
-          </>
-        )}
-        {showPlaceholder && (
-          <div className="relative w-32 h-32 md:w-48 md:h-48 rounded-full bg-gradient-to-tr from-white/20 to-white/5 border border-white/20 backdrop-blur-xl shadow-lg flex items-center justify-center animate-[floatCard_6s_ease-in-out_infinite]">
-            <div className="w-12 h-12 md:w-16 md:h-16 rounded-full bg-[var(--lg-accent-start)]/10 blur-md" />
+      {!showPlaceholder && (
+        <div className="flex flex-col items-center gap-3">
+          <div className="w-10 h-10 rounded-full border-2 border-[var(--lg-accent-start)]/30 border-t-[var(--lg-accent-start)] animate-spin" />
+          <div className="text-[var(--lg-text-tertiary)] font-mono text-[10px] uppercase tracking-[0.25em] animate-pulse">
+            Loading 3D Scene...
           </div>
-        )}
-      </div>
+        </div>
+      )}
+      {showPlaceholder && (
+        <div className="relative w-48 h-48 md:w-72 md:h-72 rounded-full bg-gradient-to-tr from-white/15 to-white/5 border border-white/15 backdrop-blur-xl shadow-lg flex items-center justify-center animate-[floatCard_8s_ease-in-out_infinite]">
+          <div className="w-20 h-20 md:w-32 md:h-32 rounded-full bg-[var(--lg-accent-start)]/10 blur-xl" />
+        </div>
+      )}
     </div>
   );
 }
