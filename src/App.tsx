@@ -16,27 +16,7 @@ import About from "./pages/About";
 
 gsap.registerPlugin(ScrollToPlugin);
 
-const Spline = lazy(() => import("@splinetool/react-spline"));
-const HERO_SPLINE_URL = "https://prod.spline.design/iEJdikEMPai70V0dx4x3hr2d/scene.splinecode";
 
-class ErrorBoundary extends Component<{ fallback: ReactNode; children: ReactNode }, { hasError: boolean }> {
-  public state = { hasError: false };
-
-  public static getDerivedStateFromError(): { hasError: boolean } {
-    return { hasError: true };
-  }
-
-  public componentDidCatch(error: Error, errorInfo: ErrorInfo) {
-    console.error("Spline Error Boundary caught an error:", error, errorInfo);
-  }
-
-  public render() {
-    if (this.state.hasError) {
-      return this.props.fallback;
-    }
-    return this.props.children;
-  }
-}
 
 const logos = ["PRINCE", "WEBKAIZEN", "FRONTEND", "DEVELOPER"];
 
@@ -63,6 +43,7 @@ export default function App() {
   const [scrolled, setScrolled] = useState(false);
   const [navbarVisible, setNavbarVisible] = useState(true);
   const [isMobile, setIsMobile] = useState(false);
+  const [iframeLoaded, setIframeLoaded] = useState(false);
 
   useEffect(() => {
     const checkMobile = () => setIsMobile(window.innerWidth < 640);
@@ -379,23 +360,35 @@ export default function App() {
                     style={{ background: "radial-gradient(circle, rgba(255,255,255,0.7), transparent 70%)", filter: "blur(80px)", animation: "blobFloat1 20s ease-in-out infinite" }} />
                 </div>
 
-                {/* Fullscreen Spline or Fallback */}
-                <div className="absolute inset-0 z-10 flex items-center justify-center">
-                  {isMobile || HERO_SPLINE_URL === "SPLINE_SCENE_URL_PLACEHOLDER" ? (
-                    <HeroSplineFallback
-                      isMobile={isMobile}
-                      isPlaceholder={HERO_SPLINE_URL === "SPLINE_SCENE_URL_PLACEHOLDER"}
-                    />
-                  ) : (
-                    <div className="w-full h-full relative">
-                      <ErrorBoundary fallback={<HeroSplineFallback />}>
-                        <Suspense fallback={<HeroSplineFallback />}>
-                          <Spline scene={HERO_SPLINE_URL} />
-                        </Suspense>
-                      </ErrorBoundary>
-                    </div>
-                  )}
+                {/* Fullscreen Spline iframe */}
+                <div className="absolute inset-0 z-10 w-full h-full overflow-hidden pointer-events-auto">
+                  <iframe
+                    src="https://my.spline.design/interactiveaiwebsite-iEJdikEMPai70V0dx4x3hr2d/"
+                    title="Interactive 3D Hero Scene"
+                    className="w-full h-full border-none bg-transparent"
+                    allow="autoplay; fullscreen"
+                    onLoad={() => setIframeLoaded(true)}
+                  ></iframe>
                 </div>
+
+                {/* Premium Loading Shimmer Loader */}
+                <AnimatePresence>
+                  {!iframeLoaded && (
+                    <motion.div
+                      initial={{ opacity: 1 }}
+                      exit={{ opacity: 0 }}
+                      transition={{ duration: 0.8, ease: "easeInOut" }}
+                      className="absolute inset-0 z-15 flex items-center justify-center bg-gradient-to-b from-[#F5F7FA] via-[#E8EDF5] to-[#DCE3F0] pointer-events-none"
+                    >
+                      <div className="flex flex-col items-center gap-3">
+                        <div className="w-10 h-10 rounded-full border-2 border-[var(--lg-accent-start)]/30 border-t-[var(--lg-accent-start)] animate-spin" />
+                        <div className="text-[var(--lg-text-tertiary)] font-mono text-[10px] uppercase tracking-[0.25em] animate-pulse">
+                          Loading 3D Scene...
+                        </div>
+                      </div>
+                    </motion.div>
+                  )}
+                </AnimatePresence>
 
                 {/* Minimalist Overlay Content */}
                 <div className="relative z-20 w-full h-full flex flex-col items-center justify-center text-center px-6 md:px-12 lg:px-20 pt-28 pb-16 pointer-events-none">
@@ -529,31 +522,4 @@ export default function App() {
     </div>
   );
 }
-
-function HeroSplineFallback({
-  isMobile = false,
-  isPlaceholder = false,
-}: {
-  isMobile?: boolean;
-  isPlaceholder?: boolean;
-}) {
-  const showPlaceholder = isMobile || isPlaceholder;
-
-  return (
-    <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
-      {!showPlaceholder && (
-        <div className="flex flex-col items-center gap-3">
-          <div className="w-10 h-10 rounded-full border-2 border-[var(--lg-accent-start)]/30 border-t-[var(--lg-accent-start)] animate-spin" />
-          <div className="text-[var(--lg-text-tertiary)] font-mono text-[10px] uppercase tracking-[0.25em] animate-pulse">
-            Loading 3D Scene...
-          </div>
-        </div>
-      )}
-      {showPlaceholder && (
-        <div className="relative w-48 h-48 md:w-72 md:h-72 rounded-full bg-gradient-to-tr from-white/15 to-white/5 border border-white/15 backdrop-blur-xl shadow-lg flex items-center justify-center animate-[floatCard_8s_ease-in-out_infinite]">
-          <div className="w-20 h-20 md:w-32 md:h-32 rounded-full bg-[var(--lg-accent-start)]/10 blur-xl" />
-        </div>
-      )}
-    </div>
-  );
-}
+
