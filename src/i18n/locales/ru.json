@@ -165,7 +165,7 @@
     "sendBtn": "Отправить",
     "replyTime": "Обычно отвечаю в течение нескольких часов",
     "followMe": "Подписывайтесь",
-    "copyright": "Copyright © {year} Все права защищены | Создано"
+    "copyright": "Copyright © {{year}} Все права защищены | Создано"
   },
   "aboutPage": {
     "back": "Назад",

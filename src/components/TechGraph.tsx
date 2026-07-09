@@ -597,7 +597,7 @@ export default function TechGraph() {
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: -16 }}
               transition={{ type: "spring", stiffness: 300, damping: 25 }}
-              className="glass-panel-strong p-6 relative overflow-hidden group min-h-[220px] flex flex-col justify-center border border-white/15 bg-white/[0.05]"
+              className="glass-panel-strong p-6 relative overflow-hidden group min-h-[220px] flex flex-col justify-center"
             >
               <div
                 className="absolute top-0 left-0 right-0 h-1 transition-all duration-500"
@@ -606,20 +606,20 @@ export default function TechGraph() {
 
               <div className="flex items-center gap-4 mb-4">
                 <div
-                  className="w-12 h-12 rounded-xl flex items-center justify-center bg-black/60 border border-white/10 p-2 shadow-inner transition-transform duration-300 group-hover:scale-110"
-                  style={{ boxShadow: `0 0 20px -5px ${selectedTech.color}55` }}
+                  className="w-12 h-12 rounded-xl flex items-center justify-center bg-white/40 border border-[var(--lg-glass-border-subtle)] p-2 shadow-inner transition-transform duration-300 group-hover:scale-110"
+                  style={{ boxShadow: `0 0 20px -5px ${selectedTech.color}33` }}
                 >
                   <img src={selectedTech.icon} alt={selectedTech.name} className="w-7 h-7 object-contain" />
                 </div>
                 <div>
-                  <span className="text-[10px] uppercase tracking-[0.25em] text-white/40 font-mono block">
+                  <span className="text-[10px] uppercase tracking-[0.25em] text-[var(--lg-text-tertiary)] font-mono block">
                     {t("techGraph.whenLabel")}
                   </span>
-                  <h3 className="text-2xl font-black text-white tracking-wide">{selectedTech.name}</h3>
+                  <h3 className="text-2xl font-black text-[var(--lg-text-primary)] tracking-wide">{selectedTech.name}</h3>
                 </div>
               </div>
 
-              <p className="text-white/70 text-sm leading-relaxed mb-4">
+              <p className="text-[var(--lg-text-secondary)] text-sm leading-relaxed mb-4">
                 {t(`techGraph.nodes.${selectedTech.key}.description`)}
               </p>
 
@@ -644,10 +644,10 @@ export default function TechGraph() {
         </div>
 
         {/* Right Canvas Area */}
-        <div className="lg:col-span-3 flex flex-col items-center">
+        <div className="lg:col-span-3 flex flex-col items-center w-full">
           <div
             ref={containerRef}
-            className={`relative w-full flex items-center justify-center overflow-hidden rounded-2xl border border-white/5 bg-slate-950/20 backdrop-blur-3xl select-none ${
+            className={`glass-panel relative w-full flex items-center justify-center overflow-hidden select-none ${
               mode === "sphere" ? "cursor-grab active:cursor-grabbing" : "cursor-default"
             }`}
             style={{ height: "460px" }}
@@ -662,7 +662,7 @@ export default function TechGraph() {
             <div
               className="absolute inset-0 pointer-events-none"
               style={{
-                background: "radial-gradient(ellipse at center, rgba(99,102,241,0.04) 0%, transparent 70%)",
+                background: "radial-gradient(ellipse at center, rgba(99,102,241,0.06) 0%, transparent 70%)",
               }}
             />
 
@@ -706,16 +706,17 @@ export default function TechGraph() {
                       style={{
                         border: (isSelected || isHovered)
                           ? `1.5px solid ${tech.color}`
-                          : "1px solid rgba(255,255,255,0.12)",
+                          : "1px solid var(--lg-glass-border-subtle)",
                         background: isSelected
-                          ? "rgba(255,255,255,0.15)"
+                          ? "rgba(255, 255, 255, 0.85)"
                           : isHovered
-                          ? "rgba(255,255,255,0.1)"
-                          : "rgba(0,0,0,0.6)",
+                          ? "rgba(255, 255, 255, 0.65)"
+                          : "rgba(255, 255, 255, 0.45)",
                         backdropFilter: "blur(12px)",
+                        WebkitBackdropFilter: "blur(12px)",
                         boxShadow: (isSelected || isHovered)
-                          ? `0 0 25px 0 ${tech.color}88`
-                          : `0 0 20px -8px ${tech.color}55`,
+                          ? `0 0 25px 0 ${tech.color}55`
+                          : `0 4px 16px rgba(31, 38, 135, 0.05)`,
                       }}
                     >
                       <img
@@ -729,7 +730,7 @@ export default function TechGraph() {
                         className="select-none pointer-events-none"
                         style={{
                           fontSize: "9px",
-                          color: isSelected ? "#fff" : "rgba(255,255,255,0.5)",
+                          color: isSelected ? "var(--lg-text-primary)" : "var(--lg-text-secondary)",
                           fontFamily: "monospace",
                           textTransform: "uppercase",
                           letterSpacing: "0.1em",

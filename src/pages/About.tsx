@@ -654,7 +654,7 @@ export default function About() {
       </motion.button>
 
       {/* MAIN CONTENT */}
-      <div className="relative z-20 flex flex-col items-center justify-center min-h-screen gap-8">
+      <div className="relative z-20 flex flex-col items-center justify-center min-h-screen gap-8 pt-28 pb-12">
 
         {/* IMAGE SECTION */}
         <motion.div

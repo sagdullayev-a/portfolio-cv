@@ -165,7 +165,7 @@
     "sendBtn": "Send Message",
     "replyTime": "Usually replies within a few hours",
     "followMe": "Follow Me",
-    "copyright": "Copyright © {year} All Rights Reserved | Created by"
+    "copyright": "Copyright © {{year}} All Rights Reserved | Created by"
   },
   "aboutPage": {
     "back": "Back",

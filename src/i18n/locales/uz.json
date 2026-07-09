@@ -165,7 +165,7 @@
     "sendBtn": "Xabar Yuborish",
     "replyTime": "Odatda bir necha soat ichida javob beraman",
     "followMe": "Kuzating",
-    "copyright": "Copyright © {year} Barcha huquqlar himoyalangan | Yaratuvchi"
+    "copyright": "Copyright © {{year}} Barcha huquqlar himoyalangan | Yaratuvchi"
   },
   "aboutPage": {
     "back": "Orqaga",

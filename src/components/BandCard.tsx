@@ -1,6 +1,6 @@
 "use client";
 
-import * as THREE from "three";
+import { Vector3, CatmullRomCurve3, RepeatWrapping } from "three";
 import { Suspense, useEffect, useRef, useState } from "react";
 
 import {
@@ -159,10 +159,10 @@ function Band({
 
   const card = useRef<any>(null);
 
-  const vec = new THREE.Vector3();
-  const ang = new THREE.Vector3();
-  const rot = new THREE.Vector3();
-  const dir = new THREE.Vector3();
+  const vec = new Vector3();
+  const ang = new Vector3();
+  const rot = new Vector3();
+  const dir = new Vector3();
 
   const segmentProps: any = {
     type: "dynamic",
@@ -179,8 +179,8 @@ function Band({
 
   const texture = useTexture(TEXTURE_PATH);
 
-  texture.wrapS = THREE.RepeatWrapping;
-  texture.wrapT = THREE.RepeatWrapping;
+  texture.wrapS = RepeatWrapping;
+  texture.wrapT = RepeatWrapping;
 
   const { width, height } = useThree(
     (state) => state.size
@@ -188,11 +188,11 @@ function Band({
 
   const [curve] = useState(
     () =>
-      new THREE.CatmullRomCurve3([
-        new THREE.Vector3(),
-        new THREE.Vector3(),
-        new THREE.Vector3(),
-        new THREE.Vector3(),
+      new CatmullRomCurve3([
+        new Vector3(),
+        new Vector3(),
+        new Vector3(),
+        new Vector3(),
       ])
   );
 
@@ -312,7 +312,7 @@ function Band({
       [j1, j2].forEach((ref) => {
         if (!ref.current.lerped) {
           ref.current.lerped =
-            new THREE.Vector3().copy(
+            new Vector3().copy(
               ref.current.translation()
             );
         }
@@ -455,7 +455,7 @@ function Band({
               );
 
               drag(
-                new THREE.Vector3()
+                new Vector3()
                   .copy(e.point)
                   .sub(
                     vec.copy(
