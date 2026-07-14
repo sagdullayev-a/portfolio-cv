@@ -11,18 +11,23 @@
     "tagline_3": "That Feel",
     "tagline_4": "Alive.",
     "description": "Turning creative ideas into interactive and high-quality web experiences.",
-    "cta": "WEBKAIZEN",
-    "badge": "AI Engineer • Full Stack Developer",
+    "cta": "HAN",
+    "badge": "Frontend Developer • Student",
     "heading": "Building Intelligent Digital Experiences.",
     "description_new": "I design premium web experiences combining AI, frontend engineering, 3D interactions and modern user interfaces.",
     "explore": "Explore Projects",
-    "contact": "Contact Me"
+    "contact": "Contact Me",
+    "stats": {
+      "exp": "Tech Stack",
+      "projects": "Complex Projects",
+      "users": "Status"
+    }
   },
   "chat": {
     "online": "Online",
     "mode": "CHAT MODE",
     "askLabel": "Ask a question",
-    "greeting": "Hey! 👋 Welcome to Prince's personal page. I specialize in modern interfaces and web development. Pick a question below or just explore the site!",
+    "greeting": "Hey! 👋 Welcome to Azizxon's (Han) personal page. I specialize in modern interfaces and web development. Pick a question below or just explore the site!",
     "questions": {
       "q0": "Who are you?",
       "q1": "Why programming?",
@@ -30,18 +35,18 @@
       "q3": "Are you open to projects?"
     },
     "answers": {
-      "a0": "Hey there! I'm Prince — a frontend developer specialized in building modern web interfaces. I love working with React, Next.js, and TypeScript. Currently studying at PDP University and always learning something new. 🚀",
+      "a0": "Hey there! I'm Azizxon (Han) — a frontend developer specialized in building modern web interfaces. I love working with React, Next.js, and TypeScript. Currently studying Software Development at PDP University and always learning something new. 🚀",
       "a1": "Programming gives me the power to turn ideas into reality. Creating a site with a beautiful design and smooth animations feels like crafting a piece of art to me. Every pixel matters! ✨",
-      "a2": "My core stack: React.js, Next.js, TypeScript, Tailwind CSS. I also work with Node.js, Firebase, Three.js, and Framer Motion. Always excited to try new tools! 💻",
-      "a3": "Absolutely! I'm always open to freelance projects and collaborations. Currently working on my portfolio, WebKaizen, and more. Head over to the Contact section to reach out! 🤝"
+      "a2": "My core stack: React.js, Next.js, TypeScript, Tailwind CSS. I also work with Node.js, Three.js, and Framer Motion. Always excited to try new tools! 💻",
+      "a3": "Absolutely! I'm always open to freelance projects and collaborations. Currently working on Turnir.uz, Wedding Hall, and more. Head over to the Contact section to reach out! 🤝"
     },
     "status": {
       "statusLabel": "Status",
       "statusValue": "Available for work",
       "locationLabel": "Location",
-      "locationValue": "Tashkent, UZ",
+      "locationValue": "Gulistan, Syrdarya, UZ",
       "focusLabel": "Focus",
-      "focusValue": "Frontend + AI"
+      "focusValue": "Frontend Developer"
     },
     "stats": {
       "title": "By the numbers",
@@ -53,7 +58,7 @@
       "technologiesUnit": "",
       "focus": "Focus",
       "focusValue": "FE",
-      "focusUnit": "+ AI"
+      "focusUnit": "+ Dev"
     },
     "interests": {
       "title": "Current interests"
@@ -110,13 +115,9 @@
         "description": "A powerful server-side JavaScript runtime built for high-load systems.",
         "useCase": "In API projects"
       },
-      "python": {
-        "description": "The most popular language for backend, AI, and data analysis.",
-        "useCase": "In AI projects"
-      },
-      "firebase": {
-        "description": "Google's cloud platform. Simplifies real-time database and authentication.",
-        "useCase": "For MVPs and prototypes"
+      "express": {
+        "description": "A minimal and flexible Node.js web application framework.",
+        "useCase": "For building RESTful APIs"
       },
       "git": {
         "description": "Distributed version control system tracking changes in code.",
@@ -156,6 +157,20 @@
       "projects": "Projects",
       "certificates": "Certificates",
       "tech": "Tech Stack"
+    },
+    "certs": {
+      "frontend": {
+        "title": "Frontend Development Certificate",
+        "tech": "MITC & IT Park"
+      },
+      "backend": {
+        "title": "Backend Development Certificate",
+        "tech": "IT Center & IT Park"
+      },
+      "btec": {
+        "title": "Pearson BTEC Level 3 Foundation Diploma",
+        "tech": "PDP University & Pearson BTEC"
+      }
     }
   },
   "contact": {
@@ -170,20 +185,20 @@
     "sendBtn": "Send Message",
     "replyTime": "Usually replies within a few hours",
     "followMe": "Follow Me",
-    "copyright": "Copyright © {{year}} All Rights Reserved | Created by"
+    "copyright": "Copyright © {{year}} All Rights Reserved | Created by Azizxon Sagdullayev"
   },
   "aboutPage": {
     "back": "Back",
     "heading": "About Myself",
     "downloadBtn": "Download Resume",
     "downloading": "Downloading in {{seconds}}s",
-    "p1": "I'm currently a Class 12 student with PCMB, but honestly, my main interest is not in Biology anymore. Before 9th class, I used to think that I would go into the medical field in the future, but as time passed, I started getting more interested in computers and technology.",
-    "p2": "In 11th class, I explored coding more seriously and slowly developed a strong interest in programming, cybersecurity, and AI.",
-    "p3": "Now, coding is something I genuinely enjoy. I like learning new programming languages, building things, and understanding how technology works behind the scenes.",
-    "p4": "Out of everything in tech, ethical hacking and cybersecurity interest me the most because I find it exciting to learn about system security, vulnerabilities, and how hackers think.",
-    "p5": "At the same time, I also enjoy using AI tools and understanding how AI can make work smarter and easier.",
-    "p6": "After completing Class 12, I want to move completely into the coding and tech field. My goal is to build a future in cybersecurity, ethical hacking, and AI.",
-    "p7": "I know there's still a lot to learn, but I enjoy the process and always try to improve my skills step by step.",
-    "p8": "For me, technology is not just a career option anymore — it's something I truly connect with and see myself doing in the future."
+    "p1": "I was born in Syrdarya region and am currently a 3rd-year student in the 'Software Development' program at PDP University.",
+    "p2": "I am a Frontend Developer interested in modern web technologies, complex animations, and user interfaces.",
+    "p3": "Although my main focus is Frontend, I can also build reliable backend systems using Node.js, Express, and PostgreSQL.",
+    "p4": "My goal is to create beautiful, fast, and user-friendly modern digital products.",
+    "p5": "",
+    "p6": "",
+    "p7": "",
+    "p8": ""
   }
 }

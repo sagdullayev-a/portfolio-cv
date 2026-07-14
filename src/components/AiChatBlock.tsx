@@ -209,7 +209,7 @@ export default function AiChatBlock() {
                   animate={{ opacity: 1, scale: 1 }}
                   transition={{ delay: 0.9 + i * 0.08 }}
                   className="relative p-2.5 sm:p-3 rounded-xl overflow-hidden group"
-                  style={{ background: "rgba(255,255,255,0.3)" }}
+                  style={{ background: "rgba(20, 24, 58, 0.45)", border: "1px solid rgba(139, 124, 246, 0.1)" }}
                 >
                   <div
                     className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-300 rounded-xl"

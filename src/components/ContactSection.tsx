@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { FaWhatsapp, FaEnvelope } from "react-icons/fa";
 import { motion } from "framer-motion";
-import { FaInstagram, FaGithub, FaYoutube, FaTelegram } from "react-icons/fa";
+import { FaInstagram, FaGithub, FaLinkedin, FaTelegram } from "react-icons/fa";
 import { useTranslation } from "react-i18next";
 
 export default function ContactSection() {
@@ -25,14 +25,14 @@ export default function ContactSection() {
   const handleSend = () => {
     if (!form.name || !form.message) return;
     const text = `Hello, my name is ${form.name}%0A%0A${form.message}`;
-    const phone = "918092464955";
+    const phone = "998994746484";
     window.open(`https://wa.me/${phone}?text=${text}`, "_blank");
   };
 
   return (
     <section
-      className="relative w-full min-h-screen overflow-hidden
-      px-4 sm:px-8 md:px-16 lg:px-24 py-24"
+      className="relative w-full overflow-hidden
+      px-4 sm:px-8 md:px-16 lg:px-24 py-16 md:py-24"
     >
       {/* background accents */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
@@ -120,7 +120,7 @@ export default function ContactSection() {
             <div className="flex items-center justify-center lg:justify-start gap-5 mt-2">
               {/* gmail */}
               <a
-                href="mailto:sprince05873@gmail.com"
+                href="mailto:azizhon.sagdullayev@gmail.com"
                 className="group glass-card !rounded-2xl w-12 h-12 sm:w-14 sm:h-14
                   flex items-center justify-center
                   transition-all duration-300
@@ -132,7 +132,7 @@ export default function ContactSection() {
 
               {/* whatsapp */}
               <a
-                href="https://wa.me/918092464955"
+                href="https://wa.me/998994746484"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="group relative glass-card !rounded-2xl w-12 h-12 sm:w-14 sm:h-14
@@ -221,7 +221,7 @@ export default function ContactSection() {
                       onChange={handleChange}
                       placeholder={t("contact.namePlaceholder")}
                       className="w-full h-14 px-6 rounded-[16px]
-                        bg-white/40 backdrop-blur-xl
+                        bg-white/5 backdrop-blur-xl
                         border border-[var(--lg-glass-border-subtle)]
                         group-hover/input:border-[var(--lg-accent-start)]/30
                         text-[var(--lg-text-primary)] placeholder:text-[var(--lg-text-tertiary)]
@@ -241,7 +241,7 @@ export default function ContactSection() {
                       onChange={handleChange}
                       placeholder={t("contact.messagePlaceholder")}
                       className="w-full p-5 rounded-[16px] resize-none
-                        bg-white/40 backdrop-blur-xl
+                        bg-white/5 backdrop-blur-xl
                         border border-[var(--lg-glass-border-subtle)]
                         group-hover/textarea:border-[var(--lg-accent-start)]/30
                         text-[var(--lg-text-primary)] placeholder:text-[var(--lg-text-tertiary)]
@@ -308,7 +308,7 @@ export default function ContactSection() {
           <div className="flex flex-wrap items-center justify-center gap-5">
             {/* Instagram */}
             <a
-              href="https://www.instagram.com/prince_kumar_74_"
+              href="https://www.instagram.com/sagdulayev_a"
               target="_blank"
               rel="noopener noreferrer"
               aria-label="Instagram"
@@ -322,7 +322,7 @@ export default function ContactSection() {
 
             {/* GitHub */}
             <a
-              href="https://github.com/princekumar-dev74"
+              href="https://github.com/sagdullayev-a"
               target="_blank"
               rel="noopener noreferrer"
               aria-label="GitHub"
@@ -334,23 +334,23 @@ export default function ContactSection() {
               <FaGithub className="text-[28px] text-[var(--lg-text-secondary)] transition-all duration-500 group-hover:scale-110 group-hover:text-[var(--lg-text-primary)]" />
             </a>
 
-            {/* YouTube */}
+            {/* LinkedIn */}
             <a
-              href="https://www.youtube.com/@WebKaizenDev"
+              href="https://linkedin.com/in/azizxon-sagdullayev"
               target="_blank"
               rel="noopener noreferrer"
-              aria-label="YouTube"
+              aria-label="LinkedIn"
               className="group glass-card !rounded-[20px] h-14 w-14 grid place-items-center
                 transition-all duration-500 ease-out
                 hover:-translate-y-1.5 hover:scale-105
-                hover:!shadow-[0_8px_30px_rgba(239,68,68,0.15)]"
+                hover:!shadow-[0_8px_30px_rgba(30,136,229,0.15)]"
             >
-              <FaYoutube className="text-[28px] text-[var(--lg-text-secondary)] transition-all duration-500 group-hover:scale-110 group-hover:text-red-500" />
+              <FaLinkedin className="text-[28px] text-[var(--lg-text-secondary)] transition-all duration-500 group-hover:scale-110 group-hover:text-blue-600" />
             </a>
 
             {/* Telegram */}
             <a
-              href="https://t.me/web_kaizen_official"
+              href="https://t.me/sagdulayev_a"
               target="_blank"
               rel="noopener noreferrer"
               aria-label="Telegram"

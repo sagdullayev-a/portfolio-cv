@@ -6,7 +6,7 @@ import { useTranslation } from "react-i18next";
    DATA & TYPES
    ═══════════════════════════════════════════════════════════════ */
 
-type TechCategory = "FE" | "BE" | "TOOL" | "CLOUD" | "AI" | "DX";
+type TechCategory = "FE" | "BE" | "TOOL" | "CLOUD";
 type Mode = "sphere" | "space" | "grid";
 
 interface TechNode {
@@ -23,8 +23,6 @@ const categories: { id: TechCategory; label: string; color: string }[] = [
   { id: "BE", label: "Backend", color: "#22c55e" },
   { id: "TOOL", label: "Tools", color: "#f59e0b" },
   { id: "CLOUD", label: "Cloud", color: "#06b6d4" },
-  { id: "AI", label: "AI", color: "#ec4899" },
-  { id: "DX", label: "Dev Experience", color: "#8b5cf6" },
 ];
 
 const techStack: TechNode[] = [
@@ -35,9 +33,8 @@ const techStack: TechNode[] = [
   { name: "React",      icon: "https://cdn.simpleicons.org/react/61DAFB",           color: "#61DAFB", category: "FE",    key: "react",      projects: ["Portfolio", "WebKaizen"] },
   { name: "Next.js",   icon: "https://cdn.simpleicons.org/nextdotjs/000000",        color: "#6366f1", category: "FE",    key: "nextjs",     projects: ["WebKaizen"] },
   { name: "Node.js",   icon: "https://cdn.simpleicons.org/nodedotjs/339933",        color: "#339933", category: "BE",    key: "nodejs",     projects: ["WebKaizen"] },
+  { name: "Express.js", icon: "https://cdn.simpleicons.org/express/ffffff",         color: "#ffffff", category: "BE",    key: "express",    projects: ["Turnir.uz"] },
   { name: "Tailwind",  icon: "https://cdn.simpleicons.org/tailwindcss/06B6D4",      color: "#06B6D4", category: "FE",    key: "tailwind",   projects: ["Portfolio", "WebKaizen"] },
-  { name: "Python",    icon: "https://cdn.simpleicons.org/python/3776AB",           color: "#3776AB", category: "AI",    key: "python",     projects: ["aiExperiments"] },
-  { name: "Firebase",  icon: "https://cdn.simpleicons.org/firebase/FFCA28",         color: "#FFCA28", category: "CLOUD", key: "firebase",   projects: ["WebKaizen"] },
   { name: "Git",       icon: "https://cdn.simpleicons.org/git/F05032",              color: "#F05032", category: "TOOL",  key: "git",        projects: ["allProjects"] },
   { name: "GitHub",    icon: "https://cdn.simpleicons.org/github/181717",           color: "#8b5cf6", category: "TOOL",  key: "github",     projects: ["allProjects"] },
   { name: "Vercel",    icon: "https://cdn.simpleicons.org/vercel/000000",           color: "#06b6d4", category: "CLOUD", key: "vercel",     projects: ["Portfolio", "WebKaizen"] },
@@ -84,7 +81,7 @@ export default function TechGraph() {
   const lastMY = useRef(0);
   const dragVX = useRef(0);
   const dragVY = useRef(0);
-  const rafId = useRef<number>();
+  const rafId = useRef<number | undefined>(undefined);
 
   // Responsive dimension state
   const [dimensions, setDimensions] = useState({ size: 420, radius: 160 });
@@ -710,10 +707,10 @@ export default function TechGraph() {
                           ? `1.5px solid ${tech.color}`
                           : "1px solid var(--lg-glass-border-subtle)",
                         background: isSelected
-                          ? "rgba(255, 255, 255, 0.85)"
+                          ? "rgba(99, 102, 241, 0.22)"
                           : isHovered
-                          ? "rgba(255, 255, 255, 0.65)"
-                          : "rgba(255, 255, 255, 0.45)",
+                          ? "rgba(20, 24, 58, 0.75)"
+                          : "rgba(20, 24, 58, 0.45)",
                         backdropFilter: "blur(12px)",
                         WebkitBackdropFilter: "blur(12px)",
                         boxShadow: (isSelected || isHovered)

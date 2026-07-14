@@ -57,10 +57,11 @@ export default function FrontendDeveloperSection() {
         duration: 1.8,
         ease: [0.16, 1, 0.3, 1],
       }}
-      className="relative w-full min-h-screen overflow-hidden flex items-start px-6 md:px-20 pt-16 md:pt-28 select-none"
+      className="relative w-full overflow-hidden flex items-center px-4 sm:px-8 md:px-16 lg:px-24 py-16 md:py-24 select-none"
     >
-      {/* TEXT */}
-      <div className="relative z-10 max-w-2xl">
+      <div className="relative z-40 w-full max-w-6xl mx-auto pointer-events-none">
+        {/* TEXT */}
+        <div className="relative max-w-2xl pointer-events-none">
         <motion.div className="flex items-center mb-6">
           <motion.span
             animate={{
@@ -142,7 +143,7 @@ export default function FrontendDeveloperSection() {
               : { opacity: 0, y: 20 }
           }
           transition={{ duration: 1, delay: 0.8 }}
-          className="mt-6 flex flex-wrap gap-4"
+          className="mt-6 flex flex-wrap gap-4 relative z-40"
         >
           {["Next.js", "React.js", "TypeScript", "Tailwind CSS"].map(
             (tech) => (
@@ -159,14 +160,14 @@ export default function FrontendDeveloperSection() {
           )}
         </motion.div>
 
-        <div className="mt-8 flex flex-col [@media(min-width:540px)]:flex-row items-start md:items-center gap-4">
+        <div className="mt-8 flex flex-col [@media(min-width:540px)]:flex-row items-start md:items-center gap-4 relative z-40">
           {/* Show Card Button */}
           <motion.button
             initial={{ opacity: 0, y: 30 }}
             animate={inView ? { opacity: 1, y: 0 } : {}}
             transition={{ duration: 0.8, delay: 0.9 }}
             onClick={() => setShowCard((s) => !s)}
-            className="btn-glossy-outline relative z-20"
+            className="btn-glossy-outline relative z-20 pointer-events-auto"
           >
             {showCard ? t("frontendSection.hideCard") : t("frontendSection.showCard")}
           </motion.button>
@@ -177,12 +178,13 @@ export default function FrontendDeveloperSection() {
             animate={inView ? { opacity: 1, x: 0 } : {}}
             transition={{ duration: 1.1, delay: 1.4 }}
             onClick={() => setGoAbout(true)}
-            className="btn-glossy relative z-20"
+            className="btn-glossy relative z-20 pointer-events-auto"
           >
             {t("frontendSection.aboutBtn")}
           </motion.button>
         </div>
       </div>
+    </div>
 
       {/* 3D ID CARD */}
       <AnimatePresence>
@@ -192,7 +194,7 @@ export default function FrontendDeveloperSection() {
             animate={{ y: 0, opacity: 1 }}
             exit={{ y: "-100%", opacity: 0 }}
             transition={{ duration: 1.1, ease: [0.22, 1, 0.36, 1] }}
-            className="absolute inset-0 z-[5] pointer-events-none"
+            className="absolute inset-0 z-30 pointer-events-none"
           >
             <Suspense fallback={null}>
               <BandCard />

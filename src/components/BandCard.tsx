@@ -1,7 +1,7 @@
 "use client";
 
-import { Vector3, CatmullRomCurve3, RepeatWrapping } from "three";
-import { Suspense, useEffect, useRef, useState } from "react";
+import { Vector3, CatmullRomCurve3, RepeatWrapping, CanvasTexture } from "three";
+import { Suspense, useEffect, useRef, useState, useMemo } from "react";
 
 import {
   Canvas,
@@ -37,10 +37,7 @@ extend({
 });
 
 const GLTF_PATH = "/assets/cards.glb";
-const TEXTURE_PATH = "/assets/new.jpeg";
-
 useGLTF.preload(GLTF_PATH);
-useTexture.preload(TEXTURE_PATH);
 
 export default function BandCard() {
   const [isMobile, setIsMobile] = useState(false);
@@ -69,6 +66,7 @@ export default function BandCard() {
     >
       <Suspense fallback={null}>
         <Canvas
+          className="band-card-canvas"
           gl={{
             alpha: true,
             antialias: true,
@@ -177,10 +175,157 @@ function Band({
   const nodes = gltf?.nodes || {};
   const materials = gltf?.materials || {};
 
-  const texture = useTexture(TEXTURE_PATH);
 
-  texture.wrapS = RepeatWrapping;
-  texture.wrapT = RepeatWrapping;
+
+  const lanyardTexture = useMemo(() => {
+    const canvas = document.createElement("canvas");
+    canvas.width = 1024;
+    canvas.height = 256;
+    const ctx = canvas.getContext("2d");
+    if (!ctx) return null;
+
+    // 1. Draw black background
+    ctx.fillStyle = "#0f172a"; // deep premium slate dark
+    ctx.fillRect(0, 0, 1024, 256);
+
+    // 2. Draw subtle border stripes (simulating silver fabric stitching)
+    ctx.fillStyle = "#4f46e5"; // Indigo accent stitch
+    ctx.fillRect(0, 0, 1024, 15);
+    ctx.fillRect(0, 241, 1024, 15);
+
+    // 3. Draw text "HAN" repeated
+    ctx.fillStyle = "#f8fafc"; // off-white
+    ctx.textAlign = "center";
+    ctx.textBaseline = "middle";
+    ctx.font = "bold 90px 'Outfit', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif";
+
+    const textToDraw = "HAN";
+    const numRepeats = 4;
+    const step = 1024 / numRepeats;
+    for (let i = 0; i < numRepeats; i++) {
+      const x = step * i + step / 2;
+      ctx.fillText(textToDraw, x, 128);
+    }
+
+    const tex = new CanvasTexture(canvas);
+    tex.wrapS = RepeatWrapping;
+    tex.wrapT = RepeatWrapping;
+    return tex;
+  }, []);
+
+  const userTexture = useTexture("/assets/azizxon.jpg");
+
+  const cardTexture = useMemo(() => {
+    if (!userTexture || !userTexture.image) return null;
+
+    const canvas = document.createElement("canvas");
+    canvas.width = 1024;
+    canvas.height = 1024;
+    const ctx = canvas.getContext("2d");
+    if (!ctx) return null;
+
+    // Flip canvas vertically to cancel out the UV flipping in the 3D model while keeping horizontal text orientation correct
+    ctx.translate(0, 1024);
+    ctx.scale(1, -1);
+
+    // The front of the card maps to the left portion of the texture (X = 0 to 530, Y = 0 to 750)
+    // The back of the card maps to the right portion of the texture (X = 530 to 1024, Y = 0 to 750)
+    const frontCenter = 265;
+    const backCenter = 777;
+
+    // --- DRAW CARD FRONT ---
+    // 1. Draw card background (clean white/off-white)
+    ctx.fillStyle = "#ffffff";
+    ctx.fillRect(0, 0, 530, 750);
+
+    // 2. Draw top header (dark indigo)
+    ctx.fillStyle = "#1e1b4b";
+    ctx.fillRect(0, 0, 530, 120);
+
+    // Draw brand text in header
+    ctx.fillStyle = "#ffffff";
+    ctx.font = "bold 28px 'Outfit', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif";
+    ctx.textAlign = "center";
+    ctx.fillText("HAN CREATIVE", frontCenter, 70);
+
+    // 3. Draw user photo
+    const pw = 340;
+    const ph = 340;
+    const px = frontCenter - pw / 2;
+    const py = 150;
+
+    // Draw photo frame/border
+    ctx.strokeStyle = "#e2e8f0";
+    ctx.lineWidth = 8;
+    ctx.strokeRect(px, py, pw, ph);
+
+    // Draw the photo
+    ctx.drawImage(userTexture.image, px, py, pw, ph);
+
+    // 4. Draw the ID text details
+    ctx.fillStyle = "#0f172a"; // dark slate
+    ctx.textAlign = "center";
+    
+    // Name
+    ctx.font = "bold 30px 'Outfit', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif";
+    ctx.fillText("Azizxon Sagdullayev", frontCenter, 540);
+
+    // Role
+    ctx.fillStyle = "#4f46e5"; // Indigo
+    ctx.font = "bold 20px 'Outfit', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif";
+    ctx.fillText("FRONTEND DEVELOPER", frontCenter, 580);
+
+    // University
+    ctx.fillStyle = "#64748b"; // Slate
+    ctx.font = "600 15px 'Outfit', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif";
+    ctx.fillText("PDP UNIVERSITY STUDENT", frontCenter, 615);
+
+    // Fake barcode
+    ctx.fillStyle = "#0f172a";
+    const barY = 650;
+    const barHeight = 35;
+    const scaleFactor = 0.7;
+    let currentX = frontCenter - (300 * scaleFactor) / 2; // Center barcode: 265 - 105 = 160
+    const barcodePattern = [10, 8, 20, 12, 6, 16, 28, 8, 12, 22, 6, 14, 10, 12, 20, 10, 10, 26, 10, 10, 20];
+    barcodePattern.forEach((w, idx) => {
+      const scaledW = w * scaleFactor;
+      if (idx % 2 === 0) {
+        ctx.fillRect(currentX, barY, scaledW, barHeight);
+      }
+      currentX += scaledW;
+    });
+
+    // --- DRAW CARD BACK ---
+    // 1. Draw card back background (dark premium blue)
+    ctx.fillStyle = "#1e1b4b";
+    ctx.fillRect(530, 0, 1024 - 530, 750);
+
+    // 2. Draw styled circle outline
+    ctx.strokeStyle = "rgba(79, 70, 229, 0.3)";
+    ctx.lineWidth = 5;
+    ctx.beginPath();
+    ctx.arc(backCenter, 375, 90, 0, Math.PI * 2);
+    ctx.stroke();
+
+    // 3. Draw Brand logo in the center of circle
+    ctx.fillStyle = "#ffffff";
+    ctx.font = "bold 60px 'Outfit', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif";
+    ctx.textAlign = "center";
+    ctx.textBaseline = "middle";
+    ctx.fillText("HAN", backCenter, 375);
+
+    // Reset baseline for other texts
+    ctx.textBaseline = "alphabetic";
+
+    // 4. Draw studio text below circle
+    ctx.fillStyle = "#a5b4fc"; // soft indigo
+    ctx.font = "bold 18px 'Outfit', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif";
+    ctx.fillText("CREATIVE STUDIO", backCenter, 510);
+
+    const tex = new CanvasTexture(canvas);
+    tex.colorSpace = "srgb";
+    return tex;
+  }, [userTexture]);
 
   const { width, height } = useThree(
     (state) => state.size
@@ -377,8 +522,8 @@ function Band({
       <group
         position={
           isMobile
-            ? [1.2, 3, 0]
-            : [3, 4, 0]
+            ? [1.2, 2.3, 0]
+            : [3, 3.2, 0]
         }
       >
         <RigidBody
@@ -473,6 +618,7 @@ function Band({
               >
                 <meshPhysicalMaterial
                   {...materials.base}
+                  map={cardTexture || materials.base.map}
                   roughness={0.35}
                   metalness={0.1}
                   clearcoat={1}
@@ -514,7 +660,7 @@ function Band({
           depthTest={false}
           resolution={[width, height]}
           useMap
-          map={texture}
+          map={lanyardTexture}
           repeat={[-4, 1]}
           lineWidth={1}
         />

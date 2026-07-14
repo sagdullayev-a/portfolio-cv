@@ -11,18 +11,23 @@
     "tagline_3": "That Feel",
     "tagline_4": "Alive.",
     "description": "Ijodiy g'oyalarni interaktiv va yuqori sifatli veb-tajribalarga aylaantiraman.",
-    "cta": "WEBKAIZEN",
-    "badge": "AI muhandis • Full Stack dasturchi",
+    "cta": "HAN",
+    "badge": "Frontend dasturchi • Talaba",
     "heading": "Building Intelligent Digital Experiences.",
     "description_new": "Men sun'iy intellekt, frontend muhandisligi, 3D interaktivlik va zamonaviy interfeyslarni birlashtirgan premium veb-tajribalarni yarataman.",
     "explore": "Loyihalarni ko'rish",
-    "contact": "Aloqa"
+    "contact": "Aloqa",
+    "stats": {
+      "exp": "Texnologik Stek",
+      "projects": "Kompleks Loyihalar",
+      "users": "Ta'lim Maqomi"
+    }
   },
   "chat": {
     "online": "Onlayn",
     "mode": "SUHBAT REJIMI",
     "askLabel": "Savol bering",
-    "greeting": "Salom! 👋 Men Princening shaxsiy sahifasiga xush kelibsiz. Zamonaviy interfeyslar va dasturlash bilan shug'ullanaman. Quyidagi savollardan birini tanlang yoki shunchaki saytni o'rganing!",
+    "greeting": "Salom! 👋 Azizxonning (Han) shaxsiy sahifasiga xush kelibsiz. Zamonaviy interfeyslar va dasturlash bilan shug'ullanaman. Quyidagi savollardan birini tanlang yoki shunchaki saytni o'rganing!",
     "questions": {
       "q0": "Siz kimsiz?",
       "q1": "Nega aynan dasturlash?",
@@ -30,18 +35,18 @@
       "q3": "Loyihalar bilan ishlaysizmi?"
     },
     "answers": {
-      "a0": "Salom! Men Prince — frontend dasturchi, zamonaviy veb-interfeyslar yaratishga ixtisoslashganman. React, Next.js va TypeScript bilan ishlashni yaxshi ko'raman. Hozirda PDP University'da o'qiyapman va yangi texnologiyalarni o'rganishni to'xtatmayman. 🚀",
+      "a0": "Salom! Men Azizxon (Han) — frontend dasturchi, zamonaviy veb-interfeyslar yaratishga ixtisoslashganman. React, Next.js va TypeScript bilan ishlashni yaxshi ko'raman. Hozirda PDP University'da o'qiyapman va yangi texnologiyalarni o'rganishni to'xtatmayman. 🚀",
       "a1": "Dasturlash menga g'oyalarni haqiqatga aylantirish imkonini beradi. Yaxshi dizayni va silliq animatsiyalari bo'lgan sayt yaratish — bu men uchun san'at asari yaratish bilan teng. Har bir piksel muhim! ✨",
-      "a2": "Asosiy stackim: React.js, Next.js, TypeScript, Tailwind CSS. Bundan tashqari Node.js, Firebase, Three.js va Framer Motion bilan ham ishlayman. Har doim yangi toollarni sinab ko'rishga tayyorman! 💻",
-      "a3": "Ha, albatta! Freelance loyihalar va hamkorlik uchun doim ochiqman. Portfolio saytim, WebKaizen va boshqa loyihalar ustida faol ishlayapman. Bog'lanish uchun Contact bo'limiga o'ting! 🤝"
+      "a2": "Asosiy stackim: React.js, Next.js, TypeScript, Tailwind CSS. Bundan tashqari Node.js, Three.js va Framer Motion bilan ham ishlayman. Har doim yangi toollarni sinab ko'rishga tayyorman! 💻",
+      "a3": "Ha, albatta! Freelance loyihalar va hamkorlik uchun doim ochiqman. Turnir.uz, Wedding Hall va boshqa loyihalar ustida faol ishlayapman. Bog'lanish uchun Contact bo'limiga o'ting! 🤝"
     },
     "status": {
       "statusLabel": "Holat",
       "statusValue": "Ishga mavjud",
       "locationLabel": "Joylashuv",
-      "locationValue": "Toshkent, UZ",
+      "locationValue": "Guliston, Sirdaryo, UZ",
       "focusLabel": "Fokus",
-      "focusValue": "Frontend + AI"
+      "focusValue": "Frontend Developer"
     },
     "stats": {
       "title": "Raqamlarda",
@@ -53,7 +58,7 @@
       "technologiesUnit": "ta",
       "focus": "Fokus",
       "focusValue": "FE",
-      "focusUnit": "+ AI"
+      "focusUnit": "+ Dev"
     },
     "interests": {
       "title": "So'nggi qiziqishlar"
@@ -110,13 +115,9 @@
         "description": "JavaScript-ni server tomonida ishlatuvchi, yuqori yuklanishlarga chidamli muhit.",
         "useCase": "API loyihalarda"
       },
-      "python": {
-        "description": "Backend, sun'iy intellekt va ma'lumotlar tahlili uchun eng mashhur til.",
-        "useCase": "AI loyihalarda"
-      },
-      "firebase": {
-        "description": "Google-ning Cloud platformasi. Real-time ma'lumotlar bazasi va autentifikatsiyani osonlashtiradi.",
-        "useCase": "MVP va prototiplar"
+      "express": {
+        "description": "Node.js uchun moslashuvchan, minimalist va tezkor veb-freymvork.",
+        "useCase": "RESTful API yaratishda"
       },
       "git": {
         "description": "Koddagi o'zgarishlarni kuzatuvchi taqsimlangan versiyani boshqarish tizimi.",
@@ -156,6 +157,20 @@
       "projects": "Loyihalar",
       "certificates": "Sertifikatlar",
       "tech": "Tech Stack"
+    },
+    "certs": {
+      "frontend": {
+        "title": "Frontend dasturlash sertifikati",
+        "tech": "MITC va IT Park"
+      },
+      "backend": {
+        "title": "Backend dasturlash sertifikati",
+        "tech": "IT Markaz va IT Park"
+      },
+      "btec": {
+        "title": "Pearson BTEC Level 3 Foundation Diploma",
+        "tech": "PDP University va Pearson BTEC"
+      }
     }
   },
   "contact": {
@@ -164,26 +179,26 @@
     "description": "G'oya, loyiha yoki hamkorlik rejangiz bormi? Xabar yuboring va birgalikda zamonaviy, chiroyli narsa yarataylik.",
     "sendTitle": "Xabar Yuborish",
     "sendDirect": "To'gridan-to'g'ri",
-    "sendDescription": "Xabaringiz to'g'ridan-to'g'ri WhatsApp'da ochiladi — spam yo'q, haqiqiy muloqot.",
+    "sendDescription": "Xabaringiz to'g'ridan-to'g'ri Telegram'da ochiladi — spam yo'q, haqiqiy muloqot.",
     "namePlaceholder": "Ismingiz",
     "messagePlaceholder": "Xabaringizni yozing...",
     "sendBtn": "Xabar Yuborish",
     "replyTime": "Odatda bir necha soat ichida javob beraman",
     "followMe": "Kuzating",
-    "copyright": "Copyright © {{year}} Barcha huquqlar himoyalangan | Yaratuvchi"
+    "copyright": "Copyright © {{year}} Barcha huquqlar himoyalangan | Yaratuvchi: Azizxon Sagdullayev"
   },
   "aboutPage": {
     "back": "Orqaga",
     "heading": "Men Haqimda",
     "downloadBtn": "Rezyume Yuklab Olish",
     "downloading": "Yuklab olinmoqda: {{seconds}}s",
-    "p1": "Hozirda men 12-sinf o'quvchisiman (PCMB), lekin asosiy qiziqishim biologiya emas. 9-sinfgacha tibbiyot sohasida bo'laman, deb o'ylardim, lekin vaqt o'tishi bilan kompyuter va texnologiyaga mehr qo'yib qoldim.",
-    "p2": "11-sinfda dasturlashni jiddiyroq o'rganishni boshladim va asta-sekin dasturlash, kiberxavfsizlik va sun'iy intellektga kuchli qiziqish uyg'ondi.",
-    "p3": "Endi dasturlash — bu men chindan ham zavq oladigan narsa. Yangi dasturlash tillarini o'rganish, biror narsa qurish va texnologiyaning ortida nima yotishini tushunish — bularning barchasi menga yoqadi.",
-    "p4": "Texnologiyaning barcha sohalaridan etik xakerlash va kiberxavfsizlik meni eng ko'p qiziqtiradi, chunki tizim xavfsizligi, zaifliklar va xakerlarning fikrlash usulini o'rganish — bu juda qiziqarli.",
-    "p5": "Shu bilan birga, AI vositalaridan foydalanish va sun'iy intellektning ishni qanday yanada samarali qilishini tushunishni ham yaxshi ko'raman.",
-    "p6": "12-sinfni tugatgandan so'ng, to'liq dasturlash va texnologiya sohasiga o'tmoqchiman. Maqsadim — kiberxavfsizlik, etik xakerlash va AI sohasida kelajak qurish.",
-    "p7": "Hali o'rganadigan narsalar juda ko'p, lekin jarayon menga yoqadi va har doim mahoratimni bosqichma-bosqich oshirishga harakat qilaman.",
-    "p8": "Men uchun texnologiya endi shunchaki martaba tanlovi emas — bu men chin dildan bog'langan va kelajakda o'zimni ko'radigan sohadir."
+    "p1": "Men Sirdaryo viloyatida tug'ilganman va hozirda PDP Universitetining 'Software Development' yo'nalishida 3-bosqich talabasiman.",
+    "p2": "Men zamonaviy veb-texnologiyalar, murakkab animatsiyalar va interfeyslar yaratishga qiziqadigan Frontend dasturchiman.",
+    "p3": "Asosiy yo'nalishim Frontend bo'lsa-da, Node.js, Express va PostgreSQL yordamida ishonchli backend tizimlarini ham qura olaman.",
+    "p4": "Maqsadim — chiroyli, tezkor va foydalanuvchilarga qulay bo'lgan zamonaviy raqamli mahsulotlar yaratish.",
+    "p5": "",
+    "p6": "",
+    "p7": "",
+    "p8": ""
   }
 }

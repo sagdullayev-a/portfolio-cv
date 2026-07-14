@@ -18,23 +18,12 @@ export default defineConfig({
     chunkSizeWarningLimit: 1500,
     rollupOptions: {
       output: {
-        manualChunks(id) {
-          if (id.includes("node_modules")) {
-            if (
-              id.includes("three") ||
-              id.includes("meshline") ||
-              id.includes("rapier") ||
-              id.includes("dimforge") ||
-              id.includes("troika") ||
-              id.includes("suspend-react")
-            ) {
-              return "vendor-3d";
-            }
-            if (id.includes("framer-motion") || id.includes("gsap")) {
-              return "vendor-animation";
-            }
-            return "vendor-core";
-          }
+        manualChunks: {
+          "vendor-three": ["three", "@react-three/fiber", "@react-three/drei", "@react-three/rapier", "meshline"],
+          "vendor-motion": ["framer-motion"],
+          "vendor-gsap": ["gsap"],
+          "vendor-react": ["react", "react-dom", "react-router-dom"],
+          "vendor-i18n": ["i18next", "react-i18next", "i18next-browser-languagedetector"],
         },
       },
     },

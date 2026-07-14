@@ -175,7 +175,7 @@ export default function WelcomeScreen() {
         >
           <motion.span
             initial={{ width: "0ch" }}
-            animate={{ width: "22ch" }}
+            animate={{ width: "18ch" }}
             transition={{
               delay: 2.2,
               duration: 2,
@@ -183,7 +183,7 @@ export default function WelcomeScreen() {
             }}
             className="inline-block overflow-hidden whitespace-nowrap"
           >
-            www.webkaizen.in
+            sagdullayev.uz
           </motion.span>
 
           <motion.span

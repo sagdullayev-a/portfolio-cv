@@ -4,25 +4,41 @@ import TechGraph from "./TechGraph";
 
 const projects = [
   {
-    tech: "TypeScript + Tailwind",
-    thumbnail: "https://cdn.jsdelivr.net/gh/princekumar-dev74/portfolio/public/preview.png",
-    github: "https://github.com/princekumar-dev74/portfolio.git",
-  },
-  {
-    tech: "TypeScript + Tailwind",
+    title: "Turnir.uz",
+    tech: "React + Node.js + Prisma",
     thumbnail: "/assets/website.png",
-    github: "https://www.webkaizen.in",
+    github: "https://github.com/sagdullayev-a/turnir.uz",
   },
   {
-    tech: "TypeScript",
-    thumbnail: "https://cdn.jsdelivr.net/gh/princekumar-dev74/portfolio-v1/public/preview.png",
-    github: "https://github.com/princekumar-dev74/portfolio-v1.git",
+    title: "Wedding Hall",
+    tech: "Next.js + Zustand + NextAuth",
+    thumbnail: "/assets/website.png",
+    github: "https://github.com/sagdullayev-a/wedding-hall",
+  },
+  {
+    title: "Sagdullayev.uz",
+    tech: "Three.js + Rapier + GSAP",
+    thumbnail: "/assets/website.png",
+    github: "https://github.com/sagdullayev-a/portfolio",
   },
 ];
 
 const certificates = [
-  { title: "upcoming", tech: "#", thumbnail: "#" },
-  { title: "upcoming", tech: "#", thumbnail: "#" },
+  {
+    title: "showcase.certs.frontend.title",
+    tech: "showcase.certs.frontend.tech",
+    thumbnail: "/assets/frontend-cert.jpg",
+  },
+  {
+    title: "showcase.certs.backend.title",
+    tech: "showcase.certs.backend.tech",
+    thumbnail: "/assets/backend-cert.png",
+  },
+  {
+    title: "showcase.certs.btec.title",
+    tech: "showcase.certs.btec.tech",
+    thumbnail: "/assets/btec-cert.png",
+  },
 ];
 
 const GithubIcon = () => (
@@ -58,10 +74,15 @@ function ProjectCard({ item }: { item: typeof projects[0] }) {
       <div className="relative h-48 overflow-hidden bg-white/10">
         <img
           src={item.thumbnail}
-          alt={item.tech}
+          alt={item.title}
           className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
         />
-        <div className="absolute inset-0 bg-gradient-to-t from-white/40 via-transparent to-transparent" />
+        <div className="absolute inset-0 bg-gradient-to-t from-[#0B0E2A]/70 via-transparent to-transparent" />
+        <div className="absolute bottom-4 left-4 right-4">
+          <p className="text-[var(--lg-text-primary)] font-semibold text-sm leading-snug line-clamp-2">
+            {item.title}
+          </p>
+        </div>
       </div>
       <div className="p-5 flex items-center justify-between">
         <span className="text-[10px] uppercase tracking-[0.25em] text-[var(--lg-text-tertiary)] font-mono">
@@ -72,7 +93,7 @@ function ProjectCard({ item }: { item: typeof projects[0] }) {
           target="_blank"
           rel="noopener noreferrer"
           className="flex items-center justify-center w-8 h-8 rounded-full
-          bg-white/40 border border-[var(--lg-glass-border-subtle)] text-[var(--lg-text-secondary)]
+          bg-white/5 border border-white/10 text-[var(--lg-text-secondary)]
           hover:bg-[var(--lg-accent-start)] hover:text-white hover:border-transparent
           transition-all duration-200 active:scale-95"
         >
@@ -84,6 +105,7 @@ function ProjectCard({ item }: { item: typeof projects[0] }) {
 }
 
 function CertCard({ item }: { item: typeof certificates[0] }) {
+  const { t } = useTranslation();
   const [downloading, setDownloading] = useState(false);
 
   const handleDownload = async () => {
@@ -94,7 +116,9 @@ function CertCard({ item }: { item: typeof certificates[0] }) {
       const url = window.URL.createObjectURL(blob);
       const link = document.createElement("a");
       link.href = url;
-      link.download = `${item.title}.jpg`;
+      const fileName = t(item.title).replace(/\s+/g, "_").toLowerCase();
+      const ext = item.thumbnail.endsWith(".png") ? "png" : "jpg";
+      link.download = `${fileName}.${ext}`;
       document.body.appendChild(link);
       link.click();
       document.body.removeChild(link);
@@ -114,24 +138,24 @@ function CertCard({ item }: { item: typeof certificates[0] }) {
       <div className="relative h-48 overflow-hidden bg-white/10">
         <img
           src={item.thumbnail}
-          alt={item.title}
+          alt={t(item.title)}
           className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
         />
-        <div className="absolute inset-0 bg-gradient-to-t from-white/40 via-transparent to-transparent" />
+        <div className="absolute inset-0 bg-gradient-to-t from-[#0B0E2A]/70 via-transparent to-transparent" />
         <div className="absolute bottom-4 left-4 right-4">
           <p className="text-[var(--lg-text-primary)] font-semibold text-sm leading-snug line-clamp-2">
-            {item.title}
+            {t(item.title)}
           </p>
         </div>
       </div>
       <div className="px-5 py-4 flex items-center justify-between">
         <span className="text-[10px] uppercase tracking-[0.25em] text-[var(--lg-text-tertiary)] font-mono">
-          {item.tech}
+          {t(item.tech)}
         </span>
         <button
           onClick={handleDownload}
           className="flex items-center justify-center w-8 h-8 rounded-full
-          bg-white/40 border border-[var(--lg-glass-border-subtle)] text-[var(--lg-text-secondary)]
+          bg-white/5 border border-white/10 text-[var(--lg-text-secondary)]
           hover:bg-[var(--lg-accent-start)] hover:text-white hover:border-transparent
           transition-all duration-200 active:scale-95"
         >
@@ -189,7 +213,7 @@ export default function ShowcaseSection() {
       : "calc(66.666% + 0px)";
 
   return (
-    <section className="relative w-full min-h-[85vh] md:min-h-screen overflow-hidden px-4 sm:px-8 md:px-16 lg:px-24 py-0 md:py-12 -mt-16 sm:mt-0 md:mt-12">
+    <section className="relative w-full overflow-hidden px-4 sm:px-8 md:px-16 lg:px-24 py-16 md:py-24">
       <div className="relative z-10 flex flex-col items-center max-w-6xl mx-auto">
         {/* Label */}
         <div className="relative flex items-center justify-center gap-4 mb-5 opacity-0 animate-[fadeSlideDown_0.8s_ease_forwards]">
@@ -276,7 +300,7 @@ export default function ShowcaseSection() {
           onTouchEnd={handleTouchEnd}
         >
           {active === "projects" && (
-            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-5">
+            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-5">
               {projects.map((item, i) => (
                 <div
                   key={i}
@@ -292,7 +316,7 @@ export default function ShowcaseSection() {
           )}
 
           {active === "certificates" && (
-            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-5">
+            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-5">
               {certificates.map((item, i) => (
                 <div
                   key={i}
