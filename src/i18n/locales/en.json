@@ -27,6 +27,9 @@
     "online": "Online",
     "mode": "CHAT MODE",
     "askLabel": "Ask a question",
+    "inputPlaceholder": "Type your question...",
+    "send": "Send",
+    "fallbackError": "I'm unable to answer right now, please try again in a moment or pick one of the quick questions.",
     "greeting": "Hey! 👋 Welcome to Azizxon's (Han) personal page. I specialize in modern interfaces and web development. Pick a question below or just explore the site!",
     "questions": {
       "q0": "Who are you?",

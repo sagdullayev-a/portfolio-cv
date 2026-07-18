@@ -7,6 +7,11 @@ interface ChatMessage {
   text: string;
 }
 
+interface HistoryItem {
+  role: "user" | "model";
+  parts: { text: string }[];
+}
+
 export default function AiChatBlock() {
   const { t } = useTranslation();
 
@@ -29,6 +34,9 @@ export default function AiChatBlock() {
   const [messages, setMessages] = useState<ChatMessage[]>([
     { role: "bot", text: t("chat.greeting") },
   ]);
+  const [history, setHistory] = useState<HistoryItem[]>([]);
+  const [inputQuery, setInputQuery] = useState("");
+  const [isSending, setIsSending] = useState(false);
   const [typing, setTyping] = useState(false);
   const [askedQuestions, setAskedQuestions] = useState<Set<number>>(new Set());
   const chatRef = useRef<HTMLDivElement>(null);
@@ -40,6 +48,7 @@ export default function AiChatBlock() {
     if (prevLang.current !== newGreeting) {
       prevLang.current = newGreeting;
       setMessages([{ role: "bot", text: newGreeting }]);
+      setHistory([]);
       setAskedQuestions(new Set());
     }
   }, [t]);
@@ -51,7 +60,7 @@ export default function AiChatBlock() {
   }, [messages, typing]);
 
   const handleQuestion = (index: number) => {
-    if (typing || askedQuestions.has(index)) return;
+    if (typing || isSending || askedQuestions.has(index)) return;
     const item = quickQuestions[index];
     setAskedQuestions((prev) => new Set(prev).add(index));
     setMessages((prev) => [...prev, { role: "user", text: item.q }]);
@@ -59,7 +68,52 @@ export default function AiChatBlock() {
     setTimeout(() => {
       setTyping(false);
       setMessages((prev) => [...prev, { role: "bot", text: item.a }]);
+      setHistory((prev) => [
+        ...prev.slice(-18),
+        { role: "user", parts: [{ text: item.q }] },
+        { role: "model", parts: [{ text: item.a }] },
+      ]);
     }, 1200 + Math.random() * 800);
+  };
+
+  const handleFreeformSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    const text = inputQuery.trim();
+    if (!text || typing || isSending) return;
+
+    setInputQuery("");
+    setMessages((prev) => [...prev, { role: "user", text }]);
+    setTyping(true);
+    setIsSending(true);
+
+    const endpoint = import.meta.env.VITE_CHAT_API_URL || "http://localhost:3001/chat";
+
+    try {
+      const res = await fetch(endpoint, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ message: text, history }),
+      });
+
+      if (!res.ok) throw new Error("Chat request failed");
+
+      const data = await res.json();
+      const replyText = data.reply || t("chat.fallbackError");
+
+      setHistory((prev) => [
+        ...prev.slice(-18),
+        { role: "user", parts: [{ text }] },
+        { role: "model", parts: [{ text: replyText }] },
+      ]);
+
+      setTyping(false);
+      setIsSending(false);
+      setMessages((prev) => [...prev, { role: "bot", text: replyText }]);
+    } catch {
+      setTyping(false);
+      setIsSending(false);
+      setMessages((prev) => [...prev, { role: "bot", text: t("chat.fallbackError") }]);
+    }
   };
 
   return (
@@ -149,7 +203,7 @@ export default function AiChatBlock() {
                 <button
                   key={i}
                   onClick={() => handleQuestion(i)}
-                  disabled={askedQuestions.has(i) || typing}
+                  disabled={askedQuestions.has(i) || typing || isSending}
                   className={`px-4 py-2.5 sm:py-2 text-xs font-medium rounded-full transition-all duration-300 min-h-[40px] sm:min-h-0 flex items-center justify-center cursor-pointer ${
                     askedQuestions.has(i)
                       ? "opacity-40 cursor-not-allowed glass-card"
@@ -161,6 +215,36 @@ export default function AiChatBlock() {
               ))}
             </div>
           </div>
+
+          {/* Freeform Chat Input */}
+          <form onSubmit={handleFreeformSubmit} className="mt-4 flex gap-2">
+            <input
+              type="text"
+              value={inputQuery}
+              onChange={(e) => setInputQuery(e.target.value)}
+              maxLength={500}
+              disabled={typing || isSending}
+              placeholder={t("chat.inputPlaceholder")}
+              className="flex-1 px-4 py-2.5 text-xs sm:text-sm rounded-full
+                bg-white/5 border border-[var(--lg-glass-border-subtle)]
+                text-[var(--lg-text-primary)] placeholder:text-[var(--lg-text-tertiary)]
+                outline-none transition-all duration-300
+                focus:border-[var(--lg-accent-start)]/50
+                disabled:opacity-50 font-medium"
+            />
+            <button
+              type="submit"
+              disabled={!inputQuery.trim() || typing || isSending}
+              className="px-5 py-2.5 text-xs font-semibold rounded-full btn-glossy
+                disabled:opacity-50 disabled:cursor-not-allowed disabled:!transform-none
+                flex items-center gap-1.5 transition-all"
+            >
+              <svg className="w-3.5 h-3.5" fill="currentColor" viewBox="0 0 24 24">
+                <path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z" />
+              </svg>
+              <span>{t("chat.send")}</span>
+            </button>
+          </form>
         </div>
 
         {/* Side Panel */}

@@ -27,6 +27,9 @@
     "online": "Onlayn",
     "mode": "SUHBAT REJIMI",
     "askLabel": "Savol bering",
+    "inputPlaceholder": "Savolingizni yozing...",
+    "send": "Yuborish",
+    "fallbackError": "Hozircha javob bera olmayapman, birozdan so'ng qayta urinib ko'ring, yoki tayyor savollardan birini tanlang.",
     "greeting": "Salom! 👋 Azizxonning (Han) shaxsiy sahifasiga xush kelibsiz. Zamonaviy interfeyslar va dasturlash bilan shug'ullanaman. Quyidagi savollardan birini tanlang yoki shunchaki saytni o'rganing!",
     "questions": {
       "q0": "Siz kimsiz?",
