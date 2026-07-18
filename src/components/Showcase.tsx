@@ -8,14 +8,14 @@ const projects = [
     tech: "React + Node.js + Prisma",
     thumbnail: "/assets/turnir-cover.png",
     github: "https://github.com/sagdullayev-a/turnir.uz",
-    liveUrl: "https://turnir.uz",
+    liveUrl: "https://eturnir-uz.netlify.app/",
   },
   {
     title: "Wedding Hall",
     tech: "Next.js + Zustand + NextAuth",
     thumbnail: "/assets/wedding-hall-cover.png",
     github: "https://github.com/sagdullayev-a/wedding-hall",
-    liveUrl: "https://wedding-hall.uz",
+    liveUrl: "https://wedding-hall-z4k5.vercel.app/",
   },
   {
     title: "Sagdullayev.uz",
