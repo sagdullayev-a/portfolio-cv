@@ -11,7 +11,7 @@
     "tagline_3": "That Feel",
     "tagline_4": "Alive.",
     "description": "Ijodiy g'oyalarni interaktiv va yuqori sifatli veb-tajribalarga aylaantiraman.",
-    "cta": "HAN",
+    "cta": "PRINCE",
     "badge": "Frontend dasturchi • Talaba",
     "heading": "Building Intelligent Digital Experiences.",
     "description_new": "Men sun'iy intellekt, frontend muhandisligi, 3D interaktivlik va zamonaviy interfeyslarni birlashtirgan premium veb-tajribalarni yarataman.",
@@ -183,6 +183,9 @@
     "namePlaceholder": "Ismingiz",
     "messagePlaceholder": "Xabaringizni yozing...",
     "sendBtn": "Xabar Yuborish",
+    "sending": "Yuborilmoqda...",
+    "sendSuccess": "Xabar yuborildi! Tez orada javob beraman.",
+    "sendError": "Xatolik yuz berdi. Qaytadan urinib ko'ring.",
     "replyTime": "Odatda bir necha soat ichida javob beraman",
     "followMe": "Kuzating",
     "copyright": "Copyright © {{year}} Barcha huquqlar himoyalangan | Yaratuvchi: Azizxon Sagdullayev"

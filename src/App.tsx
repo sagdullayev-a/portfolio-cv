@@ -348,7 +348,7 @@ export default function App() {
           >
             <img src="/assets/logo.jpg" alt="Logo" className="w-7 h-7 rounded-full object-cover ring-2 ring-white/10" />
             <span className="text-[10px] md:text-xs tracking-[0.2em] text-[var(--lg-text-primary)] uppercase font-bold whitespace-nowrap">
-              HAN
+              PRINCE
             </span>
           </div>
 

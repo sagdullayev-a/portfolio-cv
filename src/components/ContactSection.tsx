@@ -4,12 +4,15 @@ import { motion } from "framer-motion";
 import { FaInstagram, FaGithub, FaLinkedin, FaTelegram } from "react-icons/fa";
 import { useTranslation } from "react-i18next";
 
+type SubmitState = "idle" | "loading" | "success" | "error";
+
 export default function ContactSection() {
   const { t } = useTranslation();
   const [form, setForm] = useState({
     name: "",
     message: "",
   });
+  const [submitState, setSubmitState] = useState<SubmitState>("idle");
 
   const [position, setPosition] = useState({ x: 0, y: 0 });
 
@@ -22,11 +25,23 @@ export default function ContactSection() {
     }));
   };
 
-  const handleSend = () => {
+  const handleSend = async () => {
     if (!form.name.trim() || !form.message.trim()) return;
-    const text = `Hello, my name is ${form.name.trim()}\n\n${form.message.trim()}`;
-    const phone = "998994746484";
-    window.open(`https://wa.me/${phone}?text=${encodeURIComponent(text)}`, "_blank");
+    setSubmitState("loading");
+    try {
+      const res = await fetch("/api/send-telegram", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ name: form.name.trim(), message: form.message.trim() }),
+      });
+      if (!res.ok) throw new Error("send failed");
+      setSubmitState("success");
+      setForm({ name: "", message: "" });
+      setTimeout(() => setSubmitState("idle"), 4000);
+    } catch {
+      setSubmitState("error");
+      setTimeout(() => setSubmitState("idle"), 4000);
+    }
   };
 
   return (
@@ -255,18 +270,44 @@ export default function ContactSection() {
                   {/* button */}
                   <button
                     onClick={handleSend}
-                    disabled={!form.name || !form.message}
-                    className="btn-glossy w-full !h-12 !rounded-[16px] mt-2 disabled:opacity-50 disabled:cursor-not-allowed disabled:!transform-none"
+                    disabled={!form.name || !form.message || submitState === "loading"}
+                    className="btn-glossy w-full !h-12 !rounded-[16px] mt-2 disabled:opacity-50 disabled:cursor-not-allowed disabled:!transform-none flex items-center justify-center gap-2"
                   >
-                    <svg
-                      className="w-5 h-5 transition-transform duration-300 group-hover:translate-x-1"
-                      fill="currentColor"
-                      viewBox="0 0 24 24"
-                    >
-                      <path d="M16.6915026,12.4744748 L3.50612381,13.2599618 C3.19218622,13.2599618 3.03521743,13.4170592 3.03521743,13.5741566 L1.15159189,20.0151496 C0.8376543,20.8006365 0.99,21.89 1.77946707,22.52 C2.41,22.99 3.50612381,23.1 4.13399899,22.8429026 L21.714504,14.0454487 C22.6563168,13.5741566 23.1272231,12.6315722 22.9702544,11.6889879 L4.13399899,1.16126562 C3.34915502,0.9 2.40734225,1.00636533 1.77946707,1.4776575 C0.994623095,2.10604706 0.837654326,3.0486314 1.15159189,3.99621575 L3.03521743,10.4371852 C3.03521743,10.5942826 3.19218622,10.75138 3.50612381,10.75138 L16.6915026,11.5368670 C16.6915026,11.5368670 17.1624089,11.5368670 17.1624089,12.0081591 C17.1624089,12.4794512 16.6915026,12.4744748 16.6915026,12.4744748 Z" />
-                    </svg>
-                    {t("contact.sendBtn")}
+                    {submitState === "loading" ? (
+                      <>
+                        <svg className="w-4 h-4 animate-spin" viewBox="0 0 24 24" fill="none">
+                          <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
+                          <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8z" />
+                        </svg>
+                        {t("contact.sending")}
+                      </>
+                    ) : (
+                      <>
+                        <svg
+                          className="w-5 h-5 transition-transform duration-300 group-hover:translate-x-1"
+                          fill="currentColor"
+                          viewBox="0 0 24 24"
+                        >
+                          <path d="M16.6915026,12.4744748 L3.50612381,13.2599618 C3.19218622,13.2599618 3.03521743,13.4170592 3.03521743,13.5741566 L1.15159189,20.0151496 C0.8376543,20.8006365 0.99,21.89 1.77946707,22.52 C2.41,22.99 3.50612381,23.1 4.13399899,22.8429026 L21.714504,14.0454487 C22.6563168,13.5741566 23.1272231,12.6315722 22.9702544,11.6889879 L4.13399899,1.16126562 C3.34915502,0.9 2.40734225,1.00636533 1.77946707,1.4776575 C0.994623095,2.10604706 0.837654326,3.0486314 1.15159189,3.99621575 L3.03521743,10.4371852 C3.03521743,10.5942826 3.19218622,10.75138 3.50612381,10.75138 L16.6915026,11.5368670 C16.6915026,11.5368670 17.1624089,11.5368670 17.1624089,12.0081591 C17.1624089,12.4794512 16.6915026,12.4744748 16.6915026,12.4744748 Z" />
+                        </svg>
+                        {t("contact.sendBtn")}
+                      </>
+                    )}
                   </button>
+
+                  {/* feedback message */}
+                  {submitState === "success" && (
+                    <div className="flex items-center gap-2 px-4 py-2.5 rounded-xl bg-green-500/10 border border-green-500/20 text-green-400 text-sm font-medium animate-[fadeSlideUp_0.4s_ease_forwards]">
+                      <span>✓</span>
+                      <span>{t("contact.sendSuccess")}</span>
+                    </div>
+                  )}
+                  {submitState === "error" && (
+                    <div className="flex items-center gap-2 px-4 py-2.5 rounded-xl bg-red-500/10 border border-red-500/20 text-red-400 text-sm font-medium animate-[fadeSlideUp_0.4s_ease_forwards]">
+                      <span>✕</span>
+                      <span>{t("contact.sendError")}</span>
+                    </div>
+                  )}
 
                   {/* status */}
                   <div className="flex items-center gap-2 pt-4 border-t border-[var(--lg-glass-border-subtle)]">
