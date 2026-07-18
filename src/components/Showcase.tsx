@@ -6,7 +6,7 @@ const projects = [
   {
     title: "Turnir.uz",
     tech: "React + Node.js + Prisma",
-    thumbnail: "/assets/website.png",
+    thumbnail: "/assets/turnir-cover.png",
     github: "https://github.com/sagdullayev-a/turnir.uz",
   },
   {
