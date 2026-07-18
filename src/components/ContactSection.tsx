@@ -10,6 +10,9 @@ export default function ContactSection() {
   const { t } = useTranslation();
   const [form, setForm] = useState({
     name: "",
+    email: "",
+    telegramUsername: "",
+    phone: "",
     message: "",
   });
   const [submitState, setSubmitState] = useState<SubmitState>("idle");
@@ -28,19 +31,40 @@ export default function ContactSection() {
 
   const handleSend = async () => {
     if (!form.name.trim() || !form.message.trim()) return;
+    
+    // Basic format check on email if provided
+    if (form.email.trim() && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(form.email.trim())) {
+      setErrorMessage("Invalid email address format.");
+      setSubmitState("error");
+      setTimeout(() => {
+        setSubmitState("idle");
+        setErrorMessage(null);
+      }, 4000);
+      return;
+    }
+
     setSubmitState("loading");
     setErrorMessage(null);
     try {
       const endpoint = import.meta.env.VITE_CONTACT_API_URL || "http://localhost:3001/notify/contact";
+
+      const payload: Record<string, string> = {
+        name: form.name.trim(),
+        message: form.message.trim(),
+      };
+      if (form.email.trim()) payload.email = form.email.trim();
+      if (form.telegramUsername.trim()) payload.telegramUsername = form.telegramUsername.trim();
+      if (form.phone.trim()) payload.phone = form.phone.trim();
+
       const res = await fetch(endpoint, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ name: form.name.trim(), message: form.message.trim() }),
+        body: JSON.stringify(payload),
       });
 
       if (res.ok) {
         setSubmitState("success");
-        setForm({ name: "", message: "" });
+        setForm({ name: "", email: "", telegramUsername: "", phone: "", message: "" });
         setTimeout(() => setSubmitState("idle"), 4000);
         return;
       }
@@ -251,7 +275,7 @@ export default function ContactSection() {
 
                 {/* form */}
                 <div className="space-y-4">
-                  {/* input */}
+                  {/* name input */}
                   <div className="relative group/input">
                     <input
                       type="text"
@@ -269,6 +293,69 @@ export default function ContactSection() {
                         focus:shadow-[0_0_20px_rgba(99,102,241,0.08)]
                         font-medium"
                     />
+                  </div>
+
+                  {/* optional contact details grid */}
+                  <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
+                    {/* email input */}
+                    <div className="relative group/input">
+                      <input
+                        type="email"
+                        name="email"
+                        value={form.email}
+                        onChange={handleChange}
+                        placeholder={t("contact.emailPlaceholder")}
+                        className="w-full h-12 px-4 text-xs sm:text-sm rounded-[14px]
+                          bg-white/5 backdrop-blur-xl
+                          border border-[var(--lg-glass-border-subtle)]
+                          group-hover/input:border-[var(--lg-accent-start)]/30
+                          text-[var(--lg-text-primary)] placeholder:text-[var(--lg-text-tertiary)]
+                          outline-none transition-all duration-300
+                          focus:border-[var(--lg-accent-start)]/50
+                          focus:shadow-[0_0_15px_rgba(99,102,241,0.08)]
+                          font-medium"
+                      />
+                    </div>
+
+                    {/* telegram input */}
+                    <div className="relative group/input">
+                      <input
+                        type="text"
+                        name="telegramUsername"
+                        value={form.telegramUsername}
+                        onChange={handleChange}
+                        placeholder={t("contact.telegramPlaceholder")}
+                        className="w-full h-12 px-4 text-xs sm:text-sm rounded-[14px]
+                          bg-white/5 backdrop-blur-xl
+                          border border-[var(--lg-glass-border-subtle)]
+                          group-hover/input:border-[var(--lg-accent-start)]/30
+                          text-[var(--lg-text-primary)] placeholder:text-[var(--lg-text-tertiary)]
+                          outline-none transition-all duration-300
+                          focus:border-[var(--lg-accent-start)]/50
+                          focus:shadow-[0_0_15px_rgba(99,102,241,0.08)]
+                          font-medium"
+                      />
+                    </div>
+
+                    {/* phone input */}
+                    <div className="relative group/input">
+                      <input
+                        type="tel"
+                        name="phone"
+                        value={form.phone}
+                        onChange={handleChange}
+                        placeholder={t("contact.phonePlaceholder")}
+                        className="w-full h-12 px-4 text-xs sm:text-sm rounded-[14px]
+                          bg-white/5 backdrop-blur-xl
+                          border border-[var(--lg-glass-border-subtle)]
+                          group-hover/input:border-[var(--lg-accent-start)]/30
+                          text-[var(--lg-text-primary)] placeholder:text-[var(--lg-text-tertiary)]
+                          outline-none transition-all duration-300
+                          focus:border-[var(--lg-accent-start)]/50
+                          focus:shadow-[0_0_15px_rgba(99,102,241,0.08)]
+                          font-medium"
+                      />
+                    </div>
                   </div>
 
                   {/* textarea */}
