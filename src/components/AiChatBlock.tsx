@@ -24,13 +24,6 @@ export default function AiChatBlock() {
     { label: t("chat.status.focusLabel"), value: t("chat.status.focusValue"), color: "#8b5cf6" },
   ];
 
-  const realStats = [
-    { icon: "🎓", label: t("chat.stats.experience"), value: "2+", unit: t("chat.stats.experienceUnit"), accent: "#6366f1" },
-    { icon: "📁", label: t("chat.stats.projects"), value: "3", unit: t("chat.stats.projectsUnit"), accent: "#22c55e" },
-    { icon: "🛠️", label: t("chat.stats.technologies"), value: "15", unit: t("chat.stats.technologiesUnit"), accent: "#f59e0b" },
-    { icon: "🎯", label: t("chat.stats.focus"), value: t("chat.stats.focusValue"), unit: t("chat.stats.focusUnit"), accent: "#8b5cf6" },
-  ];
-
   const interestTags = ["AI Integration", "3D Web", "Motion Design", "Open Source"];
 
   const [messages, setMessages] = useState<ChatMessage[]>([
@@ -190,43 +183,6 @@ export default function AiChatBlock() {
               </div>
             </motion.div>
           ))}
-
-          {/* Real Stats */}
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.8 }}
-            className="glass-panel p-5"
-          >
-            <p className="text-xs text-[var(--lg-text-tertiary)] uppercase tracking-wider font-medium mb-4">
-              {t("chat.stats.title")}
-            </p>
-            <div className="grid grid-cols-2 gap-3">
-              {realStats.map((stat, i) => (
-                <motion.div
-                  key={i}
-                  initial={{ opacity: 0, scale: 0.9 }}
-                  animate={{ opacity: 1, scale: 1 }}
-                  transition={{ delay: 0.9 + i * 0.08 }}
-                  className="relative p-2.5 sm:p-3 rounded-xl overflow-hidden group"
-                  style={{ background: "rgba(20, 24, 58, 0.45)", border: "1px solid rgba(139, 124, 246, 0.1)" }}
-                >
-                  <div
-                    className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-300 rounded-xl"
-                    style={{ background: `radial-gradient(circle at 50% 50%, ${stat.accent}10, transparent 70%)` }}
-                  />
-                  <div className="relative z-10 text-center">
-                    <div className="text-lg mb-1">{stat.icon}</div>
-                    <div className="flex items-baseline justify-center gap-0.5">
-                      <span className="text-lg sm:text-xl font-black" style={{ color: stat.accent }}>{stat.value}</span>
-                      <span className="text-[10px] sm:text-[11px] font-semibold text-[var(--lg-text-tertiary)]">{stat.unit}</span>
-                    </div>
-                    <div className="text-[9px] sm:text-[10px] text-[var(--lg-text-tertiary)] mt-0.5 leading-tight">{stat.label}</div>
-                  </div>
-                </motion.div>
-              ))}
-            </div>
-          </motion.div>
 
           {/* Current Interests */}
           <motion.div
