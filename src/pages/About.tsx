@@ -267,7 +267,7 @@ function buildResumeHTML(langKey: LangKey, photoBase64: string): string {
     <p class="title">${tr.roleSubtitle}</p>
     <div class="contact-grid">
       <div class="contact-item"><span class="contact-icon">🏠</span><span>Guliston, Sirdaryo, Uzbekistan</span></div>
-      <div class="contact-item"><span class="contact-icon">✉</span><a href="mailto:azizhon.sagdullayev@gmail.com">azizhon.sagdullayev@gmail.com</a></div>
+      <div class="contact-item"><span class="contact-icon">✉</span><a href="https://mail.google.com/mail/?view=cm&fs=1&to=azizhon.sagdullayev@gmail.com" target="_blank" rel="noopener noreferrer">azizhon.sagdullayev@gmail.com</a></div>
       <div class="contact-item"><span class="contact-icon">📞</span><a href="tel:+998994746484">+998 99 474 64 84</a></div>
       <div class="contact-item"><span class="contact-icon">📞</span><a href="tel:+998900916484">+998 90 091 64 84 (alt)</a></div>
       <div class="contact-item"><span class="contact-icon">🌐</span><a href="https://sagdullayev.uz">sagdullayev.uz</a></div>

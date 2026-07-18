@@ -183,7 +183,10 @@ export default function ContactSection() {
             <div className="flex items-center justify-center lg:justify-start gap-5 mt-2">
               {/* gmail */}
               <a
-                href="mailto:azizhon.sagdullayev@gmail.com"
+                href="https://mail.google.com/mail/?view=cm&fs=1&to=azizhon.sagdullayev@gmail.com"
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label="Email"
                 className="group glass-card !rounded-2xl w-12 h-12 sm:w-14 sm:h-14
                   flex items-center justify-center
                   transition-all duration-300

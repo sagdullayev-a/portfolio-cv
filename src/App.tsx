@@ -584,7 +584,7 @@ export default function App() {
                       { icon: Github, url: "https://github.com/sagdullayev-a" },
                       { icon: Linkedin, url: "https://linkedin.com/in/azizxon-sagdullayev" },
                       { icon: Instagram, url: "https://instagram.com/sagdulayev_a" },
-                      { icon: Mail, url: "mailto:azizhon.sagdullayev@gmail.com" },
+                      { icon: Mail, url: "https://mail.google.com/mail/?view=cm&fs=1&to=azizhon.sagdullayev@gmail.com" },
                     ].map((soc, idx) => {
                       const Icon = soc.icon;
                       return (
