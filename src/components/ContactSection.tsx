@@ -13,6 +13,7 @@ export default function ContactSection() {
     message: "",
   });
   const [submitState, setSubmitState] = useState<SubmitState>("idle");
+  const [errorMessage, setErrorMessage] = useState<string | null>(null);
 
   const [position, setPosition] = useState({ x: 0, y: 0 });
 
@@ -28,19 +29,42 @@ export default function ContactSection() {
   const handleSend = async () => {
     if (!form.name.trim() || !form.message.trim()) return;
     setSubmitState("loading");
+    setErrorMessage(null);
     try {
-      const res = await fetch("/api/send-telegram", {
+      const endpoint = import.meta.env.VITE_CONTACT_API_URL || "http://localhost:3001/notify/contact";
+      const res = await fetch(endpoint, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ name: form.name.trim(), message: form.message.trim() }),
       });
-      if (!res.ok) throw new Error("send failed");
-      setSubmitState("success");
-      setForm({ name: "", message: "" });
-      setTimeout(() => setSubmitState("idle"), 4000);
-    } catch {
+
+      if (res.ok) {
+        setSubmitState("success");
+        setForm({ name: "", message: "" });
+        setTimeout(() => setSubmitState("idle"), 4000);
+        return;
+      }
+
+      const data = await res.json().catch(() => ({}));
+      if (res.status === 400 && data.error) {
+        setErrorMessage(data.error);
+      } else if (res.status === 429) {
+        setErrorMessage(t("contact.rateLimit"));
+      } else {
+        setErrorMessage(t("contact.sendError"));
+      }
       setSubmitState("error");
-      setTimeout(() => setSubmitState("idle"), 4000);
+      setTimeout(() => {
+        setSubmitState("idle");
+        setErrorMessage(null);
+      }, 4000);
+    } catch {
+      setErrorMessage(t("contact.sendError"));
+      setSubmitState("error");
+      setTimeout(() => {
+        setSubmitState("idle");
+        setErrorMessage(null);
+      }, 4000);
     }
   };
 
@@ -305,7 +329,7 @@ export default function ContactSection() {
                   {submitState === "error" && (
                     <div className="flex items-center gap-2 px-4 py-2.5 rounded-xl bg-red-500/10 border border-red-500/20 text-red-400 text-sm font-medium animate-[fadeSlideUp_0.4s_ease_forwards]">
                       <span>✕</span>
-                      <span>{t("contact.sendError")}</span>
+                      <span>{errorMessage || t("contact.sendError")}</span>
                     </div>
                   )}
 

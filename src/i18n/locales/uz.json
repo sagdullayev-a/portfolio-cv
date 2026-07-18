@@ -186,6 +186,7 @@
     "sending": "Yuborilmoqda...",
     "sendSuccess": "Xabar yuborildi! Tez orada javob beraman.",
     "sendError": "Xatolik yuz berdi. Qaytadan urinib ko'ring.",
+    "rateLimit": "Juda tez-tez xabar yubormoqdasiz. Iltimos, biroz kuting.",
     "replyTime": "Odatda bir necha soat ichida javob beraman",
     "followMe": "Kuzating",
     "copyright": "Copyright © {{year}} Barcha huquqlar himoyalangan | Yaratuvchi: Azizxon Sagdullayev"

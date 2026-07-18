@@ -186,6 +186,7 @@
     "sending": "Sending...",
     "sendSuccess": "Message sent! I'll get back to you soon.",
     "sendError": "Something went wrong. Please try again.",
+    "rateLimit": "You are sending messages too fast. Please wait a moment.",
     "replyTime": "Usually replies within a few hours",
     "followMe": "Follow Me",
     "copyright": "Copyright © {{year}} All Rights Reserved | Created by Azizxon Sagdullayev"
