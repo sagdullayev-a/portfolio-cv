@@ -743,8 +743,6 @@ export default function App() {
                       
                       {[
                         { value: "3+", label: t("hero.stats.projects") },
-                        { value: "15+", label: t("hero.stats.tech") },
-                        { value: "3-Kurs", label: t("hero.stats.student") },
                       ].map((stat, idx) => (
                         <div key={idx} className="flex flex-col items-start border-b last:border-0 border-[var(--lg-glass-border-subtle)] pb-6 last:pb-0">
                           <span

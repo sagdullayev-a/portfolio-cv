@@ -12,18 +12,23 @@ const projects = [
   {
     title: "Wedding Hall",
     tech: "Next.js + Zustand + NextAuth",
-    thumbnail: "/assets/website.png",
+    thumbnail: "/assets/wedding-hall-cover.png",
     github: "https://github.com/sagdullayev-a/wedding-hall",
   },
   {
     title: "Sagdullayev.uz",
     tech: "Three.js + Rapier + GSAP",
-    thumbnail: "/assets/website.png",
+    thumbnail: "/assets/sagdullayev-cover.png",
     github: "https://github.com/sagdullayev-a/portfolio",
   },
 ];
 
 const certificates = [
+  {
+    title: "showcase.certs.codingNinja.title",
+    tech: "showcase.certs.codingNinja.tech",
+    thumbnail: "/assets/coding-ninja-cert.png",
+  },
   {
     title: "showcase.certs.frontend.title",
     tech: "showcase.certs.frontend.tech",

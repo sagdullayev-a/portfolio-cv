@@ -159,6 +159,10 @@
       "tech": "Tech Stack"
     },
     "certs": {
+      "codingNinja": {
+        "title": "Coding Ninja Sertifikati",
+        "tech": "PDP University • Umar Adkhamov Professor"
+      },
       "frontend": {
         "title": "Frontend dasturlash sertifikati",
         "tech": "MITC va IT Park"

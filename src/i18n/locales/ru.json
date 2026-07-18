@@ -159,6 +159,10 @@
       "tech": "Стек"
     },
     "certs": {
+      "codingNinja": {
+        "title": "Сертификат Coding Ninja",
+        "tech": "PDP University • Umar Adkhamov Professor"
+      },
       "frontend": {
         "title": "Сертификат по Frontend-разработке",
         "tech": "MITC и IT Park"
