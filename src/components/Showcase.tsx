@@ -8,18 +8,21 @@ const projects = [
     tech: "React + Node.js + Prisma",
     thumbnail: "/assets/turnir-cover.png",
     github: "https://github.com/sagdullayev-a/turnir.uz",
+    liveUrl: "https://turnir.uz",
   },
   {
     title: "Wedding Hall",
     tech: "Next.js + Zustand + NextAuth",
     thumbnail: "/assets/wedding-hall-cover.png",
     github: "https://github.com/sagdullayev-a/wedding-hall",
+    liveUrl: "https://wedding-hall.uz",
   },
   {
     title: "Sagdullayev.uz",
     tech: "Three.js + Rapier + GSAP",
     thumbnail: "/assets/sagdullayev-cover.png",
     github: "https://github.com/sagdullayev-a/portfolio",
+    liveUrl: "https://sagdullayev.uz",
   },
 ];
 
@@ -71,10 +74,13 @@ const Spinner = () => (
 
 function ProjectCard({ item }: { item: typeof projects[0] }) {
   return (
-    <div
+    <a
+      href={item.liveUrl}
+      target="_blank"
+      rel="noopener noreferrer"
       className="group glass-card overflow-hidden
       hover:!shadow-[0_12px_40px_rgba(99,102,241,0.12)] transition-all duration-500
-      hover:-translate-y-2"
+      hover:-translate-y-2 cursor-pointer block text-left"
     >
       <div className="relative h-48 overflow-hidden bg-white/10">
         <img
@@ -93,19 +99,23 @@ function ProjectCard({ item }: { item: typeof projects[0] }) {
         <span className="text-[10px] uppercase tracking-[0.25em] text-[var(--lg-text-tertiary)] font-mono">
           {item.tech}
         </span>
-        <a
-          href={item.github}
-          target="_blank"
-          rel="noopener noreferrer"
+        <button
+          type="button"
+          aria-label="GitHub Repository"
+          onClick={(e) => {
+            e.preventDefault();
+            e.stopPropagation();
+            window.open(item.github, "_blank", "noopener,noreferrer");
+          }}
           className="flex items-center justify-center w-8 h-8 rounded-full
           bg-white/5 border border-white/10 text-[var(--lg-text-secondary)]
           hover:bg-[var(--lg-accent-start)] hover:text-white hover:border-transparent
-          transition-all duration-200 active:scale-95"
+          transition-all duration-200 active:scale-95 z-10"
         >
           <GithubIcon />
-        </a>
+        </button>
       </div>
-    </div>
+    </a>
   );
 }
 
