@@ -207,10 +207,10 @@ export default function ShowcaseSection() {
 
   const activePillLeft =
     active === "projects"
-      ? "8px"
+      ? "6px"
       : active === "certificates"
-      ? "calc(33.333% + 4px)"
-      : "calc(66.666% + 0px)";
+      ? "calc(33.333% + 2px)"
+      : "calc(66.666% - 2px)";
 
   return (
     <section className="relative w-full overflow-hidden px-4 sm:px-8 md:px-16 lg:px-24 py-16 md:py-24">

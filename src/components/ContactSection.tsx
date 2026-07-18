@@ -23,10 +23,10 @@ export default function ContactSection() {
   };
 
   const handleSend = () => {
-    if (!form.name || !form.message) return;
-    const text = `Hello, my name is ${form.name}%0A%0A${form.message}`;
+    if (!form.name.trim() || !form.message.trim()) return;
+    const text = `Hello, my name is ${form.name.trim()}\n\n${form.message.trim()}`;
     const phone = "998994746484";
-    window.open(`https://wa.me/${phone}?text=${text}`, "_blank");
+    window.open(`https://wa.me/${phone}?text=${encodeURIComponent(text)}`, "_blank");
   };
 
   return (

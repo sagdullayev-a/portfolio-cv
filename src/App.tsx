@@ -107,7 +107,11 @@ export default function App() {
   }, []);
 
   useEffect(() => {
-    const checkMobile = () => setIsMobile(window.innerWidth < 640);
+    const checkMobile = () => {
+      const mobile = window.innerWidth < 640;
+      setIsMobile(mobile);
+      if (mobile) setIframeLoaded(true);
+    };
     checkMobile();
     window.addEventListener("resize", checkMobile);
     return () => window.removeEventListener("resize", checkMobile);
@@ -116,8 +120,6 @@ export default function App() {
   const lastScrollY = useRef(0);
   const ticking = useRef(false);
   const logoRef = useRef<HTMLDivElement>(null);
-
-
 
   // Active language from i18n (normalise to uppercase 2-letter code)
   const activeLang = (i18n.language?.slice(0, 2).toUpperCase() ?? "UZ") as Lang;
@@ -165,8 +167,6 @@ export default function App() {
     return () => clearInterval(interval);
   }, []);
 
-
-
   // Scroll detection — hide/show navbar
   useEffect(() => {
     const handleScroll = () => {
@@ -190,6 +190,35 @@ export default function App() {
     window.addEventListener("scroll", handleScroll, { passive: true });
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
+
+  // Scroll spy to update activeNav based on visible section on '/'
+  useEffect(() => {
+    if (location.pathname !== "/") return;
+
+    const sections = [
+      { id: "Home", el: document.getElementById("Home") },
+      { id: "about", el: document.getElementById("about") },
+      { id: "showcase", el: document.getElementById("showcase") },
+      { id: "contact", el: document.getElementById("contact") },
+    ];
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            setActiveNav(entry.target.id);
+          }
+        });
+      },
+      { threshold: 0.3 }
+    );
+
+    sections.forEach(({ el }) => {
+      if (el) observer.observe(el);
+    });
+
+    return () => observer.disconnect();
+  }, [location.pathname]);
 
   // Close language dropdown when clicking outside
   useEffect(() => {
@@ -508,7 +537,7 @@ export default function App() {
                   </div>
 
                   {/* Layer 3: Spline Scene */}
-                  {webglSupported && (
+                  {webglSupported && !isMobile && (
                     <motion.div
                       style={{ scale: splineScale, opacity: splineOpacity, x: splineX, y: splineY, translateY: splineYScroll, filter: splineBlur }}
                       className="absolute inset-0 z-10 flex items-center justify-center overflow-hidden pointer-events-auto"
@@ -528,7 +557,7 @@ export default function App() {
 
                   {/* Premium Loading Shimmer Loader */}
                   <AnimatePresence>
-                    {!iframeLoaded && (
+                    {!iframeLoaded && !isMobile && (
                       <motion.div
                         initial={{ opacity: 1 }}
                         exit={{ opacity: 0 }}
