@@ -1,61 +1,108 @@
-import { useState } from "react";
-import { FaWhatsapp, FaEnvelope } from "react-icons/fa";
+import { useState, useMemo } from "react";
+import { FaWhatsapp, FaEnvelope, FaInstagram, FaGithub, FaLinkedin, FaTelegram } from "react-icons/fa";
 import { motion } from "framer-motion";
-import { FaInstagram, FaGithub, FaLinkedin, FaTelegram } from "react-icons/fa";
 import { useTranslation } from "react-i18next";
 import { CONTACT_API_URL } from "@/config/api";
+import {
+  validateContactForm,
+  normalizeTelegramUsername,
+} from "@/utils/validation";
 
 type SubmitState = "idle" | "loading" | "success" | "error";
 
+interface FormFields {
+  name: string;
+  email: string;
+  telegramUsername: string;
+  phone: string;
+  message: string;
+}
+
 export default function ContactSection() {
   const { t } = useTranslation();
-  const [form, setForm] = useState({
+  const [form, setForm] = useState<FormFields>({
     name: "",
     email: "",
     telegramUsername: "",
     phone: "",
     message: "",
   });
+
+  const [touched, setTouched] = useState<Record<keyof FormFields, boolean>>({
+    name: false,
+    email: false,
+    telegramUsername: false,
+    phone: false,
+    message: false,
+  });
+
+  const [attemptedSubmit, setAttemptedSubmit] = useState(false);
   const [submitState, setSubmitState] = useState<SubmitState>("idle");
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
 
   const [position, setPosition] = useState({ x: 0, y: 0 });
 
+  // Calculate validation state on every render
+  const validation = useMemo(() => validateContactForm(form), [form]);
+  const { isValid, fieldErrors } = validation;
+
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
   ) => {
+    const { name, value } = e.target;
+    
+    let updatedValue = value;
+    // Auto-normalize telegram username if leading @ entered
+    if (name === "telegramUsername" && value.startsWith("@")) {
+      updatedValue = normalizeTelegramUsername(value);
+    }
+
     setForm((prev) => ({
       ...prev,
-      [e.target.name]: e.target.value,
+      [name]: updatedValue,
+    }));
+
+    setTouched((prev) => ({
+      ...prev,
+      [name]: true,
     }));
   };
 
-  const handleSend = async () => {
-    if (!form.name.trim() || !form.message.trim()) return;
-    
-    // Basic format check on email if provided
-    if (form.email.trim() && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(form.email.trim())) {
-      setErrorMessage("Invalid email address format.");
-      setSubmitState("error");
-      setTimeout(() => {
-        setSubmitState("idle");
-        setErrorMessage(null);
-      }, 4000);
-      return;
+  const handleBlur = (
+    e: React.FocusEvent<HTMLInputElement | HTMLTextAreaElement>
+  ) => {
+    const { name } = e.target;
+    setTouched((prev) => ({
+      ...prev,
+      [name]: true,
+    }));
+  };
+
+  const showFieldError = (fieldName: keyof FormFields): string | undefined => {
+    if ((touched[fieldName] || attemptedSubmit) && fieldErrors[fieldName]) {
+      return fieldErrors[fieldName];
     }
+    return undefined;
+  };
+
+  const handleSend = async () => {
+    setAttemptedSubmit(true);
+    if (!isValid || !validation.normalizedData) return;
 
     setSubmitState("loading");
     setErrorMessage(null);
+
     try {
       const endpoint = CONTACT_API_URL;
+      const { name, email, telegramUsername, phone, message } = validation.normalizedData;
 
       const payload: Record<string, string> = {
-        name: form.name.trim(),
-        message: form.message.trim(),
+        name,
+        message,
       };
-      if (form.email.trim()) payload.email = form.email.trim();
-      if (form.telegramUsername.trim()) payload.telegramUsername = form.telegramUsername.trim();
-      if (form.phone.trim()) payload.phone = form.phone.trim();
+      if (email) payload.email = email;
+      if (telegramUsername) payload.telegramUsername = telegramUsername;
+      if (phone) payload.phone = phone;
 
       const res = await fetch(endpoint, {
         method: "POST",
@@ -63,14 +110,17 @@ export default function ContactSection() {
         body: JSON.stringify(payload),
       });
 
+      const data = await res.json().catch(() => ({}));
+
       if (res.ok) {
         setSubmitState("success");
         setForm({ name: "", email: "", telegramUsername: "", phone: "", message: "" });
+        setTouched({ name: false, email: false, telegramUsername: false, phone: false, message: false });
+        setAttemptedSubmit(false);
         setTimeout(() => setSubmitState("idle"), 4000);
         return;
       }
 
-      const data = await res.json().catch(() => ({}));
       if (res.status === 400 && data.error) {
         setErrorMessage(data.error);
       } else if (res.status === 429) {
@@ -280,113 +330,163 @@ export default function ContactSection() {
                 {/* form */}
                 <div className="space-y-4">
                   {/* name input */}
-                  <div className="relative group/input">
-                    <input
-                      type="text"
-                      name="name"
-                      value={form.name}
-                      onChange={handleChange}
-                      placeholder={t("contact.namePlaceholder")}
-                      className="w-full h-14 px-6 rounded-[16px]
-                        bg-white/5 backdrop-blur-xl
-                        border border-[var(--lg-glass-border-subtle)]
-                        group-hover/input:border-[var(--lg-accent-start)]/30
-                        text-[var(--lg-text-primary)] placeholder:text-[var(--lg-text-tertiary)]
-                        outline-none transition-all duration-300
-                        focus:border-[var(--lg-accent-start)]/50
-                        focus:shadow-[0_0_20px_rgba(99,102,241,0.08)]
-                        font-medium"
-                    />
+                  <div>
+                    <div className="relative group/input">
+                      <input
+                        type="text"
+                        name="name"
+                        value={form.name}
+                        onChange={handleChange}
+                        onBlur={handleBlur}
+                        placeholder={t("contact.namePlaceholder")}
+                        className={`w-full h-14 px-6 rounded-[16px]
+                          bg-white/5 backdrop-blur-xl
+                          border ${
+                            showFieldError("name")
+                              ? "border-red-500/60 focus:border-red-500"
+                              : "border-[var(--lg-glass-border-subtle)] group-hover/input:border-[var(--lg-accent-start)]/30 focus:border-[var(--lg-accent-start)]/50"
+                          }
+                          text-[var(--lg-text-primary)] placeholder:text-[var(--lg-text-tertiary)]
+                          outline-none transition-all duration-300
+                          focus:shadow-[0_0_20px_rgba(99,102,241,0.08)]
+                          font-medium`}
+                      />
+                    </div>
+                    {showFieldError("name") && (
+                      <p className="text-red-400 text-xs mt-1.5 px-2 font-medium">
+                        {showFieldError("name")}
+                      </p>
+                    )}
                   </div>
 
                   {/* optional contact details grid */}
                   <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
                     {/* email input */}
-                    <div className="relative group/input">
-                      <input
-                        type="email"
-                        name="email"
-                        value={form.email}
-                        onChange={handleChange}
-                        placeholder={t("contact.emailPlaceholder")}
-                        className="w-full h-12 px-4 text-xs sm:text-sm rounded-[14px]
-                          bg-white/5 backdrop-blur-xl
-                          border border-[var(--lg-glass-border-subtle)]
-                          group-hover/input:border-[var(--lg-accent-start)]/30
-                          text-[var(--lg-text-primary)] placeholder:text-[var(--lg-text-tertiary)]
-                          outline-none transition-all duration-300
-                          focus:border-[var(--lg-accent-start)]/50
-                          focus:shadow-[0_0_15px_rgba(99,102,241,0.08)]
-                          font-medium"
-                      />
+                    <div>
+                      <div className="relative group/input">
+                        <input
+                          type="email"
+                          name="email"
+                          value={form.email}
+                          onChange={handleChange}
+                          onBlur={handleBlur}
+                          placeholder={t("contact.emailPlaceholder")}
+                          className={`w-full h-12 px-4 text-xs sm:text-sm rounded-[14px]
+                            bg-white/5 backdrop-blur-xl
+                            border ${
+                              showFieldError("email")
+                                ? "border-red-500/60 focus:border-red-500"
+                                : "border-[var(--lg-glass-border-subtle)] group-hover/input:border-[var(--lg-accent-start)]/30 focus:border-[var(--lg-accent-start)]/50"
+                            }
+                            text-[var(--lg-text-primary)] placeholder:text-[var(--lg-text-tertiary)]
+                            outline-none transition-all duration-300
+                            focus:shadow-[0_0_15px_rgba(99,102,241,0.08)]
+                            font-medium`}
+                        />
+                      </div>
+                      {showFieldError("email") && (
+                        <p className="text-red-400 text-[11px] mt-1 px-1 font-medium">
+                          {showFieldError("email")}
+                        </p>
+                      )}
                     </div>
 
                     {/* telegram input */}
-                    <div className="relative group/input">
-                      <input
-                        type="text"
-                        name="telegramUsername"
-                        value={form.telegramUsername}
-                        onChange={handleChange}
-                        placeholder={t("contact.telegramPlaceholder")}
-                        className="w-full h-12 px-4 text-xs sm:text-sm rounded-[14px]
-                          bg-white/5 backdrop-blur-xl
-                          border border-[var(--lg-glass-border-subtle)]
-                          group-hover/input:border-[var(--lg-accent-start)]/30
-                          text-[var(--lg-text-primary)] placeholder:text-[var(--lg-text-tertiary)]
-                          outline-none transition-all duration-300
-                          focus:border-[var(--lg-accent-start)]/50
-                          focus:shadow-[0_0_15px_rgba(99,102,241,0.08)]
-                          font-medium"
-                      />
+                    <div>
+                      <div className="relative group/input">
+                        <input
+                          type="text"
+                          name="telegramUsername"
+                          value={form.telegramUsername}
+                          onChange={handleChange}
+                          onBlur={handleBlur}
+                          placeholder={t("contact.telegramPlaceholder")}
+                          className={`w-full h-12 px-4 text-xs sm:text-sm rounded-[14px]
+                            bg-white/5 backdrop-blur-xl
+                            border ${
+                              showFieldError("telegramUsername")
+                                ? "border-red-500/60 focus:border-red-500"
+                                : "border-[var(--lg-glass-border-subtle)] group-hover/input:border-[var(--lg-accent-start)]/30 focus:border-[var(--lg-accent-start)]/50"
+                            }
+                            text-[var(--lg-text-primary)] placeholder:text-[var(--lg-text-tertiary)]
+                            outline-none transition-all duration-300
+                            focus:shadow-[0_0_15px_rgba(99,102,241,0.08)]
+                            font-medium`}
+                        />
+                      </div>
+                      {showFieldError("telegramUsername") && (
+                        <p className="text-red-400 text-[11px] mt-1 px-1 font-medium">
+                          {showFieldError("telegramUsername")}
+                        </p>
+                      )}
                     </div>
 
                     {/* phone input */}
-                    <div className="relative group/input">
-                      <input
-                        type="tel"
-                        name="phone"
-                        value={form.phone}
-                        onChange={handleChange}
-                        placeholder={t("contact.phonePlaceholder")}
-                        className="w-full h-12 px-4 text-xs sm:text-sm rounded-[14px]
-                          bg-white/5 backdrop-blur-xl
-                          border border-[var(--lg-glass-border-subtle)]
-                          group-hover/input:border-[var(--lg-accent-start)]/30
-                          text-[var(--lg-text-primary)] placeholder:text-[var(--lg-text-tertiary)]
-                          outline-none transition-all duration-300
-                          focus:border-[var(--lg-accent-start)]/50
-                          focus:shadow-[0_0_15px_rgba(99,102,241,0.08)]
-                          font-medium"
-                      />
+                    <div>
+                      <div className="relative group/input">
+                        <input
+                          type="tel"
+                          name="phone"
+                          value={form.phone}
+                          onChange={handleChange}
+                          onBlur={handleBlur}
+                          placeholder={t("contact.phonePlaceholder")}
+                          className={`w-full h-12 px-4 text-xs sm:text-sm rounded-[14px]
+                            bg-white/5 backdrop-blur-xl
+                            border ${
+                              showFieldError("phone")
+                                ? "border-red-500/60 focus:border-red-500"
+                                : "border-[var(--lg-glass-border-subtle)] group-hover/input:border-[var(--lg-accent-start)]/30 focus:border-[var(--lg-accent-start)]/50"
+                            }
+                            text-[var(--lg-text-primary)] placeholder:text-[var(--lg-text-tertiary)]
+                            outline-none transition-all duration-300
+                            focus:shadow-[0_0_15px_rgba(99,102,241,0.08)]
+                            font-medium`}
+                        />
+                      </div>
+                      {showFieldError("phone") && (
+                        <p className="text-red-400 text-[11px] mt-1 px-1 font-medium">
+                          {showFieldError("phone")}
+                        </p>
+                      )}
                     </div>
                   </div>
 
                   {/* textarea */}
-                  <div className="relative group/textarea">
-                    <textarea
-                      rows={4}
-                      name="message"
-                      value={form.message}
-                      onChange={handleChange}
-                      placeholder={t("contact.messagePlaceholder")}
-                      className="w-full p-5 rounded-[16px] resize-none
-                        bg-white/5 backdrop-blur-xl
-                        border border-[var(--lg-glass-border-subtle)]
-                        group-hover/textarea:border-[var(--lg-accent-start)]/30
-                        text-[var(--lg-text-primary)] placeholder:text-[var(--lg-text-tertiary)]
-                        outline-none transition-all duration-300
-                        focus:border-[var(--lg-accent-start)]/50
-                        focus:shadow-[0_0_20px_rgba(99,102,241,0.08)]
-                        font-medium leading-relaxed"
-                    />
+                  <div>
+                    <div className="relative group/textarea">
+                      <textarea
+                        rows={4}
+                        name="message"
+                        value={form.message}
+                        onChange={handleChange}
+                        onBlur={handleBlur}
+                        placeholder={t("contact.messagePlaceholder")}
+                        className={`w-full p-5 rounded-[16px] resize-none
+                          bg-white/5 backdrop-blur-xl
+                          border ${
+                            showFieldError("message")
+                              ? "border-red-500/60 focus:border-red-500"
+                              : "border-[var(--lg-glass-border-subtle)] group-hover/textarea:border-[var(--lg-accent-start)]/30 focus:border-[var(--lg-accent-start)]/50"
+                          }
+                          text-[var(--lg-text-primary)] placeholder:text-[var(--lg-text-tertiary)]
+                          outline-none transition-all duration-300
+                          focus:shadow-[0_0_20px_rgba(99,102,241,0.08)]
+                          font-medium leading-relaxed`}
+                      />
+                    </div>
+                    {showFieldError("message") && (
+                      <p className="text-red-400 text-xs mt-1.5 px-2 font-medium">
+                        {showFieldError("message")}
+                      </p>
+                    )}
                   </div>
 
                   {/* button */}
                   <button
                     onClick={handleSend}
-                    disabled={!form.name || !form.message || submitState === "loading"}
-                    className="btn-glossy w-full !h-12 !rounded-[16px] mt-2 disabled:opacity-50 disabled:cursor-not-allowed disabled:!transform-none flex items-center justify-center gap-2"
+                    disabled={!isValid || submitState === "loading"}
+                    className="btn-glossy w-full !h-12 !rounded-[16px] mt-2 disabled:opacity-50 disabled:cursor-not-allowed disabled:!transform-none flex items-center justify-center gap-2 font-semibold transition-all"
                   >
                     {submitState === "loading" ? (
                       <>
