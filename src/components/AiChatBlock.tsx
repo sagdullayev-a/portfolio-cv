@@ -1,6 +1,7 @@
 import { useState, useEffect, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useTranslation } from "react-i18next";
+import { CHAT_API_URL } from "@/config/api";
 
 interface ChatMessage {
   role: "bot" | "user";
@@ -86,7 +87,7 @@ export default function AiChatBlock() {
     setTyping(true);
     setIsSending(true);
 
-    const endpoint = import.meta.env.VITE_CHAT_API_URL || "http://localhost:3001/chat";
+    const endpoint = CHAT_API_URL;
 
     try {
       const res = await fetch(endpoint, {

@@ -3,6 +3,7 @@ import { FaWhatsapp, FaEnvelope } from "react-icons/fa";
 import { motion } from "framer-motion";
 import { FaInstagram, FaGithub, FaLinkedin, FaTelegram } from "react-icons/fa";
 import { useTranslation } from "react-i18next";
+import { CONTACT_API_URL } from "@/config/api";
 
 type SubmitState = "idle" | "loading" | "success" | "error";
 
@@ -46,7 +47,7 @@ export default function ContactSection() {
     setSubmitState("loading");
     setErrorMessage(null);
     try {
-      const endpoint = import.meta.env.VITE_CONTACT_API_URL || "http://localhost:3001/notify/contact";
+      const endpoint = CONTACT_API_URL;
 
       const payload: Record<string, string> = {
         name: form.name.trim(),
