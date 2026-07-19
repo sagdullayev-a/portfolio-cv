@@ -537,7 +537,7 @@ export default function App() {
                   </div>
 
                   {/* Layer 3: Spline Scene */}
-                  {webglSupported && !isMobile && (
+                  {(
                     <motion.div
                       style={{ scale: splineScale, opacity: splineOpacity, x: splineX, y: splineY, translateY: splineYScroll, filter: splineBlur }}
                       className="absolute inset-0 z-10 flex items-center justify-center overflow-hidden pointer-events-auto"
@@ -557,7 +557,7 @@ export default function App() {
 
                   {/* Premium Loading Shimmer Loader */}
                   <AnimatePresence>
-                    {!iframeLoaded && !isMobile && (
+                    {!iframeLoaded && (
                       <motion.div
                         initial={{ opacity: 1 }}
                         exit={{ opacity: 0 }}
